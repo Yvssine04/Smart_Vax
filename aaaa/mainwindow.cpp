@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDate>
+#include <QInputDialog>
 
 Connection::Connection() {}
 
@@ -40,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     Quit = ui->Quit;
     Quit4 = ui->Quit_4;
     ajoutrdv = ui->ajoutrdv;
+    delete_2 = ui->delete_2; // Initialize the delete button
 
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
@@ -57,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Quit, &QPushButton::clicked, this, &MainWindow::on_Quit_clicked);
     connect(Quit4, &QPushButton::clicked, this, &MainWindow::on_Quit_4_clicked);
     connect(ajoutrdv, &QPushButton::clicked, this, &MainWindow::on_ajoutrdv_clicked);
+    connect(delete_2, &QPushButton::clicked, this, &MainWindow::on_delete_2_clicked); // Connect the delete button
 
     // Connect the dateChanged signal to the custom slot
     connect(ui->date_vac, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
@@ -453,5 +456,14 @@ void MainWindow::onDateChanged() {
         QMessageBox::critical(this, "Error", "Failed to update date: " + query.lastError().text());
     } else {
         QMessageBox::information(this, "Success", "The expiration date was successfully updated!");
+    }
+}
+
+void MainWindow::on_delete_2_clicked() {
+    bool ok;
+    int reference = QInputDialog::getInt(this, "Delete Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+    if (ok) {
+        vaccinManager->deleteVaccin(reference);
     }
 }

@@ -23,7 +23,6 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
     int row = 0;
     while (query.next()) {
         tabvaccin->insertRow(row);
-
         tabvaccin->setItem(row, 0, new QTableWidgetItem(query.value(0).toString())); // REFERENCE
         tabvaccin->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // NOM
         tabvaccin->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // DOSE
@@ -71,5 +70,24 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
         QMessageBox::critical(nullptr, "Error", "Failed to save data: " + query.lastError().text());
     } else {
         QMessageBox::information(nullptr, "Success", "The data was successfully uploaded!");
+    }
+}
+
+void Vaccin::deleteVaccin(int reference) {
+    if (!QSqlDatabase::database().isOpen()) {
+        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM VACCIN WHERE REFERENCE = :reference");
+    query.bindValue(":reference", reference);
+
+    if (!query.exec()) {
+        QMessageBox::critical(nullptr, "Error", "Failed to delete data: " + query.lastError().text());
+    } else if (query.numRowsAffected() == 0) {
+        QMessageBox::warning(nullptr, "Not Found", "Reference does not exist.");
+    } else {
+        QMessageBox::information(nullptr, "Success", "The data was successfully deleted!");
     }
 }
