@@ -58,16 +58,16 @@ public:
     QTabWidget *vaccin;
     QWidget *Tab1;
     QLabel *label_11;
-    QLineEdit *lineEdit_2;
-    QLineEdit *lineEdit;
+    QLineEdit *recherche_vac;
+    QLineEdit *cherche_vac;
     QLabel *label_10;
     QPushButton *pushButton_10;
     QLineEdit *lineEdit_5;
     QLineEdit *lineEdit_4;
     QTableWidget *tabvaccin;
     QPushButton *ajoutvac;
-    QPushButton *edit;
-    QPushButton *delete_2;
+    QPushButton *edit_vac;
+    QPushButton *delete_vac;
     QTableView *tableView_3;
     QLineEdit *lineEdit_6;
     QLineEdit *lineEdit_7;
@@ -258,6 +258,34 @@ public:
     QLineEdit *nom_rdv;
     QTableView *tableView_16;
     QTableView *tableView_17;
+    QWidget *tab_5;
+    QLineEdit *mode_vac_2;
+    QLineEdit *nom_vac_2;
+    QLabel *label_39;
+    QLineEdit *age_vac_2;
+    QLabel *label_40;
+    QPushButton *Quit_5;
+    QLineEdit *lineEdit_25;
+    QLineEdit *container_2;
+    QLabel *label_41;
+    QLineEdit *lineEdit_26;
+    QLabel *label_42;
+    QLabel *label_43;
+    QLabel *label_44;
+    QLineEdit *dose_vac_2;
+    QLabel *label_45;
+    QLabel *label_46;
+    QLabel *label_47;
+    QLineEdit *type_vac_2;
+    QLineEdit *prix_vac_2;
+    QLineEdit *reference_2;
+    QLineEdit *quantite_vac_2;
+    QDateEdit *date_vac_2;
+    QLabel *label_48;
+    QPushButton *save_vac_2;
+    QTableView *tableView_8;
+    QTableView *tableView_9;
+    QLabel *label_49;
     QWidget *widget;
     QLabel *Medecin;
     QPushButton *pushButton_2;
@@ -595,28 +623,28 @@ public:
         label_11->setFrameShadow(QFrame::Shadow::Sunken);
         label_11->setLineWidth(2);
         label_11->setMidLineWidth(0);
-        lineEdit_2 = new QLineEdit(Tab1);
-        lineEdit_2->setObjectName("lineEdit_2");
-        lineEdit_2->setGeometry(QRect(60, 60, 301, 51));
-        lineEdit_2->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
+        recherche_vac = new QLineEdit(Tab1);
+        recherche_vac->setObjectName("recherche_vac");
+        recherche_vac->setGeometry(QRect(60, 60, 301, 51));
+        recherche_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        lineEdit = new QLineEdit(Tab1);
-        lineEdit->setObjectName("lineEdit");
-        lineEdit->setGeometry(QRect(60, 50, 301, 51));
+        cherche_vac = new QLineEdit(Tab1);
+        cherche_vac->setObjectName("cherche_vac");
+        cherche_vac->setGeometry(QRect(60, 50, 301, 51));
         QFont font2;
         font2.setFamilies({QString::fromUtf8("Segoe UI")});
         font2.setPointSize(18);
         font2.setBold(false);
         font2.setItalic(false);
-        lineEdit->setFont(font2);
-        lineEdit->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
+        cherche_vac->setFont(font2);
+        cherche_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
 "font: 18pt \"Segoe UI\";\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        lineEdit->setCursorPosition(0);
+        cherche_vac->setCursorPosition(0);
         label_10 = new QLabel(Tab1);
         label_10->setObjectName("label_10");
         label_10->setGeometry(QRect(410, 60, 41, 31));
@@ -683,9 +711,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        edit = new QPushButton(Tab1);
-        edit->setObjectName("edit");
-        edit->setGeometry(QRect(820, 50, 61, 51));
+        edit_vac = new QPushButton(Tab1);
+        edit_vac->setObjectName("edit_vac");
+        edit_vac->setGeometry(QRect(820, 50, 61, 51));
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::WindowText, brush);
         QBrush brush24(QColor(63, 123, 134, 255));
@@ -762,20 +790,20 @@ public:
         QBrush brush32(QColor(186, 249, 255, 255));
         brush32.setStyle(Qt::SolidPattern);
         palette3.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
-        edit->setPalette(palette3);
-        edit->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
-        edit->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
+        edit_vac->setPalette(palette3);
+        edit_vac->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
+        edit_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
 "font: 18pt \"Segoe UI\";\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/7398464.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        edit->setIcon(icon3);
-        edit->setIconSize(QSize(42, 36));
-        delete_2 = new QPushButton(Tab1);
-        delete_2->setObjectName("delete_2");
-        delete_2->setGeometry(QRect(920, 50, 61, 51));
+        edit_vac->setIcon(icon3);
+        edit_vac->setIconSize(QSize(42, 36));
+        delete_vac = new QPushButton(Tab1);
+        delete_vac->setObjectName("delete_vac");
+        delete_vac->setGeometry(QRect(920, 50, 61, 51));
         QPalette palette4;
         palette4.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette4.setBrush(QPalette::Active, QPalette::Button, brush24);
@@ -850,16 +878,16 @@ public:
         QBrush brush40(QColor(125, 174, 179, 255));
         brush40.setStyle(Qt::SolidPattern);
         palette4.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
-        delete_2->setPalette(palette4);
-        delete_2->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+        delete_vac->setPalette(palette4);
+        delete_vac->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
 "font: 18pt \"Segoe UI\";\n"
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/216658.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        delete_2->setIcon(icon4);
-        delete_2->setIconSize(QSize(49, 37));
+        delete_vac->setIcon(icon4);
+        delete_vac->setIconSize(QSize(49, 37));
         tableView_3 = new QTableView(Tab1);
         tableView_3->setObjectName("tableView_3");
         tableView_3->setGeometry(QRect(50, 140, 1271, 481));
@@ -882,8 +910,8 @@ public:
 ""));
         vaccin->addTab(Tab1, QString());
         label_11->raise();
-        lineEdit_2->raise();
-        lineEdit->raise();
+        recherche_vac->raise();
+        cherche_vac->raise();
         lineEdit_5->raise();
         lineEdit_4->raise();
         pushButton_10->raise();
@@ -892,9 +920,9 @@ public:
         tableView_3->raise();
         tabvaccin->raise();
         lineEdit_6->raise();
-        delete_2->raise();
+        delete_vac->raise();
         lineEdit_7->raise();
-        edit->raise();
+        edit_vac->raise();
         Tab2 = new QWidget();
         Tab2->setObjectName("Tab2");
         tableView = new QTableView(Tab2);
@@ -935,14 +963,14 @@ public:
 "background-color: rgb(255, 255, 255);"));
         label_4 = new QLabel(Tab2);
         label_4->setObjectName("label_4");
-        label_4->setGeometry(QRect(240, 240, 371, 41));
+        label_4->setGeometry(QRect(240, 240, 171, 41));
         QFont font4;
         font4.setPointSize(17);
         font4.setBold(true);
         label_4->setFont(font4);
         label_12 = new QLabel(Tab2);
         label_12->setObjectName("label_12");
-        label_12->setGeometry(QRect(240, 200, 381, 31));
+        label_12->setGeometry(QRect(240, 200, 191, 31));
         label_12->setFont(font4);
         label_15 = new QLabel(Tab2);
         label_15->setObjectName("label_15");
@@ -954,7 +982,7 @@ public:
         label_16->setFont(font4);
         label_17 = new QLabel(Tab2);
         label_17->setObjectName("label_17");
-        label_17->setGeometry(QRect(240, 460, 351, 31));
+        label_17->setGeometry(QRect(240, 460, 271, 31));
         label_17->setFont(font4);
         save_vac = new QPushButton(Tab2);
         save_vac->setObjectName("save_vac");
@@ -4073,6 +4101,189 @@ public:
         checkBox_4->raise();
         checkBox_5->raise();
         checkBox_2->raise();
+        tab_5 = new QWidget();
+        tab_5->setObjectName("tab_5");
+        mode_vac_2 = new QLineEdit(tab_5);
+        mode_vac_2->setObjectName("mode_vac_2");
+        mode_vac_2->setGeometry(QRect(590, 350, 321, 41));
+        mode_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        nom_vac_2 = new QLineEdit(tab_5);
+        nom_vac_2->setObjectName("nom_vac_2");
+        nom_vac_2->setGeometry(QRect(590, 200, 321, 41));
+        nom_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        label_39 = new QLabel(tab_5);
+        label_39->setObjectName("label_39");
+        label_39->setGeometry(QRect(240, 460, 251, 31));
+        label_39->setFont(font4);
+        age_vac_2 = new QLineEdit(tab_5);
+        age_vac_2->setObjectName("age_vac_2");
+        age_vac_2->setGeometry(QRect(590, 300, 321, 41));
+        age_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        label_40 = new QLabel(tab_5);
+        label_40->setObjectName("label_40");
+        label_40->setGeometry(QRect(240, 290, 291, 41));
+        label_40->setFont(font4);
+        Quit_5 = new QPushButton(tab_5);
+        Quit_5->setObjectName("Quit_5");
+        Quit_5->setGeometry(QRect(1150, 50, 41, 31));
+        Quit_5->setFont(font3);
+        Quit_5->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+""));
+        Quit_5->setIcon(icon6);
+        Quit_5->setIconSize(QSize(29, 21));
+        lineEdit_25 = new QLineEdit(tab_5);
+        lineEdit_25->setObjectName("lineEdit_25");
+        lineEdit_25->setGeometry(QRect(1150, 50, 41, 41));
+        lineEdit_25->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+""));
+        container_2 = new QLineEdit(tab_5);
+        container_2->setObjectName("container_2");
+        container_2->setGeometry(QRect(590, 450, 321, 41));
+        container_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        label_41 = new QLabel(tab_5);
+        label_41->setObjectName("label_41");
+        label_41->setGeometry(QRect(240, 200, 311, 31));
+        label_41->setFont(font4);
+        lineEdit_26 = new QLineEdit(tab_5);
+        lineEdit_26->setObjectName("lineEdit_26");
+        lineEdit_26->setGeometry(QRect(1080, 110, 51, 51));
+        lineEdit_26->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+""));
+        label_42 = new QLabel(tab_5);
+        label_42->setObjectName("label_42");
+        label_42->setGeometry(QRect(240, 400, 201, 41));
+        label_42->setFont(font4);
+        label_43 = new QLabel(tab_5);
+        label_43->setObjectName("label_43");
+        label_43->setGeometry(QRect(240, 510, 311, 31));
+        label_43->setFont(font4);
+        label_44 = new QLabel(tab_5);
+        label_44->setObjectName("label_44");
+        label_44->setGeometry(QRect(240, 140, 231, 51));
+        label_44->setFont(font6);
+        dose_vac_2 = new QLineEdit(tab_5);
+        dose_vac_2->setObjectName("dose_vac_2");
+        dose_vac_2->setGeometry(QRect(590, 400, 321, 41));
+        dose_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        label_45 = new QLabel(tab_5);
+        label_45->setObjectName("label_45");
+        label_45->setGeometry(QRect(240, 350, 301, 31));
+        label_45->setFont(font4);
+        label_46 = new QLabel(tab_5);
+        label_46->setObjectName("label_46");
+        label_46->setGeometry(QRect(590, 40, 251, 41));
+        label_46->setFont(font5);
+        label_47 = new QLabel(tab_5);
+        label_47->setObjectName("label_47");
+        label_47->setGeometry(QRect(240, 240, 231, 41));
+        label_47->setFont(font4);
+        type_vac_2 = new QLineEdit(tab_5);
+        type_vac_2->setObjectName("type_vac_2");
+        type_vac_2->setGeometry(QRect(590, 250, 321, 41));
+        type_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        prix_vac_2 = new QLineEdit(tab_5);
+        prix_vac_2->setObjectName("prix_vac_2");
+        prix_vac_2->setGeometry(QRect(590, 500, 321, 41));
+        prix_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        reference_2 = new QLineEdit(tab_5);
+        reference_2->setObjectName("reference_2");
+        reference_2->setGeometry(QRect(590, 150, 321, 41));
+        reference_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        quantite_vac_2 = new QLineEdit(tab_5);
+        quantite_vac_2->setObjectName("quantite_vac_2");
+        quantite_vac_2->setGeometry(QRect(590, 550, 321, 41));
+        quantite_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        date_vac_2 = new QDateEdit(tab_5);
+        date_vac_2->setObjectName("date_vac_2");
+        date_vac_2->setGeometry(QRect(600, 460, 301, 26));
+        date_vac_2->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);\n"
+"color: rgb(63, 123, 134);"));
+        label_48 = new QLabel(tab_5);
+        label_48->setObjectName("label_48");
+        label_48->setGeometry(QRect(240, 550, 191, 41));
+        label_48->setFont(font4);
+        save_vac_2 = new QPushButton(tab_5);
+        save_vac_2->setObjectName("save_vac_2");
+        save_vac_2->setGeometry(QRect(1080, 110, 51, 41));
+        save_vac_2->setFont(font3);
+        save_vac_2->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+""));
+        save_vac_2->setIcon(icon5);
+        save_vac_2->setIconSize(QSize(25, 26));
+        tableView_8 = new QTableView(tab_5);
+        tableView_8->setObjectName("tableView_8");
+        tableView_8->setGeometry(QRect(160, 40, 1041, 651));
+        tableView_8->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;"));
+        tableView_9 = new QTableView(tab_5);
+        tableView_9->setObjectName("tableView_9");
+        tableView_9->setGeometry(QRect(210, 90, 941, 551));
+        tableView_9->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;"));
+        label_49 = new QLabel(tab_5);
+        label_49->setObjectName("label_49");
+        label_49->setGeometry(QRect(10, 20, 1361, 691));
+        label_49->setFrameShape(QFrame::Shape::WinPanel);
+        label_49->setFrameShadow(QFrame::Shadow::Sunken);
+        label_49->setLineWidth(2);
+        label_49->setMidLineWidth(0);
+        vaccin->addTab(tab_5, QString());
+        label_49->raise();
+        tableView_8->raise();
+        tableView_9->raise();
+        lineEdit_25->raise();
+        label_48->raise();
+        label_43->raise();
+        label_39->raise();
+        label_42->raise();
+        label_45->raise();
+        label_40->raise();
+        label_47->raise();
+        label_41->raise();
+        label_44->raise();
+        reference_2->raise();
+        nom_vac_2->raise();
+        type_vac_2->raise();
+        age_vac_2->raise();
+        mode_vac_2->raise();
+        dose_vac_2->raise();
+        container_2->raise();
+        date_vac_2->raise();
+        prix_vac_2->raise();
+        quantite_vac_2->raise();
+        lineEdit_26->raise();
+        save_vac_2->raise();
+        Quit_5->raise();
+        label_46->raise();
         main->raise();
         widget_2->raise();
         widget_3->raise();
@@ -4238,7 +4449,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(1);
+        vaccin->setCurrentIndex(9);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4260,8 +4471,8 @@ public:
         label_9->setText(QCoreApplication::translate("MainWindow", "Alertes", nullptr));
         main->setText(QString());
         label_11->setText(QString());
-        lineEdit->setText(QString());
-        lineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "  Chercher...", nullptr));
+        cherche_vac->setText(QString());
+        cherche_vac->setPlaceholderText(QCoreApplication::translate("MainWindow", "  Chercher...", nullptr));
         label_10->setText(QString());
         pushButton_10->setText(QString());
         QTableWidgetItem *___qtablewidgetitem = tabvaccin->horizontalHeaderItem(0);
@@ -4277,8 +4488,8 @@ public:
         QTableWidgetItem *___qtablewidgetitem5 = tabvaccin->horizontalHeaderItem(5);
         ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Quantit\303\251", nullptr));
         ajoutvac->setText(QCoreApplication::translate("MainWindow", "Ajouter vaccin +", nullptr));
-        edit->setText(QString());
-        delete_2->setText(QString());
+        edit_vac->setText(QString());
+        delete_vac->setText(QString());
         vaccin->setTabText(vaccin->indexOf(Tab1), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Type", nullptr));
         label_12->setText(QCoreApplication::translate("MainWindow", "Nom Vaccin", nullptr));
@@ -4435,6 +4646,20 @@ public:
         prenom_rdv->setText(QString());
         nom_rdv->setText(QString());
         vaccin->setTabText(vaccin->indexOf(tab_9), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        label_39->setText(QCoreApplication::translate("MainWindow", "Date d'expiration", nullptr));
+        label_40->setText(QCoreApplication::translate("MainWindow", "Age minimum requis", nullptr));
+        Quit_5->setText(QString());
+        label_41->setText(QCoreApplication::translate("MainWindow", "Nom Vaccin", nullptr));
+        label_42->setText(QCoreApplication::translate("MainWindow", "Dose \303\240 injecter", nullptr));
+        label_43->setText(QCoreApplication::translate("MainWindow", "Prix", nullptr));
+        label_44->setText(QCoreApplication::translate("MainWindow", "R\303\251ference", nullptr));
+        label_45->setText(QCoreApplication::translate("MainWindow", "Mode d'administration", nullptr));
+        label_46->setText(QCoreApplication::translate("MainWindow", "Modifier Vaccin", nullptr));
+        label_47->setText(QCoreApplication::translate("MainWindow", "Type", nullptr));
+        label_48->setText(QCoreApplication::translate("MainWindow", "Quantit\303\251", nullptr));
+        save_vac_2->setText(QString());
+        label_49->setText(QString());
+        vaccin->setTabText(vaccin->indexOf(tab_5), QCoreApplication::translate("MainWindow", "Page", nullptr));
         Medecin->setText(QCoreApplication::translate("MainWindow", "M\303\251decins", nullptr));
         pushButton_2->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "Vaccins", nullptr));

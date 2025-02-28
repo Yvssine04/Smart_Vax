@@ -14,9 +14,9 @@ Connection::Connection() {}
 bool Connection::createconnect() {
     bool test = false;
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("projetc++"); // Insérer le nom de la source de données
-    db.setUserName("Mariem"); // Insérer le nom d'utilisateur
-    db.setPassword("2004"); // Insérer le mot de passe pour cet utilisateur
+    db.setDatabaseName("projetc++"); // Insert the name of the data source
+    db.setUserName("Mariem"); // Insert the username
+    db.setPassword("2004"); // Insert the password for this user
 
     if (db.open())
         test = true;
@@ -41,7 +41,9 @@ MainWindow::MainWindow(QWidget *parent)
     Quit = ui->Quit;
     Quit4 = ui->Quit_4;
     ajoutrdv = ui->ajoutrdv;
-    delete_2 = ui->delete_2; // Initialiser le bouton supprimer
+    delete_vac = ui->delete_vac;
+    edit_vac = ui->edit_vac; // Initialize the edit button
+    save_vac_2 = ui->save_vac_2; // Initialize the save button for edited data
 
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
@@ -59,10 +61,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Quit, &QPushButton::clicked, this, &MainWindow::on_Quit_clicked);
     connect(Quit4, &QPushButton::clicked, this, &MainWindow::on_Quit_4_clicked);
     connect(ajoutrdv, &QPushButton::clicked, this, &MainWindow::on_ajoutrdv_clicked);
-    connect(delete_2, &QPushButton::clicked, this, &MainWindow::on_delete_2_clicked); // Connecter le bouton supprimer
+    connect(delete_vac, &QPushButton::clicked, this, &MainWindow::on_delete_2_clicked);
+    connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_clicked);
+    connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_vac_2_clicked); // Connect the save button for edited data
 
-    // Connecter le signal dateChanged au slot personnalisé
-    connect(ui->date_vac, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
+    // Connect the signal dateChanged to the custom slot
+    connect(ui->date_vac_2, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -73,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     opacityEffect->setOpacity(0.5);
     main->setGraphicsEffect(opacityEffect);
 
-    // Feuille de style pour les widgets de tableau
+    // Style sheet for table widgets
     QTableWidget *tabvaccin = ui->tabvaccin;
     tabvaccin->setColumnWidth(0, 185);
     tabvaccin->setColumnWidth(1, 185);
@@ -98,25 +102,19 @@ MainWindow::MainWindow(QWidget *parent)
     tabequi->setColumnWidth(2, 165);
     tabequi->setColumnWidth(3, 165);
 
-    // Définir la feuille de style pour le widget de tableau
+    // Set style sheet for table widgets
     tabvaccin->setStyleSheet(
         "QTableWidget {"
         " background-color:rgb(63, 123, 134);"
-
-
-
-
         "}"
         "QHeaderView {"
         "    background-color: rgb(63, 123, 134);"
         "}"
         "QHeaderView::section {"
         "    background-color:#bae5e8;"
-
         "    color: black;"
         "    font-size: 16px;"
         "    padding: 6px;"
-
         "}"
         "QTableWidget::item {"
         "    padding: 6px;"
@@ -248,7 +246,7 @@ void MainWindow::on_ajoutrdv_clicked() {
 
 void MainWindow::on_save_rdv_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
+        QMessageBox::critical(this, "Database Error", "The database is not connected.");
         return;
     }
 
@@ -267,7 +265,7 @@ void MainWindow::on_save_rdv_clicked() {
     query.prepare("INSERT INTO RENDEZ_VOUS (ID_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV) "
                   "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD'),:lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv)");
 
-    // Lier les valeurs
+    // Bind values
     query.bindValue(":cin", CIN);
     query.bindValue(":dispo", dispo);
     query.bindValue(":lieu", adresse_rdv);
@@ -280,15 +278,15 @@ void MainWindow::on_save_rdv_clicked() {
     query.bindValue(":vaccin_rdv", vaccin_rdv);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de l'enregistrement des données : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to save data: " + query.lastError().text());
     } else {
-        QMessageBox::information(this, "Succès", "Les données ont été téléchargées avec succès !");
+        QMessageBox::information(this, "Success", "The data was successfully uploaded!");
     }
 }
 
 void MainWindow::on_save_event_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
+        QMessageBox::critical(this, "Database Error", "The database is not connected.");
         return;
     }
 
@@ -305,7 +303,7 @@ void MainWindow::on_save_event_clicked() {
     query.prepare("INSERT INTO EVENTS (ID_EVENT, NOM_EVENT, NOM_RESPONSABLE, TYPE, DATE_EVENT, HEURE_EVENT, LIEU, NBR_PARTICIPANT) "
                   "VALUES (:id_event, :name, :nom_responsable, :type, :date_event, :heure_event, :lieu, :nbr_participant)");
 
-    // Lier les valeurs
+    // Bind values
     query.bindValue(":id_event", id_event);
     query.bindValue(":name", name);
     query.bindValue(":nom_responsable", nom_responsable);
@@ -316,15 +314,15 @@ void MainWindow::on_save_event_clicked() {
     query.bindValue(":nbr_participant", nbr_participant);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de l'enregistrement des données : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to save data: " + query.lastError().text());
     } else {
-        QMessageBox::information(this, "Succès", "L'événement a été ajouté avec succès !");
+        QMessageBox::information(this, "Success", "The event was successfully added!");
     }
 }
 
 void MainWindow::on_save_eq_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
+        QMessageBox::critical(this, "Database Error", "The database is not connected.");
         return;
     }
 
@@ -342,7 +340,7 @@ void MainWindow::on_save_eq_clicked() {
 
     if (reference.isEmpty() || name.isEmpty() || type.isEmpty() || supplier.isEmpty() ||
         !quantityOk || quantity <= 0 || !priceOk || price < 0) {
-        QMessageBox::warning(this, "Erreur de saisie", "Tous les champs doivent être remplis avec des données valides.");
+        QMessageBox::warning(this, "Input Error", "All fields must be filled with valid data.");
         return;
     }
 
@@ -350,7 +348,7 @@ void MainWindow::on_save_eq_clicked() {
     query.prepare("INSERT INTO EQUIPEMENTS (REFERNCE_EQ, NOM_EQ, TYPE_EQ, DATE_LIMITE, FOURNISSEUR, QUANTITE_EQ, PRIX) "
                   "VALUES (:reference, :name, :type, TO_DATE(:date_limit, 'YYYY-MM-DD'), :supplier, :quantity, :price)");
 
-    // Lier les valeurs
+    // Bind values
     query.bindValue(":reference", reference);
     query.bindValue(":name", name);
     query.bindValue(":type", type);
@@ -360,15 +358,15 @@ void MainWindow::on_save_eq_clicked() {
     query.bindValue(":price", price);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de l'enregistrement des données : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to save data: " + query.lastError().text());
     } else {
-        QMessageBox::information(this, "Succès", "Les données de l'équipement ont été téléchargées avec succès !");
+        QMessageBox::information(this, "Success", "The equipment data was successfully uploaded!");
     }
 }
 
 void MainWindow::loadEquipementsData() {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
+        QMessageBox::critical(this, "Database Error", "The database is not connected.");
         return;
     }
 
@@ -376,7 +374,7 @@ void MainWindow::loadEquipementsData() {
     query.prepare("SELECT REFERNCE_EQ, NOM_EQ, TYPE_EQ, DATE_LIMITE, FOURNISSEUR, QUANTITE_EQ, PRIX FROM EQUIPEMENTS");
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de la récupération des données : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to retrieve data: " + query.lastError().text());
         return;
     }
 
@@ -399,7 +397,7 @@ void MainWindow::loadEquipementsData() {
 
 void MainWindow::loadEventData() {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
+        QMessageBox::critical(this, "Database Error", "The database is not connected.");
         return;
     }
 
@@ -407,7 +405,7 @@ void MainWindow::loadEventData() {
     query.prepare("SELECT ID_EVENT, NOM_EVENT, TYPE, DATE_EVENT, HEURE_EVENT, LIEU, NBR_PARTICIPANT, NOM_RESPONSABLE FROM EVENTS");
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de la récupération des données : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to retrieve data: " + query.lastError().text());
         return;
     }
 
@@ -443,18 +441,18 @@ void MainWindow::loadAppointments() {
 }
 
 void MainWindow::onDateChanged() {
-    QDate selectedDate = ui->date_vac->date();
+    QDate selectedDate = ui->date_vac_2->date();
     QDate currentDate = QDate::currentDate();
 
     if (selectedDate <= currentDate) {
-        QMessageBox::warning(this, "Date invalide", "La date d'expiration doit être supérieure à la date actuelle.");
-        // Optionnellement, revenir à la date précédente valide ou à la date actuelle + 1 jour
-        ui->date_vac->setDate(currentDate.addDays(1));
+        QMessageBox::warning(this, "Invalid Date", "The expiration date must be greater than the current date.");
+        // Optionally, revert to the previous valid date or the current date + 1 day
+        ui->date_vac_2->setDate(currentDate.addDays(1));
         return;
     }
 
-    // Supposons que vous ayez un moyen d'identifier quel enregistrement mettre à jour, par exemple, une référence ou un ID
-    int reference = ui->reference->text().toInt(); // Exemple : obtenir la référence à partir de l'interface utilisateur
+    // Assume there is a way to identify which record to update, e.g., a reference or ID
+    int reference = ui->reference_2->text().toInt(); // Example: get the reference from the UI
 
     QSqlQuery query;
     query.prepare("UPDATE VACCIN SET DATE_EXP = :date_exp WHERE REFERENCE = :reference");
@@ -462,16 +460,53 @@ void MainWindow::onDateChanged() {
     query.bindValue(":reference", reference);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "Erreur", "Échec de la mise à jour de la date : " + query.lastError().text());
+        QMessageBox::critical(this, "Error", "Failed to update the date: " + query.lastError().text());
     }
 }
 
 void MainWindow::on_delete_2_clicked() {
     bool ok;
-    int reference = QInputDialog::getInt(this, "Supprimer l'enregistrement", "Entrez le numéro de référence :", 0, 0, INT_MAX, 1, &ok);
+    int reference = QInputDialog::getInt(this, "Delete Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
 
     if (ok) {
         vaccinManager->deleteVaccin(reference);
         vaccinManager->loadVaccinData(ui->tabvaccin);
     }
+}
+
+void MainWindow::on_edit_vac_clicked() {
+    bool ok;
+    int reference = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+    if (ok) {
+        // Fetch the vaccine data and populate the edit fields
+        vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
+
+        // Navigate to the tab that contains the edit fields
+        vaccinTab->setCurrentIndex(9); // Assuming the edit tab is at index 9
+    }
+}
+
+
+void MainWindow::on_save_vac_2_clicked() {
+    int reference = ui->reference_2->text().toInt();
+    QString nom = ui->nom_vac_2->text();
+    QString type = ui->type_vac_2->text();
+    int age_min = ui->age_vac_2->text().toInt();
+    QString mode_admin = ui->mode_vac_2->text();
+    QString dose = ui->dose_vac_2->text();
+    QDate date_exp = ui->date_vac_2->date();
+    double prix = ui->prix_vac_2->text().toDouble();
+    int quantite = ui->quantite_vac_2->text().toInt();
+
+    vaccinManager->saveVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
+    ui->reference_2->clear();
+    ui->nom_vac_2->clear();
+    ui->type_vac_2->clear();
+    ui->age_vac_2->clear();
+    ui->mode_vac_2->clear();
+    ui->dose_vac_2->clear();
+    ui->date_vac_2->clear();
+    ui->prix_vac_2->clear();
+    ui->quantite_vac_2->clear();
 }

@@ -1676,7 +1676,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>9</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -1707,7 +1707,7 @@
         <string/>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="recherche_vac">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -1723,7 +1723,7 @@ border-radius: 15px;
 </string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="cherche_vac">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -1923,7 +1923,7 @@ border-radius: 15px;
         <string>Ajouter vaccin +</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="edit">
+      <widget class="QPushButton" name="edit_vac">
        <property name="geometry">
         <rect>
          <x>820</x>
@@ -2425,7 +2425,7 @@ border-radius: 25px;
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="delete_2">
+      <widget class="QPushButton" name="delete_vac">
        <property name="geometry">
         <rect>
          <x>920</x>
@@ -2972,8 +2972,8 @@ border-radius: 25px;
        </property>
       </widget>
       <zorder>label_11</zorder>
-      <zorder>lineEdit_2</zorder>
-      <zorder>lineEdit</zorder>
+      <zorder>recherche_vac</zorder>
+      <zorder>cherche_vac</zorder>
       <zorder>lineEdit_5</zorder>
       <zorder>lineEdit_4</zorder>
       <zorder>pushButton_10</zorder>
@@ -2982,9 +2982,9 @@ border-radius: 25px;
       <zorder>tableView_3</zorder>
       <zorder>tabvaccin</zorder>
       <zorder>lineEdit_6</zorder>
-      <zorder>delete_2</zorder>
+      <zorder>delete_vac</zorder>
       <zorder>lineEdit_7</zorder>
-      <zorder>edit</zorder>
+      <zorder>edit_vac</zorder>
      </widget>
      <widget class="QWidget" name="Tab2">
       <attribute name="title">
@@ -3085,7 +3085,7 @@ background-color: rgb(255, 255, 255);</string>
         <rect>
          <x>240</x>
          <y>240</y>
-         <width>371</width>
+         <width>171</width>
          <height>41</height>
         </rect>
        </property>
@@ -3104,7 +3104,7 @@ background-color: rgb(255, 255, 255);</string>
         <rect>
          <x>240</x>
          <y>200</y>
-         <width>381</width>
+         <width>191</width>
          <height>31</height>
         </rect>
        </property>
@@ -3161,7 +3161,7 @@ background-color: rgb(255, 255, 255);</string>
         <rect>
          <x>240</x>
          <y>460</y>
-         <width>351</width>
+         <width>271</width>
          <height>31</height>
         </rect>
        </property>
@@ -21509,6 +21509,538 @@ border-radius: 15px;</string>
       <zorder>checkBox_4</zorder>
       <zorder>checkBox_5</zorder>
       <zorder>checkBox_2</zorder>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Page</string>
+      </attribute>
+      <widget class="QLineEdit" name="mode_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>350</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="nom_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>200</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_39">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>460</y>
+         <width>251</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Date d'expiration</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="age_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>300</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_40">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>290</y>
+         <width>291</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Age minimum requis</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Quit_5">
+       <property name="geometry">
+        <rect>
+         <x>1150</x>
+         <y>50</y>
+         <width>41</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(63, 123, 134);
+border: 2px solid #000000;
+border-radius: 15px;
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="QIcon::ThemeIcon::ApplicationExit"/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>29</width>
+         <height>21</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_25">
+       <property name="geometry">
+        <rect>
+         <x>1150</x>
+         <y>50</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(0, 0, 0);
+border: 2px solid #000000;
+border-radius: 15px;
+</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="container_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>450</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_41">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>200</y>
+         <width>311</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Nom Vaccin</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_26">
+       <property name="geometry">
+        <rect>
+         <x>1080</x>
+         <y>110</y>
+         <width>51</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(0, 0, 0);
+border: 2px solid #000000;
+border-radius: 15px;
+</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_42">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>400</y>
+         <width>201</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Dose à injecter</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_43">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>510</y>
+         <width>311</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Prix</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_44">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>140</y>
+         <width>231</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>17</pointsize>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Réference</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="dose_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>400</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_45">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>350</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Mode d'administration</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_46">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>40</y>
+         <width>251</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>19</pointsize>
+         <italic>false</italic>
+         <fontweight>DemiBold</fontweight>
+        </font>
+       </property>
+       <property name="text">
+        <string>Modifier Vaccin</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_47">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>240</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Type</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="type_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>250</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="prix_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>500</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="reference_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>150</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="quantite_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>550</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+      <widget class="QDateEdit" name="date_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>460</y>
+         <width>301</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-radius: 15px;
+background-color: rgb(255, 255, 255);
+color: rgb(63, 123, 134);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_48">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>550</y>
+         <width>191</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Quantité</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="save_vac_2">
+       <property name="geometry">
+        <rect>
+         <x>1080</x>
+         <y>110</y>
+         <width>51</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(63, 123, 134);
+border: 2px solid #000000;
+border-radius: 15px;
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="image.qrc">
+         <normaloff>:/save.png</normaloff>:/save.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>25</width>
+         <height>26</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QTableView" name="tableView_8">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>40</y>
+         <width>1041</width>
+         <height>651</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(63, 123, 134);
+border: 2px solid #000000;
+border-radius: 15px;</string>
+       </property>
+      </widget>
+      <widget class="QTableView" name="tableView_9">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>90</y>
+         <width>941</width>
+         <height>551</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(63, 123, 134);
+border: 2px solid #000000;
+border-radius: 15px;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_49">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>1361</width>
+         <height>691</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="midLineWidth">
+        <number>0</number>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <zorder>label_49</zorder>
+      <zorder>tableView_8</zorder>
+      <zorder>tableView_9</zorder>
+      <zorder>lineEdit_25</zorder>
+      <zorder>label_48</zorder>
+      <zorder>label_43</zorder>
+      <zorder>label_39</zorder>
+      <zorder>label_42</zorder>
+      <zorder>label_45</zorder>
+      <zorder>label_40</zorder>
+      <zorder>label_47</zorder>
+      <zorder>label_41</zorder>
+      <zorder>label_44</zorder>
+      <zorder>reference_2</zorder>
+      <zorder>nom_vac_2</zorder>
+      <zorder>type_vac_2</zorder>
+      <zorder>age_vac_2</zorder>
+      <zorder>mode_vac_2</zorder>
+      <zorder>dose_vac_2</zorder>
+      <zorder>container_2</zorder>
+      <zorder>date_vac_2</zorder>
+      <zorder>prix_vac_2</zorder>
+      <zorder>quantite_vac_2</zorder>
+      <zorder>lineEdit_26</zorder>
+      <zorder>save_vac_2</zorder>
+      <zorder>Quit_5</zorder>
+      <zorder>label_46</zorder>
      </widget>
     </widget>
     <zorder>main</zorder>

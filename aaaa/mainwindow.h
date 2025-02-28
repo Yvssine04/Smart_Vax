@@ -35,7 +35,9 @@ private slots:
     void on_save_event_clicked();
     void on_save_eq_clicked();
     void onDateChanged();
-    void on_delete_2_clicked(); // Slot for the delete button
+    void on_delete_2_clicked();
+    void on_edit_vac_clicked(); // Slot for the edit button
+    void on_save_vac_2_clicked(); // Slot for saving edited data
 
 private:
     Ui::MainWindow *ui;
@@ -51,7 +53,9 @@ private:
     QPushButton *Quit;
     QPushButton *Quit4;
     QPushButton *ajoutrdv;
-    QPushButton *delete_2; // Declare the delete button
+    QPushButton *delete_vac;
+    QPushButton *edit_vac; // Declare the edit button
+    QPushButton *save_vac_2; // Declare the save button for edited data
 
     void loadEquipementsData();
     void loadEventData();
