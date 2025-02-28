@@ -1658,8 +1658,8 @@
       <rect>
        <x>130</x>
        <y>0</y>
-       <width>1641</width>
-       <height>861</height>
+       <width>1411</width>
+       <height>771</height>
       </rect>
      </property>
      <property name="text">
@@ -1669,14 +1669,14 @@
     <widget class="QTabWidget" name="vaccin">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>130</x>
        <y>0</y>
        <width>3071</width>
-       <height>851</height>
+       <height>771</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -3050,21 +3050,6 @@ border-radius: 15px;
 background-color: rgb(255, 255, 255);</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="container">
-       <property name="geometry">
-        <rect>
-         <x>590</x>
-         <y>450</y>
-         <width>321</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid #000000;
-border-radius: 15px;
-background-color: rgb(255, 255, 255);</string>
-       </property>
-      </widget>
       <widget class="QLineEdit" name="prix_vac">
        <property name="geometry">
         <rect>
@@ -3363,7 +3348,7 @@ border-radius: 15px;
         <rect>
          <x>240</x>
          <y>290</y>
-         <width>441</width>
+         <width>291</width>
          <height>41</height>
         </rect>
        </property>
@@ -3382,7 +3367,7 @@ border-radius: 15px;
         <rect>
          <x>240</x>
          <y>350</y>
-         <width>421</width>
+         <width>301</width>
          <height>31</height>
         </rect>
        </property>
@@ -3475,13 +3460,13 @@ border-radius: 15px;
 background-color: rgb(255, 255, 255);</string>
        </property>
       </widget>
-      <widget class="QDateTimeEdit" name="date_vac">
+      <widget class="QDateEdit" name="date_vac">
        <property name="geometry">
         <rect>
          <x>600</x>
          <y>460</y>
          <width>301</width>
-         <height>21</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -3490,12 +3475,26 @@ background-color: rgb(255, 255, 255);
 color: rgb(63, 123, 134);</string>
        </property>
       </widget>
+      <widget class="QLineEdit" name="container">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>450</y>
+         <width>321</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 2px solid #000000;
+border-radius: 15px;
+background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
       <zorder>label_19</zorder>
       <zorder>tableView</zorder>
       <zorder>tableView_2</zorder>
       <zorder>age_vac</zorder>
       <zorder>mode_vac</zorder>
-      <zorder>container</zorder>
       <zorder>prix_vac</zorder>
       <zorder>dose_vac</zorder>
       <zorder>label_4</zorder>
@@ -3516,6 +3515,7 @@ color: rgb(63, 123, 134);</string>
       <zorder>nom_vac</zorder>
       <zorder>reference</zorder>
       <zorder>type_vac</zorder>
+      <zorder>container</zorder>
       <zorder>date_vac</zorder>
      </widget>
      <widget class="QWidget" name="Tab3">

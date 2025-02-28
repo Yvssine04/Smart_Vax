@@ -16,6 +16,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDateEdit>
 #include <QtWidgets/QDateTimeEdit>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFrame>
@@ -75,7 +76,6 @@ public:
     QTableView *tableView_2;
     QLineEdit *age_vac;
     QLineEdit *mode_vac;
-    QLineEdit *container;
     QLineEdit *prix_vac;
     QLineEdit *dose_vac;
     QLabel *label_4;
@@ -97,7 +97,8 @@ public:
     QLineEdit *nom_vac;
     QLineEdit *reference;
     QLineEdit *type_vac;
-    QDateTimeEdit *date_vac;
+    QDateEdit *date_vac;
+    QLineEdit *container;
     QWidget *Tab3;
     QLabel *label_20;
     QLineEdit *lineEdit_14;
@@ -581,10 +582,10 @@ public:
         label_9->setStyleSheet(QString::fromUtf8("color:black;"));
         main = new QLabel(frame);
         main->setObjectName("main");
-        main->setGeometry(QRect(130, 0, 1641, 861));
+        main->setGeometry(QRect(130, 0, 1411, 771));
         vaccin = new QTabWidget(frame);
         vaccin->setObjectName("vaccin");
-        vaccin->setGeometry(QRect(140, 0, 3071, 851));
+        vaccin->setGeometry(QRect(130, 0, 3071, 771));
         Tab1 = new QWidget();
         Tab1->setObjectName("Tab1");
         label_11 = new QLabel(Tab1);
@@ -920,12 +921,6 @@ public:
         mode_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
-        container = new QLineEdit(Tab2);
-        container->setObjectName("container");
-        container->setGeometry(QRect(590, 450, 321, 41));
-        container->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         prix_vac = new QLineEdit(Tab2);
         prix_vac->setObjectName("prix_vac");
         prix_vac->setGeometry(QRect(590, 500, 321, 41));
@@ -1025,11 +1020,11 @@ public:
         label_30->setFont(font6);
         label_31 = new QLabel(Tab2);
         label_31->setObjectName("label_31");
-        label_31->setGeometry(QRect(240, 290, 441, 41));
+        label_31->setGeometry(QRect(240, 290, 291, 41));
         label_31->setFont(font4);
         label_32 = new QLabel(Tab2);
         label_32->setObjectName("label_32");
-        label_32->setGeometry(QRect(240, 350, 421, 31));
+        label_32->setGeometry(QRect(240, 350, 301, 31));
         label_32->setFont(font4);
         label_33 = new QLabel(Tab2);
         label_33->setObjectName("label_33");
@@ -1059,19 +1054,24 @@ public:
         type_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
-        date_vac = new QDateTimeEdit(Tab2);
+        date_vac = new QDateEdit(Tab2);
         date_vac->setObjectName("date_vac");
-        date_vac->setGeometry(QRect(600, 460, 301, 21));
+        date_vac->setGeometry(QRect(600, 460, 301, 26));
         date_vac->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "color: rgb(63, 123, 134);"));
+        container = new QLineEdit(Tab2);
+        container->setObjectName("container");
+        container->setGeometry(QRect(590, 450, 321, 41));
+        container->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
         vaccin->addTab(Tab2, QString());
         label_19->raise();
         tableView->raise();
         tableView_2->raise();
         age_vac->raise();
         mode_vac->raise();
-        container->raise();
         prix_vac->raise();
         dose_vac->raise();
         label_4->raise();
@@ -1092,6 +1092,7 @@ public:
         nom_vac->raise();
         reference->raise();
         type_vac->raise();
+        container->raise();
         date_vac->raise();
         Tab3 = new QWidget();
         Tab3->setObjectName("Tab3");
@@ -4237,7 +4238,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(0);
+        vaccin->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
