@@ -36,8 +36,8 @@ private slots:
     void on_save_eq_clicked();
     void onDateChanged();
     void on_delete_2_clicked();
-    void on_edit_vac_clicked(); // Slot for the edit button
-    void on_save_vac_2_clicked(); // Slot for saving edited data
+    void on_edit_vac_2_clicked(); // Slot for the edit button
+    void on_save_2_clicked(); // Slot for saving edited data
 
 private:
     Ui::MainWindow *ui;

@@ -8,6 +8,7 @@
 #include <QSqlError>
 #include <QDate>
 #include <QInputDialog>
+#include <QDebug>
 
 Connection::Connection() {}
 
@@ -51,6 +52,10 @@ MainWindow::MainWindow(QWidget *parent)
         "QTabBar { height: 0; }"
         );
 
+    // Ensure this connection is only made once
+    connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_2_clicked);
+    connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_2_clicked);
+    // Other connections...
     connect(ajoutvac, &QPushButton::clicked, this, &MainWindow::onajoutvacclicked);
     connect(vaccinB, &QPushButton::clicked, this, &MainWindow::onvaccinBclicked);
     connect(ajoutevent, &QPushButton::clicked, this, &MainWindow::onajouteventclicked);
@@ -62,10 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Quit4, &QPushButton::clicked, this, &MainWindow::on_Quit_4_clicked);
     connect(ajoutrdv, &QPushButton::clicked, this, &MainWindow::on_ajoutrdv_clicked);
     connect(delete_vac, &QPushButton::clicked, this, &MainWindow::on_delete_2_clicked);
-    connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_clicked);
-    connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_vac_2_clicked); // Connect the save button for edited data
-
-    // Connect the signal dateChanged to the custom slot
     connect(ui->date_vac_2, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
 
     QLabel *main = ui->main;
@@ -474,21 +475,18 @@ void MainWindow::on_delete_2_clicked() {
     }
 }
 
-void MainWindow::on_edit_vac_clicked() {
+void MainWindow::on_edit_vac_2_clicked() {
+    qDebug() << "Edit button clicked";
     bool ok;
     int reference = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
 
     if (ok) {
-        // Fetch the vaccine data and populate the edit fields
         vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
-
-        // Navigate to the tab that contains the edit fields
-        vaccinTab->setCurrentIndex(9); // Assuming the edit tab is at index 9
+        vaccinTab->setCurrentIndex(9);
     }
 }
 
-
-void MainWindow::on_save_vac_2_clicked() {
+void MainWindow::on_save_2_clicked() {
     int reference = ui->reference_2->text().toInt();
     QString nom = ui->nom_vac_2->text();
     QString type = ui->type_vac_2->text();

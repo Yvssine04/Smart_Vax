@@ -4449,7 +4449,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(9);
+        vaccin->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

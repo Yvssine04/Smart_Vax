@@ -54,8 +54,8 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "on_save_eq_clicked",
     "onDateChanged",
     "on_delete_2_clicked",
-    "on_edit_vac_clicked",
-    "on_save_vac_2_clicked"
+    "on_edit_vac_2_clicked",
+    "on_save_2_clicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -159,9 +159,9 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_delete_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_edit_vac_clicked'
+        // method 'on_edit_vac_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_save_vac_2_clicked'
+        // method 'on_save_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -189,8 +189,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 13: _t->on_save_eq_clicked(); break;
         case 14: _t->onDateChanged(); break;
         case 15: _t->on_delete_2_clicked(); break;
-        case 16: _t->on_edit_vac_clicked(); break;
-        case 17: _t->on_save_vac_2_clicked(); break;
+        case 16: _t->on_edit_vac_2_clicked(); break;
+        case 17: _t->on_save_2_clicked(); break;
         default: ;
         }
     }
