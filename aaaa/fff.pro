@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    rendez_vous.cpp \
     vaccin.cpp
 
 HEADERS += \
     connection.h \
     mainwindow.h \
+    rendez_vous.h \
     vaccin.h
 
 FORMS += \

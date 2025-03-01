@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "rendez_vous.h"
 #include <QPixmap>
 #include <QGraphicsOpacityEffect>
 #include "connection.h"
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     , vaccinManager(new Vaccin(this))
 {
     ui->setupUi(this);
+    rdvWindow = new rendez_vous(this);
     vaccinTab = ui->vaccin;
     ajoutvac = ui->ajoutvac;
     vaccinB = ui->vaccinB;
@@ -230,7 +232,7 @@ void MainWindow::on_ajoutequi_clicked() {
 
 void MainWindow::on_rdv_clicked() {
     vaccinTab->setCurrentIndex(6);
-    loadAppointments();
+    rdvWindow->loadAppointments(ui->liste_att);
 }
 
 void MainWindow::on_Quit_clicked() {
@@ -243,47 +245,10 @@ void MainWindow::on_Quit_4_clicked() {
 
 void MainWindow::on_ajoutrdv_clicked() {
     vaccinTab->setCurrentIndex(8);
+    rdvWindow->loadVaccins(ui->vaccin_2);
 }
 
-void MainWindow::on_save_rdv_clicked() {
-    if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(this, "Database Error", "The database is not connected.");
-        return;
-    }
 
-    QString CIN = ui->CIN_rdv->text();
-    QString vaccin_rdv = ui->vaccin_des->text();
-    QString adresse_rdv = ui->adresse->text();
-    QString nom_rdv = ui->nom_rdv->text();
-    QString prenom_rdv = ui->prenom_rdv->text();
-    QString dispo = ui->dispo->text();
-    QString medecin_rdv = ui->medecin_att->text();
-    QString infirmier_rdv = ui->infirmier_att->text();
-    QString salle_rdv = ui->salle_att->text();
-    double facturation = ui->facturation->value();
-
-    QSqlQuery query;
-    query.prepare("INSERT INTO RENDEZ_VOUS (ID_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV) "
-                  "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD'),:lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv)");
-
-    // Bind values
-    query.bindValue(":cin", CIN);
-    query.bindValue(":dispo", dispo);
-    query.bindValue(":lieu", adresse_rdv);
-    query.bindValue(":doc_att", medecin_rdv);
-    query.bindValue(":infirmier_att", infirmier_rdv);
-    query.bindValue(":salle_att", salle_rdv);
-    query.bindValue(":facturation", facturation);
-    query.bindValue(":nom_rdv", nom_rdv);
-    query.bindValue(":prenom_rdv", prenom_rdv);
-    query.bindValue(":vaccin_rdv", vaccin_rdv);
-
-    if (!query.exec()) {
-        QMessageBox::critical(this, "Error", "Failed to save data: " + query.lastError().text());
-    } else {
-        QMessageBox::information(this, "Success", "The data was successfully uploaded!");
-    }
-}
 
 void MainWindow::on_save_event_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
@@ -508,3 +473,49 @@ void MainWindow::on_save_2_clicked() {
     ui->prix_vac_2->clear();
     ui->quantite_vac_2->clear();
 }
+
+void MainWindow::on_save_rdv_clicked()
+{
+    QString CIN = ui->CIN_rdv->text();
+    QString vaccin = ui->vaccin_2->currentText();
+    QString date_rdv = ui->date_rdv->text();
+    QString adresse = ui->adresse->text();
+    QString nom = ui->nom_rdv->text();
+    QString prenom = ui->prenom_rdv->text();
+    QString dispo = ui->dispo->text();
+    QString medecin = ui->medecin_att->text();
+    QString infirmier = ui->infirmier_att->text();
+    QString salle = ui->salle_att->text();
+    double facturation = ui->facturation->value();
+
+
+    rdvWindow->saveAppointment(CIN, vaccin, date_rdv, adresse, nom, prenom, dispo, medecin, infirmier, salle, facturation);
+
+
+    ui->CIN_rdv->clear();
+    ui->adresse->clear();
+    ui->date_rdv->clear();
+    ui->nom_rdv->clear();
+    ui->prenom_rdv->clear();
+    ui->medecin_att->clear();
+    ui->infirmier_att->clear();
+    ui->salle_att->clear();
+    ui->reference->clear();
+    ui->vaccin_2->clear();
+    ui->dispo->clear();
+}
+
+
+void MainWindow::on_deleteRdv_clicked()
+{
+    bool ok;
+
+    int CIN = QInputDialog::getInt(this, "Delete Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+    if (ok) {
+        rdvWindow->supprimerRdv(CIN);
+        rdvWindow->loadAppointments(ui->liste_att);
+    }
+
+}
+

@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include "vaccin.h"
+#include "rendez_vous.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,8 +40,11 @@ private slots:
     void on_edit_vac_2_clicked(); // Slot for the edit button
     void on_save_2_clicked(); // Slot for saving edited data
 
+    void on_deleteRdv_clicked();
+
 private:
     Ui::MainWindow *ui;
+    rendez_vous *rdvWindow;
     Vaccin *vaccinManager;
     QTabWidget *vaccinTab;
     QPushButton *ajoutvac;
