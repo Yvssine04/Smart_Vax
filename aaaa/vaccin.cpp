@@ -6,7 +6,7 @@ Vaccin::Vaccin(QObject *parent) : QObject(parent) {}
 
 void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
+        QMessageBox::critical(nullptr, "Erreur de base de données", "La base de données n'est pas connectée.");
         return;
     }
 
@@ -14,7 +14,7 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
     query.prepare("SELECT REFERENCE, NOM, DOSE, PRIX, DATE_EXP, QUANTITE FROM VACCIN");
 
     if (!query.exec()) {
-        QMessageBox::critical(nullptr, "Error", "Failed to retrieve data: " + query.lastError().text());
+        QMessageBox::critical(nullptr, "Erreur", "Échec de la récupération des données : " + query.lastError().text());
         return;
     }
 
@@ -34,7 +34,7 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
             dateItem->setData(Qt::EditRole, dateExp);
             tabvaccin->setItem(row, 4, dateItem);
         } else {
-            tabvaccin->setItem(row, 4, new QTableWidgetItem("Invalid Date"));
+            tabvaccin->setItem(row, 4, new QTableWidgetItem("Date invalide"));
         }
 
         tabvaccin->setItem(row, 5, new QTableWidgetItem(query.value(5).toString())); // QUANTITE
@@ -47,7 +47,7 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
 
 void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite) {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
+        QMessageBox::critical(nullptr, "Erreur de base de données", "La base de données n'est pas connectée.");
         return;
     }
 
@@ -59,7 +59,7 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
                       "VALUES (:reference, :nom, :type, :age_min, :mode_admin, :dose, :date_exp, :prix, :quantite)");
     }
 
-    // Bind values
+    // Lier les valeurs
     query.bindValue(":reference", reference);
     query.bindValue(":nom", nom);
     query.bindValue(":type", type);
@@ -71,15 +71,15 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
     query.bindValue(":quantite", quantite);
 
     if (!query.exec()) {
-        QMessageBox::critical(nullptr, "Error", "Failed to save data: " + query.lastError().text());
+        QMessageBox::critical(nullptr, "Erreur", "Échec de l'enregistrement des données : " + query.lastError().text());
     } else {
-        QMessageBox::information(nullptr, "Success", "The data was successfully uploaded!");
+        QMessageBox::information(nullptr, "Succès", "Les données ont été téléchargées avec succès !");
     }
 }
 
 void Vaccin::deleteVaccin(int reference) {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
+        QMessageBox::critical(nullptr, "Erreur de base de données", "La base de données n'est pas connectée.");
         return;
     }
 
@@ -88,17 +88,17 @@ void Vaccin::deleteVaccin(int reference) {
     query.bindValue(":reference", reference);
 
     if (!query.exec()) {
-        QMessageBox::critical(nullptr, "Error", "Failed to delete data: " + query.lastError().text());
+        QMessageBox::critical(nullptr, "Erreur", "Échec de la suppression des données : " + query.lastError().text());
     } else if (query.numRowsAffected() == 0) {
-        QMessageBox::warning(nullptr, "Not Found", "Reference does not exist.");
+        QMessageBox::warning(nullptr, "Introuvable", "La référence n'existe pas.");
     } else {
-        QMessageBox::information(nullptr, "Success", "The data was successfully deleted!");
+        QMessageBox::information(nullptr, "Succès", "Les données ont été supprimées avec succès !");
     }
 }
 
 void Vaccin::fetchVaccinData(int reference, QLineEdit *referenceEdit, QLineEdit *nomEdit, QLineEdit *typeEdit, QLineEdit *ageEdit, QLineEdit *modeEdit, QLineEdit *doseEdit, QDateEdit *dateEdit, QLineEdit *prixEdit, QLineEdit *quantiteEdit) {
     if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
+        QMessageBox::critical(nullptr, "Erreur de base de données", "La base de données n'est pas connectée.");
         return;
     }
 
@@ -107,7 +107,7 @@ void Vaccin::fetchVaccinData(int reference, QLineEdit *referenceEdit, QLineEdit 
     query.bindValue(":reference", reference);
 
     if (!query.exec()) {
-        QMessageBox::critical(nullptr, "Error", "Failed to retrieve data: " + query.lastError().text());
+        QMessageBox::critical(nullptr, "Erreur", "Échec de la récupération des données : " + query.lastError().text());
         return;
     }
 
@@ -125,7 +125,7 @@ void Vaccin::fetchVaccinData(int reference, QLineEdit *referenceEdit, QLineEdit 
         prixEdit->setText(query.value(6).toString());
         quantiteEdit->setText(query.value(7).toString());
     } else {
-        QMessageBox::warning(nullptr, "Not Found", "Reference does not exist.");
+        QMessageBox::warning(nullptr, "Introuvable", "La référence n'existe pas.");
     }
 }
 

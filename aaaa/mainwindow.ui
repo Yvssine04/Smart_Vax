@@ -1676,7 +1676,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>9</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -3473,6 +3473,9 @@ background-color: rgb(255, 255, 255);</string>
         <string notr="true">border-radius: 15px;
 background-color: rgb(255, 255, 255);
 color: rgb(63, 123, 134);</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLineEdit" name="container">
@@ -21904,6 +21907,9 @@ background-color: rgb(255, 255, 255);</string>
 background-color: rgb(255, 255, 255);
 color: rgb(63, 123, 134);</string>
        </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_48">
        <property name="geometry">
@@ -22788,7 +22794,7 @@ border-radius: 15px;</string>
      <x>0</x>
      <y>0</y>
      <width>1546</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSessio">

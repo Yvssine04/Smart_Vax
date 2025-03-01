@@ -1088,6 +1088,7 @@ public:
         date_vac->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "color: rgb(63, 123, 134);"));
+        date_vac->setCalendarPopup(true);
         container = new QLineEdit(Tab2);
         container->setObjectName("container");
         container->setGeometry(QRect(590, 450, 321, 41));
@@ -4223,6 +4224,7 @@ public:
         date_vac_2->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "color: rgb(63, 123, 134);"));
+        date_vac_2->setCalendarPopup(true);
         label_48 = new QLabel(tab_5);
         label_48->setObjectName("label_48");
         label_48->setGeometry(QRect(240, 550, 191, 41));
@@ -4431,7 +4433,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 26));
+        menubar->setGeometry(QRect(0, 0, 1546, 22));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -4449,7 +4451,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(0);
+        vaccin->setCurrentIndex(9);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
