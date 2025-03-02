@@ -442,14 +442,29 @@ void MainWindow::on_delete_2_clicked() {
 
 void MainWindow::on_edit_vac_2_clicked() {
     qDebug() << "Edit button clicked";
-    bool ok;
-    int reference = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
 
-    if (ok) {
-        vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
-        vaccinTab->setCurrentIndex(9);
+    bool validReference = false;
+    int reference = 0;
+
+    while (!validReference) {
+        bool ok;
+        reference = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+        if (!ok) {
+            return;
+        }
+
+        if (vaccinManager->isReferenceExists(reference)) {
+            validReference = true;
+        } else {
+            QMessageBox::warning(this, "Reference Incorrecte", "La référence n'est pas correcte. Veuillez réessayer.");
+        }
     }
+    vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
+    vaccinTab->setCurrentIndex(9);
 }
+
+
 
 void MainWindow::on_save_2_clicked() {
     int reference = ui->reference_2->text().toInt();
