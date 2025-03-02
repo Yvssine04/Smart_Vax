@@ -1090,6 +1090,7 @@ public:
         reference->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
+        reference->setReadOnly(true);
         type_vac = new QLineEdit(Tab2);
         type_vac->setObjectName("type_vac");
         type_vac->setGeometry(QRect(590, 250, 321, 41));
@@ -3863,7 +3864,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(2);
+        vaccin->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

@@ -465,9 +465,12 @@ void MainWindow::on_edit_vac_2_clicked() {
 
     // If we reach here, the reference is valid
     vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
+
+    // Disable the reference field to prevent changes
+    ui->reference_2->setDisabled(true);
+
     vaccinTab->setCurrentIndex(9);
 }
-
 
 void MainWindow::on_save_2_clicked() {
     int reference = ui->reference_2->text().toInt();
@@ -480,7 +483,10 @@ void MainWindow::on_save_2_clicked() {
     double prix = ui->prix_vac_2->text().toDouble();
     int quantite = ui->quantite_vac_2->text().toInt();
 
-    vaccinManager->saveVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
+    // Use update function to ensure the existing record is updated
+    vaccinManager->updateVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
+
+    // Clear the fields after saving
     ui->reference_2->clear();
     ui->nom_vac_2->clear();
     ui->type_vac_2->clear();
@@ -490,7 +496,11 @@ void MainWindow::on_save_2_clicked() {
     ui->date_vac_2->clear();
     ui->prix_vac_2->clear();
     ui->quantite_vac_2->clear();
+
+    // Re-enable the reference field for future edits
+    ui->reference_2->setDisabled(false);
 }
+
 
 void MainWindow::on_supprimerevent_clicked() {
     bool ok;
