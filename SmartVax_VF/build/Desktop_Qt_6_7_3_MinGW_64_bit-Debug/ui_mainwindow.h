@@ -60,8 +60,7 @@ public:
     QLabel *label_11;
     QLineEdit *recherche_vac;
     QLineEdit *cherche_vac;
-    QLabel *label_10;
-    QPushButton *pushButton_10;
+    QPushButton *tri_vac;
     QLineEdit *lineEdit_5;
     QLineEdit *lineEdit_4;
     QTableWidget *tabvaccin;
@@ -659,21 +658,21 @@ public:
 "border-radius: 15px;\n"
 ""));
         cherche_vac->setCursorPosition(0);
-        label_10 = new QLabel(Tab1);
-        label_10->setObjectName("label_10");
-        label_10->setGeometry(QRect(410, 60, 41, 31));
-        label_10->setStyleSheet(QString::fromUtf8("image: url(:/icon8.png);"));
-        pushButton_10 = new QPushButton(Tab1);
-        pushButton_10->setObjectName("pushButton_10");
-        pushButton_10->setGeometry(QRect(400, 50, 61, 51));
+        tri_vac = new QPushButton(Tab1);
+        tri_vac->setObjectName("tri_vac");
+        tri_vac->setGeometry(QRect(400, 50, 61, 51));
         QFont font3;
         font3.setPointSize(12);
         font3.setBold(true);
-        pushButton_10->setFont(font3);
-        pushButton_10->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
+        tri_vac->setFont(font3);
+        tri_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/icon8.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        tri_vac->setIcon(icon3);
+        tri_vac->setIconSize(QSize(34, 33));
         lineEdit_5 = new QLineEdit(Tab1);
         lineEdit_5->setObjectName("lineEdit_5");
         lineEdit_5->setGeometry(QRect(400, 60, 61, 51));
@@ -811,9 +810,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/7398464.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        edit_vac->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/7398464.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        edit_vac->setIcon(icon4);
         edit_vac->setIconSize(QSize(42, 36));
         delete_vac = new QPushButton(Tab1);
         delete_vac->setObjectName("delete_vac");
@@ -898,9 +897,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/216658.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        delete_vac->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/216658.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        delete_vac->setIcon(icon5);
         delete_vac->setIconSize(QSize(49, 37));
         tableView_3 = new QTableView(Tab1);
         tableView_3->setObjectName("tableView_3");
@@ -928,8 +927,7 @@ public:
         cherche_vac->raise();
         lineEdit_5->raise();
         lineEdit_4->raise();
-        pushButton_10->raise();
-        label_10->raise();
+        tri_vac->raise();
         ajoutvac->raise();
         tableView_3->raise();
         tabvaccin->raise();
@@ -1006,9 +1004,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/save.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        save_vac->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/save.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        save_vac->setIcon(icon6);
         save_vac->setIconSize(QSize(25, 26));
         lineEdit_12 = new QLineEdit(Tab2);
         lineEdit_12->setObjectName("lineEdit_12");
@@ -1034,8 +1032,8 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        QIcon icon6(QIcon::fromTheme(QIcon::ThemeIcon::ApplicationExit));
-        Quit->setIcon(icon6);
+        QIcon icon7(QIcon::fromTheme(QIcon::ThemeIcon::ApplicationExit));
+        Quit->setIcon(icon7);
         Quit->setIconSize(QSize(29, 21));
         lineEdit_13 = new QLineEdit(Tab2);
         lineEdit_13->setObjectName("lineEdit_13");
@@ -1090,7 +1088,7 @@ public:
         reference->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
-        reference->setReadOnly(true);
+        reference->setReadOnly(false);
         type_vac = new QLineEdit(Tab2);
         type_vac->setObjectName("type_vac");
         type_vac->setGeometry(QRect(590, 250, 321, 41));
@@ -1322,7 +1320,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
-        supprimerevent->setIcon(icon4);
+        supprimerevent->setIcon(icon5);
         supprimerevent->setIconSize(QSize(49, 37));
         modifierevent = new QPushButton(Tab3);
         modifierevent->setObjectName("modifierevent");
@@ -1392,7 +1390,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        modifierevent->setIcon(icon3);
+        modifierevent->setIcon(icon4);
         modifierevent->setIconSize(QSize(42, 36));
         vaccin->addTab(Tab3, QString());
         label_20->raise();
@@ -1524,7 +1522,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_3->setIcon(icon6);
+        Quit_3->setIcon(icon7);
         Quit_3->setIconSize(QSize(25, 20));
         save_event = new QPushButton(tab_2);
         save_event->setObjectName("save_event");
@@ -1534,7 +1532,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);"));
-        save_event->setIcon(icon5);
+        save_event->setIcon(icon6);
         save_event->setIconSize(QSize(25, 26));
         save_event->setFlat(true);
         lineEdit_33 = new QLineEdit(tab_2);
@@ -1716,7 +1714,7 @@ public:
 #endif
         palette7.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_154->setPalette(palette7);
-        pushButton_154->setIcon(icon3);
+        pushButton_154->setIcon(icon4);
         pushButton_155 = new QPushButton(tab);
         pushButton_155->setObjectName("pushButton_155");
         pushButton_155->setGeometry(QRect(1100, 330, 91, 29));
@@ -1779,7 +1777,7 @@ public:
 #endif
         palette8.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_155->setPalette(palette8);
-        pushButton_155->setIcon(icon3);
+        pushButton_155->setIcon(icon4);
         pushButton_156 = new QPushButton(tab);
         pushButton_156->setObjectName("pushButton_156");
         pushButton_156->setGeometry(QRect(1100, 380, 91, 29));
@@ -1842,7 +1840,7 @@ public:
 #endif
         palette9.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_156->setPalette(palette9);
-        pushButton_156->setIcon(icon3);
+        pushButton_156->setIcon(icon4);
         pushButton_157 = new QPushButton(tab);
         pushButton_157->setObjectName("pushButton_157");
         pushButton_157->setGeometry(QRect(1100, 230, 91, 29));
@@ -1905,7 +1903,7 @@ public:
 #endif
         palette10.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_157->setPalette(palette10);
-        pushButton_157->setIcon(icon3);
+        pushButton_157->setIcon(icon4);
         pushButton_158 = new QPushButton(tab);
         pushButton_158->setObjectName("pushButton_158");
         pushButton_158->setGeometry(QRect(1100, 430, 91, 29));
@@ -1968,7 +1966,7 @@ public:
 #endif
         palette11.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_158->setPalette(palette11);
-        pushButton_158->setIcon(icon3);
+        pushButton_158->setIcon(icon4);
         pushButton_159 = new QPushButton(tab);
         pushButton_159->setObjectName("pushButton_159");
         pushButton_159->setGeometry(QRect(1100, 480, 91, 29));
@@ -2031,7 +2029,7 @@ public:
 #endif
         palette12.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_159->setPalette(palette12);
-        pushButton_159->setIcon(icon3);
+        pushButton_159->setIcon(icon4);
         pushButton_160 = new QPushButton(tab);
         pushButton_160->setObjectName("pushButton_160");
         pushButton_160->setGeometry(QRect(1210, 230, 101, 29));
@@ -2094,7 +2092,7 @@ public:
 #endif
         palette13.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_160->setPalette(palette13);
-        pushButton_160->setIcon(icon4);
+        pushButton_160->setIcon(icon5);
         pushButton_161 = new QPushButton(tab);
         pushButton_161->setObjectName("pushButton_161");
         pushButton_161->setGeometry(QRect(1210, 280, 101, 29));
@@ -2157,7 +2155,7 @@ public:
 #endif
         palette14.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_161->setPalette(palette14);
-        pushButton_161->setIcon(icon4);
+        pushButton_161->setIcon(icon5);
         pushButton_162 = new QPushButton(tab);
         pushButton_162->setObjectName("pushButton_162");
         pushButton_162->setGeometry(QRect(1210, 330, 101, 29));
@@ -2220,7 +2218,7 @@ public:
 #endif
         palette15.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_162->setPalette(palette15);
-        pushButton_162->setIcon(icon4);
+        pushButton_162->setIcon(icon5);
         pushButton_163 = new QPushButton(tab);
         pushButton_163->setObjectName("pushButton_163");
         pushButton_163->setGeometry(QRect(1210, 380, 101, 29));
@@ -2283,7 +2281,7 @@ public:
 #endif
         palette16.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_163->setPalette(palette16);
-        pushButton_163->setIcon(icon4);
+        pushButton_163->setIcon(icon5);
         pushButton_164 = new QPushButton(tab);
         pushButton_164->setObjectName("pushButton_164");
         pushButton_164->setGeometry(QRect(1210, 430, 101, 29));
@@ -2346,7 +2344,7 @@ public:
 #endif
         palette17.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_164->setPalette(palette17);
-        pushButton_164->setIcon(icon4);
+        pushButton_164->setIcon(icon5);
         pushButton_165 = new QPushButton(tab);
         pushButton_165->setObjectName("pushButton_165");
         pushButton_165->setGeometry(QRect(1210, 480, 101, 29));
@@ -2409,7 +2407,7 @@ public:
 #endif
         palette18.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_165->setPalette(palette18);
-        pushButton_165->setIcon(icon4);
+        pushButton_165->setIcon(icon5);
         label_37 = new QLabel(tab);
         label_37->setObjectName("label_37");
         label_37->setGeometry(QRect(10, 20, 1351, 691));
@@ -2496,7 +2494,7 @@ public:
 #endif
         palette19.setBrush(QPalette::Disabled, QPalette::Accent, brush32);
         pushButton_167->setPalette(palette19);
-        pushButton_167->setIcon(icon3);
+        pushButton_167->setIcon(icon4);
         pushButton_168 = new QPushButton(tab);
         pushButton_168->setObjectName("pushButton_168");
         pushButton_168->setGeometry(QRect(1210, 530, 101, 29));
@@ -2559,7 +2557,7 @@ public:
 #endif
         palette20.setBrush(QPalette::Disabled, QPalette::Accent, brush40);
         pushButton_168->setPalette(palette20);
-        pushButton_168->setIcon(icon4);
+        pushButton_168->setIcon(icon5);
         vaccin->addTab(tab, QString());
         label_37->raise();
         tableView_19->raise();
@@ -2695,7 +2693,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_2->setIcon(icon6);
+        Quit_2->setIcon(icon7);
         Quit_2->setIconSize(QSize(26, 21));
         label_38 = new QLabel(tab_3);
         label_38->setObjectName("label_38");
@@ -2719,7 +2717,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        save_eq->setIcon(icon5);
+        save_eq->setIcon(icon6);
         save_eq->setIconSize(QSize(25, 26));
         vaccin->addTab(tab_3, QString());
         label_38->raise();
@@ -3015,7 +3013,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_4->setIcon(icon6);
+        Quit_4->setIcon(icon7);
         Quit_4->setIconSize(QSize(19, 26));
         liste_att = new QListWidget(tab_4);
         liste_att->setObjectName("liste_att");
@@ -3266,7 +3264,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_9->setIcon(icon6);
+        Quit_9->setIcon(icon7);
         Quit_9->setIconSize(QSize(19, 26));
         lineEdit_153 = new QLineEdit(tab_9);
         lineEdit_153->setObjectName("lineEdit_153");
@@ -3294,7 +3292,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        save_rdv->setIcon(icon5);
+        save_rdv->setIcon(icon6);
         save_rdv->setIconSize(QSize(25, 26));
         label_80 = new QLabel(tab_9);
         label_80->setObjectName("label_80");
@@ -3408,7 +3406,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_5->setIcon(icon6);
+        Quit_5->setIcon(icon7);
         Quit_5->setIconSize(QSize(29, 21));
         lineEdit_25 = new QLineEdit(tab_5);
         lineEdit_25->setObjectName("lineEdit_25");
@@ -3506,7 +3504,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        save_vac_2->setIcon(icon5);
+        save_vac_2->setIcon(icon6);
         save_vac_2->setIconSize(QSize(25, 26));
         tableView_8 = new QTableView(tab_5);
         tableView_8->setObjectName("tableView_8");
@@ -3613,7 +3611,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_13->setIcon(icon6);
+        Quit_13->setIcon(icon7);
         Quit_13->setIconSize(QSize(25, 20));
         label_204 = new QLabel(tab_6);
         label_204->setObjectName("label_204");
@@ -3695,7 +3693,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);"));
-        sauvegarderevent->setIcon(icon5);
+        sauvegarderevent->setIcon(icon6);
         sauvegarderevent->setIconSize(QSize(25, 26));
         sauvegarderevent->setFlat(true);
         vaccin->addTab(tab_6, QString());
@@ -3783,9 +3781,9 @@ public:
         pushButton_2->setObjectName("pushButton_2");
         pushButton_2->setGeometry(QRect(0, -10, 131, 141));
         pushButton_2->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_2->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_2->setIcon(icon8);
         pushButton_2->setIconSize(QSize(71, 71));
         label_2 = new QLabel(widget);
         label_2->setObjectName("label_2");
@@ -3796,9 +3794,9 @@ public:
         pushButton_3->setObjectName("pushButton_3");
         pushButton_3->setGeometry(QRect(130, 0, 131, 131));
         pushButton_3->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_3->setIcon(icon8);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_3->setIcon(icon9);
         pushButton_3->setIconSize(QSize(102, 78));
         label_3 = new QLabel(widget);
         label_3->setObjectName("label_3");
@@ -3813,9 +3811,9 @@ public:
         vaccinB->setToolTipDuration(12);
         vaccinB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         vaccinB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon9;
-        icon9.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        vaccinB->setIcon(icon9);
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        vaccinB->setIcon(icon10);
         vaccinB->setIconSize(QSize(68, 68));
         vaccinB->setFlat(false);
         equiB = new QPushButton(widget);
@@ -3825,9 +3823,9 @@ public:
         equiB->setToolTipDuration(12);
         equiB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         equiB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon10;
-        icon10.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        equiB->setIcon(icon10);
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        equiB->setIcon(icon11);
         equiB->setIconSize(QSize(100, 89));
         equiB->setFlat(false);
         label_8 = new QLabel(widget);
@@ -3846,7 +3844,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 22));
+        menubar->setGeometry(QRect(0, 0, 1546, 26));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -3864,7 +3862,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(1);
+        vaccin->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -3888,8 +3886,7 @@ public:
         label_11->setText(QString());
         cherche_vac->setText(QString());
         cherche_vac->setPlaceholderText(QCoreApplication::translate("MainWindow", "  Chercher...", nullptr));
-        label_10->setText(QString());
-        pushButton_10->setText(QString());
+        tri_vac->setText(QString());
         QTableWidgetItem *___qtablewidgetitem = tabvaccin->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "R\303\251ference", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tabvaccin->horizontalHeaderItem(1);

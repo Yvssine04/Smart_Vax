@@ -1676,7 +1676,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -1757,23 +1757,7 @@ border-radius: 15px;
         <string>  Chercher...</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_10">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>60</y>
-         <width>41</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">image: url(:/icon8.png);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_10">
+      <widget class="QPushButton" name="tri_vac">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -1796,6 +1780,16 @@ border-radius: 15px;
        </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="image.qrc">
+         <normaloff>:/icon8.png</normaloff>:/icon8.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>34</width>
+         <height>33</height>
+        </size>
        </property>
       </widget>
       <widget class="QLineEdit" name="lineEdit_5">
@@ -2976,8 +2970,7 @@ border-radius: 25px;
       <zorder>cherche_vac</zorder>
       <zorder>lineEdit_5</zorder>
       <zorder>lineEdit_4</zorder>
-      <zorder>pushButton_10</zorder>
-      <zorder>label_10</zorder>
+      <zorder>tri_vac</zorder>
       <zorder>ajoutvac</zorder>
       <zorder>tableView_3</zorder>
       <zorder>tabvaccin</zorder>
@@ -3445,7 +3438,7 @@ border-radius: 15px;
 background-color: rgb(255, 255, 255);</string>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLineEdit" name="type_vac">
@@ -17465,7 +17458,7 @@ color: rgb(0, 0, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1546</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSessio">

@@ -158,3 +158,25 @@ bool Vaccin::isReferenceExists(int reference) {
     query.exec();
     return query.next();
 }
+void Vaccin::filterVaccinTable(QTableWidget *table, const QString &searchText) {
+    for (int row = 0; row < table->rowCount(); ++row) {
+        bool matchFound = false;
+        QTableWidgetItem *itemRef = table->item(row, 0);
+        if (itemRef && itemRef->text().contains(searchText, Qt::CaseInsensitive)) {
+            matchFound = true;
+        }
+        QTableWidgetItem *itemName = table->item(row, 1);
+        if (itemName && itemName->text().contains(searchText, Qt::CaseInsensitive)) {
+            matchFound = true;
+        }
+        table->setRowHidden(row, !matchFound);
+    }
+}
+void Vaccin::sortVaccinTable(QTableWidget *tablevaccin) {
+    if (tablevaccin->rowCount() == 0) {
+        return;
+    }
+    tablevaccin->sortItems(3, Qt::AscendingOrder);
+    tablevaccin->sortItems(4, Qt::AscendingOrder);
+    tablevaccin->sortItems(5, Qt::AscendingOrder);
+}

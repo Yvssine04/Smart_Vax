@@ -42,7 +42,6 @@ private slots:
     void on_edit_vac_2_clicked(); // Slot for the edit button
     void on_save_2_clicked(); // Slot for saving edited data
     void on_supprimerevent_clicked();
-
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
@@ -65,8 +64,8 @@ private:
     QPushButton *edit_event; // Declare the edit button
     QPushButton *save_event;
     QPushButton *supprimerevent;
-
-
+    QLineEdit *cherche_vac;
+    QPushButton *tri_vac;
     void loadEquipementsData();
     void loadEventData();
     void loadAppointments();

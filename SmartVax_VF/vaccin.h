@@ -19,7 +19,9 @@ public:
     void deleteVaccin(int reference);
     void fetchVaccinData(int reference, QLineEdit *referenceEdit, QLineEdit *nomEdit, QLineEdit *typeEdit, QLineEdit *ageEdit, QLineEdit *modeEdit, QLineEdit *doseEdit, QDateEdit *dateEdit, QLineEdit *prixEdit, QLineEdit *quantiteEdit);
     bool isReferenceExists(int reference);
-    void updateVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite); // Change to public
+    void updateVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);
+    void filterVaccinTable(QTableWidget *table, const QString &searchText);
+    void sortVaccinTable(QTableWidget *tablevaccin);
 
 private:
     void insertVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);

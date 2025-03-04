@@ -43,23 +43,28 @@ MainWindow::MainWindow(QWidget *parent)
     Quit4 = ui->Quit_4;
     ajoutrdv = ui->ajoutrdv;
     delete_vac = ui->delete_vac;
-    edit_vac = ui->edit_vac; // Initialize the edit button
-    save_vac_2 = ui->save_vac_2; // Initialize the save button for edited data
+    edit_vac = ui->edit_vac;
+    save_vac_2 = ui->save_vac_2;
+    cherche_vac = ui->cherche_vac;
+    tri_vac = ui->tri_vac;
+
 
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
         "QTabBar::tab { height: 0; width: 0; }"
         "QTabBar { height: 0; }"
         );
+    connect(tri_vac, &QPushButton::clicked, this, [this]() {
+        vaccinManager->sortVaccinTable(ui->tabvaccin);
+    });
 
-    // Ensure this connection is only made once
+    connect(cherche_vac, &QLineEdit::textChanged, this, [this]() {
+        vaccinManager->filterVaccinTable(ui->tabvaccin, cherche_vac->text());
+    });
     connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_2_clicked);
     connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_2_clicked);
-
-    // Connecter le signal dateChanged pour les deux éditeurs de date
     connect(ui->date_vac, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
     connect(ui->date_vac_2, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
-    // Other connections...
     connect(ajoutvac, &QPushButton::clicked, this, &MainWindow::onajoutvacclicked);
     connect(vaccinB, &QPushButton::clicked, this, &MainWindow::onvaccinBclicked);
     connect(ajoutevent, &QPushButton::clicked, this, &MainWindow::onajouteventclicked);
@@ -211,6 +216,7 @@ void MainWindow::on_save_vac_clicked() {
     ui->date_vac->clear();
     ui->prix_vac->clear();
     ui->quantite_vac->clear();
+    vaccinTab->setCurrentIndex(0);
 }
 
 void MainWindow::onajouteventclicked() {
@@ -511,3 +517,5 @@ void MainWindow::on_supprimerevent_clicked() {
         eventManager->loadEventData(ui->tabevent);
     }
 }
+
+
