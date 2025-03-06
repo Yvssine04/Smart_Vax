@@ -245,7 +245,7 @@ void MainWindow::on_Quit_4_clicked() {
 
 void MainWindow::on_ajoutrdv_clicked() {
     vaccinTab->setCurrentIndex(8);
-    rdvWindow->loadVaccins(ui->vaccin_2);
+    rdvWindow->loadVaccins(ui->vaccin_2,ui->medecin_att,ui->infirmier_att);
 }
 
 
@@ -474,8 +474,8 @@ void MainWindow::on_save_rdv_clicked()
     QString nom = ui->nom_rdv->text();
     QString prenom = ui->prenom_rdv->text();
     QString dispo = ui->dispo->text();
-    QString medecin = ui->medecin_att->text();
-    QString infirmier = ui->infirmier_att->text();
+    QString medecin = ui->medecin_att->currentText();
+    QString infirmier = ui->infirmier_att->currentText();
     QString salle = ui->salle_att->text();
     double facturation = ui->facturation->value();
 
@@ -523,7 +523,7 @@ void MainWindow::on_edit_rdv_clicked()
 
 
         rdvWindow->infoEdit(id_rdv,ui->CIN_rdv_2,ui->date_rdv_2,ui->vaccin_3,ui->adresse_2,ui->nom_rdv_2,ui->prenom_rdv_2,ui->dispo_2,ui->medecin_att_2,ui->infirmier_att_2,ui->salle_att_2,ui->facturation_2);
-        rdvWindow->loadVaccins(ui->vaccin_3);
+        rdvWindow->loadVaccins(ui->vaccin_3,ui->medecin_att_2,ui->infirmier_att_2);
         rdvWindow->loadAppointments(ui->liste_att);
         vaccinTab->setCurrentIndex(10);
 
@@ -540,8 +540,8 @@ void MainWindow::on_save_rdv_2_clicked()
     QString nom2 = ui->nom_rdv_2->text();
     QString prenom2 = ui->prenom_rdv_2->text();
     QString dispo2 = ui->dispo_2->text();
-    QString medecin2 = ui->medecin_att_2->text();
-    QString infirmier2 = ui->infirmier_att_2->text();
+    QString medecin2 = ui->medecin_att_2->currentText();
+    QString infirmier2 = ui->infirmier_att_2->currentText();
     QString salle2 = ui->salle_att_2->text();
     double facturation2 = ui->facturation_2->value();
     int CINi = CIN2.toInt();

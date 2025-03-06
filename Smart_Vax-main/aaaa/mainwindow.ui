@@ -1474,7 +1474,7 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+       <iconset resource="image.qrc">
         <normaloff>:/icon4.png</normaloff>:/icon4.png</iconset>
       </property>
       <property name="iconSize">
@@ -1500,7 +1500,7 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+       <iconset resource="image.qrc">
         <normaloff>:/icon6.png</normaloff>:/icon6.png</iconset>
       </property>
       <property name="iconSize">
@@ -1551,7 +1551,7 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+       <iconset resource="image.qrc">
         <normaloff>:/icon7.png</normaloff>:/icon7.png</iconset>
       </property>
       <property name="iconSize">
@@ -1676,7 +1676,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>8</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -2415,7 +2415,7 @@ border-radius: 25px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
        <property name="iconSize">
@@ -2914,7 +2914,7 @@ border-radius :25px
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
        <property name="iconSize">
@@ -3204,7 +3204,7 @@ border-radius: 15px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/save.png</normaloff>:/save.png</iconset>
        </property>
        <property name="iconSize">
@@ -4148,7 +4148,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -4634,7 +4634,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -5120,7 +5120,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -5606,7 +5606,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -6092,7 +6092,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -6578,7 +6578,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -7064,7 +7064,7 @@ border-radius: 15px;</string>
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -7550,7 +7550,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -8036,7 +8036,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -8522,7 +8522,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -9008,7 +9008,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -9494,7 +9494,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -9980,7 +9980,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -10466,7 +10466,7 @@ border-radius: 15px;</string>
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -11091,7 +11091,7 @@ color: rgb(0, 0, 0);</string>
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/save.png</normaloff>:/save.png</iconset>
        </property>
        <property name="iconSize">
@@ -11846,7 +11846,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -12332,7 +12332,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -12818,7 +12818,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -13304,7 +13304,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -13790,7 +13790,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -14276,7 +14276,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -14762,7 +14762,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -15248,7 +15248,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -15734,7 +15734,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -16220,7 +16220,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -16706,7 +16706,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -17192,7 +17192,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -17753,7 +17753,7 @@ border-radius: 15px;
         <string>Modifier</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
        </property>
       </widget>
@@ -18239,7 +18239,7 @@ border-radius: 15px;
         <string>Supprimer</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
       </widget>
@@ -18692,7 +18692,7 @@ border-radius: 15px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/save.png</normaloff>:/save.png</iconset>
        </property>
        <property name="iconSize">
@@ -18735,7 +18735,7 @@ border-radius: 15px;
         <rect>
          <x>40</x>
          <y>50</y>
-         <width>1121</width>
+         <width>1191</width>
          <height>611</height>
         </rect>
        </property>
@@ -19272,9 +19272,9 @@ border-radius: 15px;
       <widget class="QCalendarWidget" name="calendarWidget">
        <property name="geometry">
         <rect>
-         <x>580</x>
+         <x>600</x>
          <y>200</y>
-         <width>491</width>
+         <width>541</width>
          <height>381</height>
         </rect>
        </property>
@@ -19901,7 +19901,7 @@ selection-color: rgb(255, 255, 255);
         <rect>
          <x>90</x>
          <y>100</y>
-         <width>1021</width>
+         <width>1091</width>
          <height>521</height>
         </rect>
        </property>
@@ -20044,7 +20044,7 @@ border-radius: 15px;
       <widget class="QPushButton" name="ajoutrdv">
        <property name="geometry">
         <rect>
-         <x>720</x>
+         <x>790</x>
          <y>120</y>
          <width>351</width>
          <height>51</height>
@@ -20072,7 +20072,7 @@ border-radius: 15px;
       <widget class="QLineEdit" name="lineEdit_32">
        <property name="geometry">
         <rect>
-         <x>720</x>
+         <x>790</x>
          <y>130</y>
          <width>351</width>
          <height>51</height>
@@ -20107,7 +20107,7 @@ border-radius: 15px;
       <widget class="QLineEdit" name="lineEdit_69">
        <property name="geometry">
         <rect>
-         <x>1110</x>
+         <x>1180</x>
          <y>60</y>
          <width>41</width>
          <height>41</height>
@@ -20123,7 +20123,7 @@ border-radius: 15px;
       <widget class="QPushButton" name="Quit_4">
        <property name="geometry">
         <rect>
-         <x>1110</x>
+         <x>1180</x>
          <y>60</y>
          <width>41</width>
          <height>31</height>
@@ -20187,7 +20187,7 @@ border-radius: 15px;
       <widget class="QLineEdit" name="lineEdit_34">
        <property name="geometry">
         <rect>
-         <x>640</x>
+         <x>720</x>
          <y>130</y>
          <width>61</width>
          <height>51</height>
@@ -20203,7 +20203,7 @@ border-radius: 25px;
       <widget class="QPushButton" name="deleteRdv">
        <property name="geometry">
         <rect>
-         <x>640</x>
+         <x>720</x>
          <y>120</y>
          <width>61</width>
          <height>51</height>
@@ -20225,7 +20225,7 @@ border-radius: 25px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/216658.png</normaloff>:/216658.png</iconset>
        </property>
        <property name="iconSize">
@@ -20238,7 +20238,7 @@ border-radius: 25px;
       <widget class="QLineEdit" name="lineEdit_36">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>650</x>
          <y>130</y>
          <width>61</width>
          <height>51</height>
@@ -20254,7 +20254,7 @@ border-radius: 25px;
       <widget class="QPushButton" name="edit_rdv">
        <property name="geometry">
         <rect>
-         <x>560</x>
+         <x>650</x>
          <y>120</y>
          <width>61</width>
          <height>51</height>
@@ -20276,8 +20276,59 @@ border-radius: 25px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/7398464.png</normaloff>:/7398464.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>37</width>
+         <height>34</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_37">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>130</y>
+         <width>61</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(0, 0, 0);
+border: 2px solid #000000;
+border-radius: 25px;
+</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="edit_rdv_2">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>120</y>
+         <width>61</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(93, 143, 157);
+border: 2px solid #000000;
+border-radius: 25px;
+color: rgb(0, 0, 0);
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="QIcon::ThemeIcon::DocumentPrintPreview"/>
        </property>
        <property name="iconSize">
         <size>
@@ -20307,6 +20358,8 @@ border-radius: 25px;
       <zorder>deleteRdv</zorder>
       <zorder>lineEdit_36</zorder>
       <zorder>edit_rdv</zorder>
+      <zorder>lineEdit_37</zorder>
+      <zorder>edit_rdv_2</zorder>
      </widget>
      <widget class="QWidget" name="tab_10">
       <attribute name="title">
@@ -21379,7 +21432,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>6</day>
+         <day>5</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -21389,7 +21442,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>6</day>
+         <day>5</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -21525,28 +21578,6 @@ border-radius: 15px;
         <string>Salle attribuée</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="infirmier_att">
-       <property name="geometry">
-        <rect>
-         <x>940</x>
-         <y>430</y>
-         <width>271</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid #000000;
-border-radius: 15px;
-background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_76">
        <property name="geometry">
         <rect>
@@ -21641,28 +21672,6 @@ color: rgb(0, 0, 0);
         </size>
        </property>
       </widget>
-      <widget class="QLineEdit" name="medecin_att">
-       <property name="geometry">
-        <rect>
-         <x>940</x>
-         <y>370</y>
-         <width>271</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid #000000;
-border-radius: 15px;
-background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_75">
        <property name="geometry">
         <rect>
@@ -21682,6 +21691,40 @@ color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
         <string>Médecin attribué</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="medecin_att">
+       <property name="geometry">
+        <rect>
+         <x>940</x>
+         <y>370</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> border: 2px solid black; 
+         border-radius: 15px;    
+          padding: 5px;          
+           background-color: white;
+           color: black;</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="infirmier_att">
+       <property name="geometry">
+        <rect>
+         <x>940</x>
+         <y>430</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> border: 2px solid black; 
+         border-radius: 15px;    
+          padding: 5px;          
+           background-color: white;
+           color: black;</string>
        </property>
       </widget>
       <zorder>label_68</zorder>
@@ -21719,13 +21762,13 @@ color: rgb(0, 0, 0);</string>
       <zorder>label_71</zorder>
       <zorder>label_72</zorder>
       <zorder>label_77</zorder>
-      <zorder>infirmier_att</zorder>
       <zorder>label_76</zorder>
       <zorder>salle_att</zorder>
       <zorder>lineEdit_167</zorder>
       <zorder>save_rdv</zorder>
-      <zorder>medecin_att</zorder>
       <zorder>label_75</zorder>
+      <zorder>medecin_att</zorder>
+      <zorder>infirmier_att</zorder>
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -22174,7 +22217,7 @@ border-radius: 15px;
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+        <iconset resource="image.qrc">
          <normaloff>:/save.png</normaloff>:/save.png</iconset>
        </property>
        <property name="iconSize">
@@ -22518,28 +22561,6 @@ border-radius: 15px;
          <width>19</width>
          <height>26</height>
         </size>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="medecin_att_2">
-       <property name="geometry">
-        <rect>
-         <x>940</x>
-         <y>370</y>
-         <width>271</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid #000000;
-border-radius: 15px;
-background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
       <widget class="QTableView" name="tableView_28">
@@ -23152,28 +23173,6 @@ color: rgb(0, 0, 0);
         </size>
        </property>
       </widget>
-      <widget class="QLineEdit" name="infirmier_att_2">
-       <property name="geometry">
-        <rect>
-         <x>940</x>
-         <y>430</y>
-         <width>271</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid #000000;
-border-radius: 15px;
-background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_74">
        <property name="geometry">
         <rect>
@@ -23416,7 +23415,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>5</day>
+         <day>4</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -23426,7 +23425,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>5</day>
+         <day>4</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -23641,6 +23640,40 @@ border-radius: 15px;</string>
         <string>Le matin</string>
        </property>
       </widget>
+      <widget class="QComboBox" name="medecin_att_2">
+       <property name="geometry">
+        <rect>
+         <x>940</x>
+         <y>370</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> border: 2px solid black; 
+         border-radius: 15px;    
+          padding: 5px;          
+           background-color: white;
+           color: black;</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="infirmier_att_2">
+       <property name="geometry">
+        <rect>
+         <x>940</x>
+         <y>430</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> border: 2px solid black; 
+         border-radius: 15px;    
+          padding: 5px;          
+           background-color: white;
+           color: black;</string>
+       </property>
+      </widget>
       <zorder>label_74</zorder>
       <zorder>tableView_28</zorder>
       <zorder>tableView_18</zorder>
@@ -23656,10 +23689,8 @@ border-radius: 15px;</string>
       <zorder>label_83</zorder>
       <zorder>CIN_rdv_2</zorder>
       <zorder>Quit_10</zorder>
-      <zorder>medecin_att_2</zorder>
       <zorder>label_84</zorder>
       <zorder>save_rdv_2</zorder>
-      <zorder>infirmier_att_2</zorder>
       <zorder>prenom_rdv_2</zorder>
       <zorder>label_85</zorder>
       <zorder>label_124</zorder>
@@ -23683,6 +23714,8 @@ border-radius: 15px;</string>
       <zorder>checkBox_28</zorder>
       <zorder>checkBox_29</zorder>
       <zorder>checkBox_30</zorder>
+      <zorder>medecin_att_2</zorder>
+      <zorder>infirmier_att_2</zorder>
      </widget>
     </widget>
     <zorder>main</zorder>
@@ -24224,7 +24257,7 @@ border-radius: 15px;</string>
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+      <iconset resource="image.qrc">
        <normaloff>:/icon.png</normaloff>:/icon.png</iconset>
      </property>
      <property name="iconSize">
@@ -24275,7 +24308,7 @@ border-radius: 15px;</string>
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+      <iconset resource="image.qrc">
        <normaloff>:/icon2.png</normaloff>:/icon2.png</iconset>
      </property>
      <property name="iconSize">
@@ -24338,7 +24371,7 @@ border-radius: 15px;</string>
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+      <iconset resource="image.qrc">
        <normaloff>:/4190642 (1).png</normaloff>:/4190642 (1).png</iconset>
      </property>
      <property name="iconSize">
@@ -24376,7 +24409,7 @@ border-radius: 15px;</string>
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Downloads/Smart_Vax-main/Smart_Vax-main/aaaa/image.qrc">
+      <iconset resource="image.qrc">
        <normaloff>:/icon5.png</normaloff>:/icon5.png</iconset>
      </property>
      <property name="iconSize">
@@ -24466,6 +24499,8 @@ border-radius: 15px;</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="image.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -12,9 +12,9 @@ rendez_vous::~rendez_vous() {
 
 }
 
-void rendez_vous::loadVaccins(QComboBox *comboBox) {
-    if (!comboBox) {
-        qDebug() << "Combo box is null!";
+void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox *BoxInf) {
+    if (!comboBox || !BoxMed || !BoxInf) {
+        qDebug() << "One or more combo boxes are null!";
         return;
     }
 
@@ -22,24 +22,52 @@ void rendez_vous::loadVaccins(QComboBox *comboBox) {
         QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
         return;
     }
+
     QSqlQuery query;
+
+    // Load Vaccines
     query.prepare("SELECT NOM FROM VACCIN");
-
-
     if (!query.exec()) {
         QMessageBox::critical(nullptr, "Error", "Query failed: " + query.lastError().text());
-        qDebug() << "SQL Error: " << query.lastError().text();
         return;
     }
     comboBox->clear();
-
     while (query.next()) {
         QString nom = query.value(0).toString();
         qDebug() << "Vaccin ajouté: " << nom;
         comboBox->addItem(nom);
+    }
 
+    // Load Doctors
+    query.prepare("SELECT NOM_E, PRENOM_E FROM EMPLOYEES WHERE SPECIALITE = 'docteur'");
+    if (!query.exec()) {
+        qDebug() << "Doctor Query failed:" << query.lastError().text();
+        return;
+    }
+
+    BoxMed->clear();
+
+    while (query.next()) {
+        QString nom_e = query.value(0).toString();
+        QString prenom_e = query.value(1).toString();
+        BoxMed->addItem(nom_e + " " + prenom_e);
+    }
+
+
+    query.prepare("SELECT NOM_E, PRENOM_E FROM EMPLOYEES WHERE SPECIALITE = 'infirmier'");
+    if (!query.exec()) {
+        qDebug() << "Nurse Query failed:" << query.lastError().text();
+        return;
+    }
+
+    BoxInf->clear();
+    while (query.next()) {
+        QString nom_e1 = query.value(0).toString();
+        QString prenom_e2 = query.value(1).toString();
+        BoxInf->addItem(nom_e1 + " " + prenom_e2);
     }
 }
+
 
 void rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, const QString &date_rdvNaiss, const QString &adresse,
                                   const QString &nom, const QString &prenom, const QString &dispo,
@@ -178,7 +206,7 @@ void rendez_vous::supprimerRdv(int CIN){
 
 
 }
-void rendez_vous::infoEdit(int CIN, QLineEdit *CIN_rdv_2, QDateEdit *daterdv_2, QComboBox *vaccin_3, QLineEdit *adresse_2, QLineEdit *nom_rdv_2, QLineEdit *prenom_rdv_2, QDateTimeEdit *dispo_rdv_2, QLineEdit *medecin_att_2, QLineEdit *infirmier_att_2, QLineEdit *salle_att_2, QDoubleSpinBox *facturation_2) {
+void rendez_vous::infoEdit(int CIN, QLineEdit *CIN_rdv_2, QDateEdit *daterdv_2, QComboBox *vaccin_3, QLineEdit *adresse_2, QLineEdit *nom_rdv_2, QLineEdit *prenom_rdv_2, QDateTimeEdit *dispo_rdv_2, QComboBox *medecin_att_2, QComboBox *infirmier_att_2, QLineEdit *salle_att_2, QDoubleSpinBox *facturation_2) {
     QSqlQuery query;
     query.prepare("SELECT ID_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV FROM RENDEZ_VOUS WHERE ID_RDV = :CIN");
     query.bindValue(":CIN", CIN);
@@ -195,8 +223,8 @@ void rendez_vous::infoEdit(int CIN, QLineEdit *CIN_rdv_2, QDateEdit *daterdv_2, 
         CIN_rdv_2->setText(QString::number(CIN));
         daterdv_2->setDate(query.value(1).toDate());
         adresse_2->setText(query.value(2).toString());
-        medecin_att_2->setText(query.value(3).toString());
-        infirmier_att_2->setText(query.value(4).toString());
+        medecin_att_2->setCurrentText(query.value(3).toString());
+        infirmier_att_2->setCurrentText(query.value(4).toString());
         salle_att_2->setText(query.value(5).toString());
         facturation_2->setValue(query.value(6).toDouble());
         nom_rdv_2->setText(query.value(7).toString());
