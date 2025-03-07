@@ -8,6 +8,11 @@
 #include <QLineEdit>
 #include <QDoubleSpinBox>
 #include <QDateEdit>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QTextDocument>
+#include <QFileDialog>
+#include <QStandardPaths>
 
 class rendez_vous : public QObject {
     Q_OBJECT
@@ -28,7 +33,7 @@ public:
                   const QString &nom, const QString &prenom, const QString &dispo,
                   const QString &medecin, const QString &infirmier, const QString &salle,
                       double facturation );
-
+    void generateCertificate(int id_rdv);
 private:
 
     bool rdv_existe(int ID_RDV);

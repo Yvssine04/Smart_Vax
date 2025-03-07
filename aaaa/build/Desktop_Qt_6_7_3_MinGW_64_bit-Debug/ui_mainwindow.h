@@ -3841,6 +3841,8 @@ public:
 "color: rgb(255, 255, 255);"));
         liste_att->setFrameShape(QFrame::Shape::StyledPanel);
         liste_att->setDragEnabled(true);
+        liste_att->setDragDropOverwriteMode(true);
+        liste_att->setDragDropMode(QAbstractItemView::DragDropMode::DragDrop);
         liste_att->setAlternatingRowColors(true);
         liste_att->setSelectionRectVisible(true);
         liste_att->setItemAlignment(Qt::AlignmentFlag::AlignLeading);
@@ -3848,7 +3850,10 @@ public:
         listWidget = new QListWidget(tab_4);
         listWidget->setObjectName("listWidget");
         listWidget->setGeometry(QRect(120, 440, 341, 161));
-        listWidget->setFont(font7);
+        listWidget->setFont(font11);
+        listWidget->setDragEnabled(true);
+        listWidget->setDragDropOverwriteMode(true);
+        listWidget->setDragDropMode(QAbstractItemView::DragDropMode::DragDrop);
         lineEdit_34 = new QLineEdit(tab_4);
         lineEdit_34->setObjectName("lineEdit_34");
         lineEdit_34->setGeometry(QRect(720, 130, 61, 51));
@@ -4159,8 +4164,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 9, 3), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 9, 3), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 9, 2), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 9, 2), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         label_79 = new QLabel(tab_9);
         label_79->setObjectName("label_79");
@@ -4709,8 +4714,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 9, 2), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 9, 2), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 9, 1), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 9, 1), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_98 = new QLabel(tab_6);
         label_98->setObjectName("label_98");

@@ -20179,6 +20179,12 @@ color: rgb(255, 255, 255);</string>
        <property name="dragEnabled">
         <bool>true</bool>
        </property>
+       <property name="dragDropOverwriteMode">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDropMode::DragDrop</enum>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -20203,8 +20209,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>11</pointsize>
         </font>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDropMode::DragDrop</enum>
        </property>
       </widget>
       <widget class="QLineEdit" name="lineEdit_34">
@@ -21455,7 +21470,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>3</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -21465,7 +21480,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>3</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -23438,7 +23453,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>2</day>
+         <day>1</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -23448,7 +23463,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>2</day>
+         <day>1</day>
         </datetime>
        </property>
        <property name="displayFormat">

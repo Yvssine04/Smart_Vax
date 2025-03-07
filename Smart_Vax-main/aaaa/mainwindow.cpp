@@ -10,11 +10,7 @@
 #include <QDate>
 #include <QInputDialog>
 #include <QDebug>
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QTextDocument>
-#include <QFileDialog>
-#include <QStandardPaths>
+
 
 Connection::Connection() {}
 
@@ -575,149 +571,20 @@ void MainWindow::on_rdv_pdf_clicked()
 {
     QListWidgetItem *selectedItem = ui->liste_att->currentItem();
     if (selectedItem) {
-        // Get the full text of the selected item
         QString fullText = selectedItem->text();
 
-        // Extract the CIN (assuming it's the first space-separated value)
         QString cini = fullText.split(" ").first();
 
         qDebug() << "Selected CIN:" << cini;
         int cin=cini.toInt();
-        // Pass CIN to generateCertificate function
-        generateCertificate(cin);
+        rdvWindow->generateCertificate(cin);
     } else {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner un élément de la liste.");
     }
+
+
 }
 
 
 
-void MainWindow::generateCertificate(int id_rdv)
-{
-    QSqlQuery query;
 
-
-    query.prepare("SELECT NOM_RDV,PRENOM_RDV, VACCIN_RDV, DATE_RDV, DATENAISS_RDV FROM RENDEZ_VOUS WHERE ID_RDV = :id_rdv");
-    query.bindValue(":id_rdv", id_rdv);
-
-    if (!query.exec() || !query.next()) {
-        QMessageBox::critical(this, "Erreur", "Impossible de récupérer les informations du rendez-vous.");
-        qDebug() << "SQL Error: " << query.lastError().text();
-        return;
-    }
-
-    QString nom = query.value(0).toString();
-    QString prenom = query.value(1).toString();
-    QString vaccin_ref = query.value(2).toString();
-    QString date_rdv = query.value(3).toString();
-    QString date_naissp = query.value(4).toString();
-
-    query.prepare("SELECT CIN_PASSP FROM PATIENT WHERE NOM = :nom");
-    query.bindValue(":nom", nom);
-
-    if (!query.exec() || !query.next()) {
-        QMessageBox::critical(this, "Erreur", "part 2.");
-        qDebug() << "SQL Error: " << query.lastError().text();
-        return;
-    }
-
-    QString CIN = query.value(0).toString();
-
-
-
-    query.prepare("SELECT DOSE, TYPE FROM VACCIN WHERE NOM = :vaccin_ref");
-    query.bindValue(":vaccin_ref", vaccin_ref);
-
-    if (!query.exec() || !query.next()) {
-        QMessageBox::critical(this, "Erreur", ".");
-        qDebug() << "SQL Error: " << query.lastError().text();
-        return;
-    }
-
-
-    QString dose_vaccin = query.value(0).toString();
-    QString type_vaccin = query.value(1).toString();
-
-    // Generate the HTML certificate
-    QString html = QString(R"(
-    <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Certificat de Confirmation de Vaccination</title>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; border: 2px solid #000; max-width: 600px; text-align: center; position: relative; }
-            h1 { color: #333; margin-bottom: 20px; }
-            .section { margin-bottom: 15px; text-align: left; }
-            .section p { margin: 5px 0; }
-            .footer { margin-top: 20px; font-size: 0.9em; color: #666; }
-            .consent { font-style: italic; margin-top: 15px; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; }
-            .important-info { margin-top: 15px; padding: 10px; border: 1px solid #ffeeba; border-radius: 5px; }
-        </style>
-    </head>
-    <body>
-
-        <h1>Certificat de Confirmation de Vaccination</h1>
-        <div class="section">
-            <h2>Informations du Patient</h2>
-            <p><strong>Nom :</strong> %1</p>
-            <p><strong>Prénom :</strong> %2</p>
-            <p><strong>Date de naissance :</strong> %3</p>
-            <p><strong>Identifiant unique (CIN/Passeport) :</strong> %4</p>
-        </div>
-
-        <div class="section">
-            <h2>Détails de la Vaccination</h2>
-            <p><strong>Nom du vaccin :</strong> %5</p>
-            <p><strong>Date d'administration :</strong> %6</p>
-            <p><strong>Dose :</strong> %7</p>
-            <p><strong>Centre de vaccination :</strong> SmartVax Center</p>
-        </div>
-
-        <div class="section">
-            <h2>Informations du Professionnel de Santé</h2>
-            <p><strong>Nom :</strong> -----------------</p>
-            <p><strong>Signature :</strong> _______________</p>
-        </div>
-
-        <div class="consent">
-            <p>
-                Le patient éligible, ou son représentant légal, a accepté d’entrer dans le processus de vaccination après avoir reçu toutes les informations nécessaires à son choix éclairé.
-            </p>
-        </div>
-
-        <div class="important-info">
-            <p><strong>En cas d'effets indésirables, veuillez nous informer immédiatement.</strong></p>
-        </div>
-
-        <div class="footer">
-            <h3>Informations Importantes</h3>
-            <p>Ce certificat est une preuve officielle de vaccination. Veuillez le conserver précieusement.</p>
-            <p>Il est recommandé de garder une copie électronique ou papier de ce certificat pour référence future.
-            En cas de perte, veuillez contacter le centre de vaccination pour obtenir une copie.</p>
-            <p>Pour toute question, contactez-nous à :</p>
-            <p><strong>Email :</strong> SmartVax@yahoo.com | <strong>Téléphone :</strong> +216 21 276 002</p>
-        </div>
-    </body>
-    </html>
-    )").arg(nom, prenom, date_naissp, CIN, vaccin_ref, date_rdv, dose_vaccin);
-    QPrinter printer(QPrinter::PrinterResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    QTextDocument doc;
-    doc.setHtml(html);
-    QString filePath = QFileDialog::getSaveFileName(this, "Enregistrer le certificat",
-                                                    QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/certificat_vaccination.pdf",
-                                                    "PDF Files (*.pdf)");
-
-    if (!filePath.isEmpty()) {
-        printer.setOutputFileName(filePath);
-    }
-
-
-
-
-    doc.print(&printer);
-
-    QMessageBox::information(this, "Succès", "Le certificat de vaccination a été généré avec succès !");
-}

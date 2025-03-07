@@ -136,3 +136,5 @@ bool Vaccin::isReferenceExists(int reference) {
     query.exec();
     return query.next();
 }
+
+
