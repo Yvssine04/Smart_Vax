@@ -48,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
     cherche_vac = ui->cherche_vac;
     tri_vac = ui->tri_vac;
 
-
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
         "QTabBar::tab { height: 0; width: 0; }"
@@ -61,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cherche_vac, &QLineEdit::textChanged, this, [this]() {
         vaccinManager->filterVaccinTable(ui->tabvaccin, cherche_vac->text());
     });
+    connect(ui->tabvaccin, &QTableWidget::itemSelectionChanged, this, &MainWindow::onVaccinTableSelectionChanged);
     connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_2_clicked);
     connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_2_clicked);
     connect(ui->date_vac, &QDateEdit::dateChanged, this, &MainWindow::onDateChanged);
@@ -389,7 +389,6 @@ void MainWindow::loadEquipementsData() {
     tabequi->resizeRowsToContents();
 }
 
-
 void MainWindow::loadAppointments() {
     ui->liste_att->clear();
 
@@ -435,48 +434,44 @@ void MainWindow::onDateChanged() {
         QMessageBox::critical(this, "Erreur", "Échec de la mise à jour de la date : " + query.lastError().text());
     }
 }
-
+void MainWindow::onVaccinTableSelectionChanged() {
+    QList<QTableWidgetSelectionRange> selectedRanges = ui->tabvaccin->selectedRanges();
+    if (!selectedRanges.isEmpty()) {
+        QTableWidgetSelectionRange range = selectedRanges.at(0);
+        selectedRow = range.topRow();
+    } else {
+        selectedRow = -1;
+    }
+}
 
 void MainWindow::on_delete_2_clicked() {
-    bool ok;
-    int reference = QInputDialog::getInt(this, "Delete Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
-
-    if (ok) {
+    if (selectedRow != -1) {
+        QTableWidgetItem* referenceItem = ui->tabvaccin->item(selectedRow, 0);
+        int reference = referenceItem->text().toInt();
         vaccinManager->deleteVaccin(reference);
         vaccinManager->loadVaccinData(ui->tabvaccin);
+        selectedRow = -1;
+    } else {
+        QMessageBox::warning(this, "No Selection", "veuillez selectionner un élément du tableau");
     }
 }
 
 void MainWindow::on_edit_vac_2_clicked() {
-    qDebug() << "Edit button clicked";
+    if (selectedRow != -1) {
+        QTableWidgetItem* referenceItem = ui->tabvaccin->item(selectedRow, 0); // Assuming the first column is the reference
+        int reference = referenceItem->text().toInt();
+        vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
+        ui->reference_2->setDisabled(true);
 
-    bool validReference = false;
-    int reference = 0;
-
-    while (!validReference) {
-        bool ok;
-        reference = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
-
-        if (!ok) {
-            // User canceled the input
-            return;
-        }
-
-        if (vaccinManager->isReferenceExists(reference)) {
-            validReference = true;
-        } else {
-            QMessageBox::warning(this, "Reference Incorrecte", "La référence n'est pas correcte. Veuillez réessayer.");
-        }
+        // Switch to the edit tab
+        vaccinTab->setCurrentIndex(9);
+        selectedRow = -1;
+    } else {
+        QMessageBox::warning(this, "No Selection", "veuillez selectionner un élément du tableau");
     }
-
-    // If we reach here, the reference is valid
-    vaccinManager->fetchVaccinData(reference, ui->reference_2, ui->nom_vac_2, ui->type_vac_2, ui->age_vac_2, ui->mode_vac_2, ui->dose_vac_2, ui->date_vac_2, ui->prix_vac_2, ui->quantite_vac_2);
-
-    // Disable the reference field to prevent changes
-    ui->reference_2->setDisabled(true);
-
-    vaccinTab->setCurrentIndex(9);
 }
+
+
 
 void MainWindow::on_save_2_clicked() {
     int reference = ui->reference_2->text().toInt();
@@ -507,7 +502,6 @@ void MainWindow::on_save_2_clicked() {
     ui->reference_2->setDisabled(false);
 }
 
-
 void MainWindow::on_supprimerevent_clicked() {
     bool ok;
     int identifiant = QInputDialog::getInt(this, "Supprimer un événement", "Entrez l'identifiant de l'événement :", 0, 0, INT_MAX, 1, &ok);
@@ -517,5 +511,3 @@ void MainWindow::on_supprimerevent_clicked() {
         eventManager->loadEventData(ui->tabevent);
     }
 }
-
-

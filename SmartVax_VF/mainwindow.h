@@ -42,6 +42,7 @@ private slots:
     void on_edit_vac_2_clicked(); // Slot for the edit button
     void on_save_2_clicked(); // Slot for saving edited data
     void on_supprimerevent_clicked();
+    void onVaccinTableSelectionChanged();
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
@@ -69,6 +70,8 @@ private:
     void loadEquipementsData();
     void loadEventData();
     void loadAppointments();
+    int selectedRow = -1;
+
 };
 
 #endif // MAINWINDOW_H

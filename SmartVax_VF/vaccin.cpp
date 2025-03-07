@@ -58,6 +58,7 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
     }
 }
 
+
 void Vaccin::insertVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite) {
     QSqlQuery query;
     query.prepare("INSERT INTO VACCIN (REFERENCE, NOM, TYPE, AGE_MIN, MODE_ADMIN, DOSE, DATE_EXP, PRIX, QUANTITE) "
@@ -79,6 +80,7 @@ void Vaccin::insertVaccinData(int reference, QString nom, QString type, int age_
     }
 }
 
+
 void Vaccin::updateVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite) {
     QSqlQuery query;
     query.prepare("UPDATE VACCIN SET NOM = :nom, TYPE = :type, AGE_MIN = :age_min, MODE_ADMIN = :mode_admin, DOSE = :dose, DATE_EXP = :date_exp, PRIX = :prix, QUANTITE = :quantite WHERE REFERENCE = :reference");
@@ -98,6 +100,7 @@ void Vaccin::updateVaccinData(int reference, QString nom, QString type, int age_
         QMessageBox::information(nullptr, "Succès", "Les données ont été mises à jour avec succès !");
     }
 }
+
 
 void Vaccin::deleteVaccin(int reference) {
     if (!QSqlDatabase::database().isOpen()) {
@@ -159,6 +162,9 @@ bool Vaccin::isReferenceExists(int reference) {
     return query.next();
 }
 void Vaccin::filterVaccinTable(QTableWidget *table, const QString &searchText) {
+    bool firstMatchFound = false;
+    int firstMatchRow = -1;
+
     for (int row = 0; row < table->rowCount(); ++row) {
         bool matchFound = false;
         QTableWidgetItem *itemRef = table->item(row, 0);
@@ -169,9 +175,27 @@ void Vaccin::filterVaccinTable(QTableWidget *table, const QString &searchText) {
         if (itemName && itemName->text().contains(searchText, Qt::CaseInsensitive)) {
             matchFound = true;
         }
+
         table->setRowHidden(row, !matchFound);
+
+        // Check if this is the first match
+        if (matchFound && !firstMatchFound) {
+            firstMatchFound = true;
+            firstMatchRow = row;
+        }
+    }
+
+    // Select the first matching row invisibly
+    if (firstMatchRow != -1) {
+        // Clear the current selection to avoid visual changes
+        table->clearSelection();
+
+        // Use the selection model to select the row without visual feedback
+        table->selectionModel()->select(table->model()->index(firstMatchRow, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 }
+
+
 void Vaccin::sortVaccinTable(QTableWidget *tablevaccin) {
     if (tablevaccin->rowCount() == 0) {
         return;
