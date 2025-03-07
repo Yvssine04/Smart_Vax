@@ -43,6 +43,12 @@ public:
     QAction *actionGestion_d_acc_s;
     QAction *actionChanger_d_utilisateur;
     QAction *actionQuitter;
+    QAction *actionrendez_vous;
+    QAction *actionequipement;
+    QAction *actionpatient;
+    QAction *actionvaccin;
+    QAction *actionemploye;
+    QAction *actionevenement;
     QWidget *centralwidget;
     QFrame *frame;
     QWidget *widget_2;
@@ -222,7 +228,7 @@ public:
     QLineEdit *lineEdit_36;
     QPushButton *edit_rdv;
     QLineEdit *lineEdit_37;
-    QPushButton *edit_rdv_2;
+    QPushButton *rdv_pdf;
     QWidget *tab_10;
     QWidget *tab_9;
     QTableView *tableView_27;
@@ -436,6 +442,18 @@ public:
         actionChanger_d_utilisateur->setObjectName("actionChanger_d_utilisateur");
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName("actionQuitter");
+        actionrendez_vous = new QAction(MainWindow);
+        actionrendez_vous->setObjectName("actionrendez_vous");
+        actionequipement = new QAction(MainWindow);
+        actionequipement->setObjectName("actionequipement");
+        actionpatient = new QAction(MainWindow);
+        actionpatient->setObjectName("actionpatient");
+        actionvaccin = new QAction(MainWindow);
+        actionvaccin->setObjectName("actionvaccin");
+        actionemploye = new QAction(MainWindow);
+        actionemploye->setObjectName("actionemploye");
+        actionevenement = new QAction(MainWindow);
+        actionevenement->setObjectName("actionevenement");
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         frame = new QFrame(centralwidget);
@@ -3818,6 +3836,15 @@ public:
         QFont font11;
         font11.setPointSize(11);
         liste_att->setFont(font11);
+        liste_att->setStyleSheet(QString::fromUtf8("background-color: rgb(121, 167, 173);\n"
+"alternate-background-color: rgb(63, 123, 134);\n"
+"color: rgb(255, 255, 255);"));
+        liste_att->setFrameShape(QFrame::Shape::StyledPanel);
+        liste_att->setDragEnabled(true);
+        liste_att->setAlternatingRowColors(true);
+        liste_att->setSelectionRectVisible(true);
+        liste_att->setItemAlignment(Qt::AlignmentFlag::AlignLeading);
+        liste_att->setSortingEnabled(false);
         listWidget = new QListWidget(tab_4);
         listWidget->setObjectName("listWidget");
         listWidget->setGeometry(QRect(120, 440, 341, 161));
@@ -3863,18 +3890,18 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        edit_rdv_2 = new QPushButton(tab_4);
-        edit_rdv_2->setObjectName("edit_rdv_2");
-        edit_rdv_2->setGeometry(QRect(580, 120, 61, 51));
-        edit_rdv_2->setFont(font3);
-        edit_rdv_2->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
+        rdv_pdf = new QPushButton(tab_4);
+        rdv_pdf->setObjectName("rdv_pdf");
+        rdv_pdf->setGeometry(QRect(580, 120, 61, 51));
+        rdv_pdf->setFont(font3);
+        rdv_pdf->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 "color: rgb(0, 0, 0);\n"
 ""));
         QIcon icon7(QIcon::fromTheme(QIcon::ThemeIcon::DocumentPrintPreview));
-        edit_rdv_2->setIcon(icon7);
-        edit_rdv_2->setIconSize(QSize(37, 34));
+        rdv_pdf->setIcon(icon7);
+        rdv_pdf->setIconSize(QSize(37, 34));
         vaccin->addTab(tab_4, QString());
         label_34->raise();
         tableView_22->raise();
@@ -3898,7 +3925,7 @@ public:
         lineEdit_36->raise();
         edit_rdv->raise();
         lineEdit_37->raise();
-        edit_rdv_2->raise();
+        rdv_pdf->raise();
         tab_10 = new QWidget();
         tab_10->setObjectName("tab_10");
         vaccin->addTab(tab_10, QString());
@@ -4132,8 +4159,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 9, 5), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 9, 5), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 9, 3), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 9, 3), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         label_79 = new QLabel(tab_9);
         label_79->setObjectName("label_79");
@@ -4682,8 +4709,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 9, 4), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 9, 4), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 9, 2), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 9, 2), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_98 = new QLabel(tab_6);
         label_98->setObjectName("label_98");
@@ -4957,10 +4984,16 @@ public:
         menuSessio->addAction(actionGestion_d_acc_s);
         menuSessio->addAction(actionChanger_d_utilisateur);
         menuSessio->addAction(actionQuitter);
+        menuStatistique->addAction(actionrendez_vous);
+        menuStatistique->addAction(actionequipement);
+        menuStatistique->addAction(actionpatient);
+        menuStatistique->addAction(actionvaccin);
+        menuStatistique->addAction(actionemploye);
+        menuStatistique->addAction(actionevenement);
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(8);
+        vaccin->setCurrentIndex(6);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4972,6 +5005,12 @@ public:
         actionGestion_d_acc_s->setText(QCoreApplication::translate("MainWindow", "Gestion d'acc\303\251s", nullptr));
         actionChanger_d_utilisateur->setText(QCoreApplication::translate("MainWindow", "Changer d'utilisateur", nullptr));
         actionQuitter->setText(QCoreApplication::translate("MainWindow", "Quitter", nullptr));
+        actionrendez_vous->setText(QCoreApplication::translate("MainWindow", "Activit\303\251s", nullptr));
+        actionequipement->setText(QCoreApplication::translate("MainWindow", "Employ\303\251s", nullptr));
+        actionpatient->setText(QCoreApplication::translate("MainWindow", "Stock equipements", nullptr));
+        actionvaccin->setText(QCoreApplication::translate("MainWindow", "Stock vaccins", nullptr));
+        actionemploye->setText(QCoreApplication::translate("MainWindow", "Suivie rendez_vous", nullptr));
+        actionevenement->setText(QCoreApplication::translate("MainWindow", "Suivie \303\251venements", nullptr));
         pushButton_4->setText(QString());
         rdv->setText(QString());
         label_6->setText(QCoreApplication::translate("MainWindow", "Rendez-vous", nullptr));
@@ -5123,7 +5162,7 @@ public:
         Quit_4->setText(QString());
         deleteRdv->setText(QString());
         edit_rdv->setText(QString());
-        edit_rdv_2->setText(QString());
+        rdv_pdf->setText(QString());
         vaccin->setTabText(vaccin->indexOf(tab_4), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_10), QCoreApplication::translate("MainWindow", "Page", nullptr));
         label_68->setText(QString());

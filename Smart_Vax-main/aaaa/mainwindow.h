@@ -47,6 +47,8 @@ private slots:
     void on_save_rdv_2_clicked();
 
 
+    void generateCertificate(int id_rdv);
+    void on_rdv_pdf_clicked();
 
 private:
     Ui::MainWindow *ui;

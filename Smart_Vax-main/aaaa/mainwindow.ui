@@ -1676,7 +1676,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -20168,6 +20168,29 @@ border-radius: 15px;
          <pointsize>11</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(121, 167, 173);
+alternate-background-color: rgb(63, 123, 134);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::StyledPanel</enum>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionRectVisible">
+        <bool>true</bool>
+       </property>
+       <property name="itemAlignment">
+        <set>Qt::AlignmentFlag::AlignLeading</set>
+       </property>
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
       </widget>
       <widget class="QListWidget" name="listWidget">
        <property name="geometry">
@@ -20302,7 +20325,7 @@ border-radius: 25px;
 </string>
        </property>
       </widget>
-      <widget class="QPushButton" name="edit_rdv_2">
+      <widget class="QPushButton" name="rdv_pdf">
        <property name="geometry">
         <rect>
          <x>580</x>
@@ -20359,7 +20382,7 @@ color: rgb(0, 0, 0);
       <zorder>lineEdit_36</zorder>
       <zorder>edit_rdv</zorder>
       <zorder>lineEdit_37</zorder>
-      <zorder>edit_rdv_2</zorder>
+      <zorder>rdv_pdf</zorder>
      </widget>
      <widget class="QWidget" name="tab_10">
       <attribute name="title">
@@ -21432,7 +21455,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>5</day>
+         <day>3</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -21442,7 +21465,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>5</day>
+         <day>3</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -23415,7 +23438,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>9</month>
-         <day>4</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -23425,7 +23448,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>9</month>
-         <day>4</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -24478,6 +24501,12 @@ border-radius: 15px;</string>
     <property name="title">
      <string>Statistique</string>
     </property>
+    <addaction name="actionrendez_vous"/>
+    <addaction name="actionequipement"/>
+    <addaction name="actionpatient"/>
+    <addaction name="actionvaccin"/>
+    <addaction name="actionemploye"/>
+    <addaction name="actionevenement"/>
    </widget>
    <addaction name="menuSessio"/>
    <addaction name="menuStatistique"/>
@@ -24496,6 +24525,36 @@ border-radius: 15px;</string>
   <action name="actionQuitter">
    <property name="text">
     <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionrendez_vous">
+   <property name="text">
+    <string>Activités</string>
+   </property>
+  </action>
+  <action name="actionequipement">
+   <property name="text">
+    <string>Employés</string>
+   </property>
+  </action>
+  <action name="actionpatient">
+   <property name="text">
+    <string>Stock equipements</string>
+   </property>
+  </action>
+  <action name="actionvaccin">
+   <property name="text">
+    <string>Stock vaccins</string>
+   </property>
+  </action>
+  <action name="actionemploye">
+   <property name="text">
+    <string>Suivie rendez_vous</string>
+   </property>
+  </action>
+  <action name="actionevenement">
+   <property name="text">
+    <string>Suivie évenements</string>
    </property>
   </action>
  </widget>
