@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "rendez_vous.h"
 #include <QPixmap>
 #include <QGraphicsOpacityEffect>
 #include "connection.h"
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     , vaccinManager(new Vaccin(this))
 {
     ui->setupUi(this);
+    rdvWindow = new rendez_vous(this);
     vaccinTab = ui->vaccin;
     ajoutvac = ui->ajoutvac;
     vaccinB = ui->vaccinB;
@@ -235,7 +237,7 @@ void MainWindow::on_ajoutequi_clicked() {
 
 void MainWindow::on_rdv_clicked() {
     vaccinTab->setCurrentIndex(6);
-    loadAppointments();
+    rdvWindow->loadAppointments(ui->liste_att);
 }
 
 void MainWindow::on_Quit_clicked() {
@@ -248,8 +250,10 @@ void MainWindow::on_Quit_4_clicked() {
 
 void MainWindow::on_ajoutrdv_clicked() {
     vaccinTab->setCurrentIndex(8);
+    rdvWindow->loadVaccins(ui->vaccin_2);
 }
 
+<<<<<<< HEAD
 void MainWindow::on_save_rdv_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur de base de données", "La base de données n'est pas connectée.");
@@ -289,6 +293,9 @@ void MainWindow::on_save_rdv_clicked() {
         QMessageBox::information(this, "Succès", "Les données ont été téléchargées avec succès !");
     }
 }
+=======
+
+>>>>>>> ee88b6b07fe7b3be8728f30dde7239bb425c3694
 
 void MainWindow::on_save_event_clicked() {
     if (!QSqlDatabase::database().isOpen()) {
@@ -432,19 +439,7 @@ void MainWindow::loadEventData() {
     tabevent->resizeRowsToContents();
 }
 
-void MainWindow::loadAppointments() {
-    ui->liste_att->clear();
 
-    QSqlQuery query("SELECT ID_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM TABLE1");
-    while (query.next()) {
-        QString CIN = query.value(0).toString();
-        QString nom = query.value(1).toString();
-        QString prenom = query.value(2).toString();
-        QString vaccin = query.value(3).toString();
-        QString itemText = CIN + " " + nom + " " + prenom + "   :   " + vaccin;
-        ui->liste_att->addItem(itemText);
-    }
-}
 
 void MainWindow::onDateChanged() {
     QDate selectedDate;
@@ -489,7 +484,11 @@ void MainWindow::on_delete_2_clicked() {
 }
 
 void MainWindow::on_edit_vac_2_clicked() {
+<<<<<<< HEAD
     qDebug() << "Bouton de modification cliqué";
+=======
+
+>>>>>>> ee88b6b07fe7b3be8728f30dde7239bb425c3694
     bool ok;
     int reference = QInputDialog::getInt(this, "Modifier l'enregistrement", "Entrez le numéro de référence :", 0, 0, INT_MAX, 1, &ok);
 
@@ -498,6 +497,7 @@ void MainWindow::on_edit_vac_2_clicked() {
         vaccinTab->setCurrentIndex(9); // Naviguer vers l'onglet de modification
     }
 }
+
 
 void MainWindow::on_save_2_clicked() {
     int reference = ui->reference_2->text().toInt();
@@ -520,4 +520,107 @@ void MainWindow::on_save_2_clicked() {
     ui->date_vac_2->clear();
     ui->prix_vac_2->clear();
     ui->quantite_vac_2->clear();
+
+
 }
+
+void MainWindow::on_save_rdv_clicked()
+{
+    QString CIN = ui->CIN_rdv->text();
+    QString vaccin = ui->vaccin_2->currentText();
+    QString date_rdv = ui->date_rdv->text();
+    QString adresse = ui->adresse->text();
+    QString nom = ui->nom_rdv->text();
+    QString prenom = ui->prenom_rdv->text();
+    QString dispo = ui->dispo->text();
+    QString medecin = ui->medecin_att->text();
+    QString infirmier = ui->infirmier_att->text();
+    QString salle = ui->salle_att->text();
+    double facturation = ui->facturation->value();
+
+
+    rdvWindow->saveAppointment(CIN, vaccin, date_rdv, adresse, nom, prenom, dispo, medecin, infirmier, salle, facturation);
+
+
+    ui->CIN_rdv->clear();
+    ui->adresse->clear();
+    ui->date_rdv->clear();
+    ui->nom_rdv->clear();
+    ui->prenom_rdv->clear();
+    ui->medecin_att->clear();
+    ui->infirmier_att->clear();
+    ui->salle_att->clear();
+    ui->reference->clear();
+    ui->vaccin_2->clear();
+    ui->dispo->clear();
+    vaccinTab->setCurrentIndex(6);
+}
+
+
+void MainWindow::on_deleteRdv_clicked()
+{
+    bool ok;
+
+    int CIN = QInputDialog::getInt(this, "Delete Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+    if (ok) {
+        rdvWindow->supprimerRdv(CIN);
+        rdvWindow->loadAppointments(ui->liste_att);
+    }
+
+}
+
+
+void MainWindow::on_edit_rdv_clicked()
+{
+    qDebug() << "Edit button clicked";
+    bool ok;
+    int id_rdv = QInputDialog::getInt(this, "Edit Record", "Enter the reference number:", 0, 0, INT_MAX, 1, &ok);
+
+    if (ok) {
+
+
+
+        rdvWindow->infoEdit(id_rdv,ui->CIN_rdv_2,ui->date_rdv_2,ui->vaccin_3,ui->adresse_2,ui->nom_rdv_2,ui->prenom_rdv_2,ui->dispo_2,ui->medecin_att_2,ui->infirmier_att_2,ui->salle_att_2,ui->facturation_2);
+        rdvWindow->loadVaccins(ui->vaccin_3);
+        rdvWindow->loadAppointments(ui->liste_att);
+        vaccinTab->setCurrentIndex(10);
+
+    }
+}
+
+
+void MainWindow::on_save_rdv_2_clicked()
+{
+    QString CIN2 = ui->CIN_rdv_2->text();
+    QString vaccin2 = ui->vaccin_3->currentText();
+    QString date_rdv2 = ui->date_rdv_2->text();
+    QString adresse2 = ui->adresse_2->text();
+    QString nom2 = ui->nom_rdv_2->text();
+    QString prenom2 = ui->prenom_rdv_2->text();
+    QString dispo2 = ui->dispo_2->text();
+    QString medecin2 = ui->medecin_att_2->text();
+    QString infirmier2 = ui->infirmier_att_2->text();
+    QString salle2 = ui->salle_att_2->text();
+    double facturation2 = ui->facturation_2->value();
+    int CINi = CIN2.toInt();
+
+    rdvWindow->modifier_rdv(CINi,CIN2, vaccin2,date_rdv2,adresse2,nom2, prenom2, dispo2,medecin2, infirmier2, salle2,facturation2);
+
+
+    ui->CIN_rdv->clear();
+    ui->adresse->clear();
+    ui->date_rdv->clear();
+    ui->nom_rdv->clear();
+    ui->prenom_rdv->clear();
+    ui->medecin_att->clear();
+    ui->infirmier_att->clear();
+    ui->salle_att->clear();
+    ui->reference->clear();
+    ui->vaccin_2->clear();
+    ui->dispo->clear();
+    vaccinTab->setCurrentIndex(6);
+
+}
+
+

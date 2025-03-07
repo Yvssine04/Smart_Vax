@@ -23,10 +23,10 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
     int row = 0;
     while (query.next()) {
         tabvaccin->insertRow(row);
-        tabvaccin->setItem(row, 0, new QTableWidgetItem(query.value(0).toString())); // REFERENCE
-        tabvaccin->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // NOM
-        tabvaccin->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // DOSE
-        tabvaccin->setItem(row, 3, new QTableWidgetItem(query.value(3).toString())); // PRIX
+        tabvaccin->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
+        tabvaccin->setItem(row, 1, new QTableWidgetItem(query.value(1).toString()));
+        tabvaccin->setItem(row, 2, new QTableWidgetItem(query.value(2).toString()));
+        tabvaccin->setItem(row, 3, new QTableWidgetItem(query.value(3).toString()));
         QDate dateExp = query.value(4).toDate();
         if (dateExp.isValid()) {
             QTableWidgetItem *dateItem = new QTableWidgetItem(dateExp.toString(Qt::ISODate));
@@ -59,7 +59,11 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
                       "VALUES (:reference, :nom, :type, :age_min, :mode_admin, :dose, :date_exp, :prix, :quantite)");
     }
 
+<<<<<<< HEAD
     // Lier les valeurs
+=======
+
+>>>>>>> ee88b6b07fe7b3be8728f30dde7239bb425c3694
     query.bindValue(":reference", reference);
     query.bindValue(":nom", nom);
     query.bindValue(":type", type);
