@@ -7,6 +7,7 @@
 #include <QLabel>
 #include "vaccin.h"
 #include "evenement.h"
+#include "equipements.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,10 +40,25 @@ private slots:
     void on_save_eq_clicked();
     void onDateChanged();
     void on_delete_2_clicked();
-    void on_edit_vac_2_clicked(); // Slot for the edit button
-    void on_save_2_clicked(); // Slot for saving edited data
+    void on_edit_vac_2_clicked();
+    void on_save_2_clicked();
     void on_supprimerevent_clicked();
+    void on_modifierevent_clicked();
+    void on_sauvegarderevent_clicked();
     void onVaccinTableSelectionChanged();
+    void onComboBoxIndexChanged(int index);
+    void onRechercheEqReturnPressed();
+
+    void on_edit_equi_clicked(); // Corrected return type to void
+    void on_modif_save_clicked(); // Corrected return type to void
+
+    void on_supprime_eq_clicked();
+
+    void onEquipementComboBoxIndexChanged(int index);
+    void sortEquipementTable(QTableWidget *tableEqui, int column);
+    void onVaccinHeaderSectionClicked(int logicalIndex);
+
+
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
@@ -67,11 +83,17 @@ private:
     QPushButton *supprimerevent;
     QLineEdit *cherche_vac;
     QPushButton *tri_vac;
+    int selectedRow = -1;
+
+
+
+    bool checkDatabaseConnection();
+
+        // QPushButton *ffff;
+
     void loadEquipementsData();
     void loadEventData();
     void loadAppointments();
-    int selectedRow = -1;
-
 };
 
 #endif // MAINWINDOW_H

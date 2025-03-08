@@ -22,6 +22,11 @@ public:
                        const QString &lieu, int nbr_participant);
 
     void supprimerEvenement(int id_event);
+    bool recupererEvenement(int id, QString &nom, QString &responsable, QString &type, QString &lieu, int &participants, QDateTime &dateHeure);
+    bool modifierEvenement(int id, const QString &nom, const QString &responsable, const QString &type, const QString &lieu, int participants, const QDateTime &dateHeure);
+    void searchEventData(QTableWidget *tabevent, const QString &searchTerm);
+    void sortEventData(QTableWidget *tabevent, const QString &critere);
+
 };
 
 #endif // EVENEMENT_H

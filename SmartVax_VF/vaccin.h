@@ -7,13 +7,14 @@
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <Qt> // Include this for Qt::SortOrder
 
-class Vaccin : public QObject
-{
+class Vaccin : public QObject {
     Q_OBJECT
 
 public:
-    Vaccin(QObject *parent = nullptr);
+    explicit Vaccin(QObject *parent = nullptr);
+
     void loadVaccinData(QTableWidget *tabvaccin);
     void saveVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);
     void deleteVaccin(int reference);
@@ -21,7 +22,7 @@ public:
     bool isReferenceExists(int reference);
     void updateVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);
     void filterVaccinTable(QTableWidget *table, const QString &searchText);
-    void sortVaccinTable(QTableWidget *tablevaccin);
+    void sortVaccinTable(QTableWidget *tableVaccin, int column, Qt::SortOrder order = Qt::AscendingOrder);
 
 private:
     void insertVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);

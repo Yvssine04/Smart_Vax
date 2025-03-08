@@ -1,6 +1,7 @@
 #include "vaccin.h"
 #include <QSqlError>
 #include <QDate>
+#include <QDebug>
 
 Vaccin::Vaccin(QObject *parent) : QObject(parent) {}
 
@@ -36,9 +37,7 @@ void Vaccin::loadVaccinData(QTableWidget *tabvaccin) {
         } else {
             tabvaccin->setItem(row, 4, new QTableWidgetItem("Date invalide"));
         }
-
         tabvaccin->setItem(row, 5, new QTableWidgetItem(query.value(5).toString())); // QUANTITE
-
         row++;
     }
 
@@ -57,7 +56,6 @@ void Vaccin::saveVaccinData(int reference, QString nom, QString type, int age_mi
         insertVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
     }
 }
-
 
 void Vaccin::insertVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite) {
     QSqlQuery query;
@@ -80,7 +78,6 @@ void Vaccin::insertVaccinData(int reference, QString nom, QString type, int age_
     }
 }
 
-
 void Vaccin::updateVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite) {
     QSqlQuery query;
     query.prepare("UPDATE VACCIN SET NOM = :nom, TYPE = :type, AGE_MIN = :age_min, MODE_ADMIN = :mode_admin, DOSE = :dose, DATE_EXP = :date_exp, PRIX = :prix, QUANTITE = :quantite WHERE REFERENCE = :reference");
@@ -100,7 +97,6 @@ void Vaccin::updateVaccinData(int reference, QString nom, QString type, int age_
         QMessageBox::information(nullptr, "Succès", "Les données ont été mises à jour avec succès !");
     }
 }
-
 
 void Vaccin::deleteVaccin(int reference) {
     if (!QSqlDatabase::database().isOpen()) {
@@ -161,6 +157,7 @@ bool Vaccin::isReferenceExists(int reference) {
     query.exec();
     return query.next();
 }
+
 void Vaccin::filterVaccinTable(QTableWidget *table, const QString &searchText) {
     bool firstMatchFound = false;
     int firstMatchRow = -1;
@@ -175,32 +172,33 @@ void Vaccin::filterVaccinTable(QTableWidget *table, const QString &searchText) {
         if (itemName && itemName->text().contains(searchText, Qt::CaseInsensitive)) {
             matchFound = true;
         }
-
         table->setRowHidden(row, !matchFound);
-
-        // Check if this is the first match
         if (matchFound && !firstMatchFound) {
             firstMatchFound = true;
             firstMatchRow = row;
         }
     }
-
-    // Select the first matching row invisibly
     if (firstMatchRow != -1) {
-        // Clear the current selection to avoid visual changes
         table->clearSelection();
-
-        // Use the selection model to select the row without visual feedback
         table->selectionModel()->select(table->model()->index(firstMatchRow, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 }
 
-
-void Vaccin::sortVaccinTable(QTableWidget *tablevaccin) {
-    if (tablevaccin->rowCount() == 0) {
+void Vaccin::sortVaccinTable(QTableWidget *tableVaccin, int column, Qt::SortOrder order) {
+    if (tableVaccin == nullptr || tableVaccin->rowCount() == 0 || column < 0 || column >= tableVaccin->columnCount()) {
+        qDebug() << "Invalid table or column index!";
         return;
     }
-    tablevaccin->sortItems(3, Qt::AscendingOrder);
-    tablevaccin->sortItems(4, Qt::AscendingOrder);
-    tablevaccin->sortItems(5, Qt::AscendingOrder);
+    // Check if the column is for quantity or price
+    bool isNumericColumn = (column == 3 || column == 5); // Assuming prix is column 3 and quantite is column 5
+
+    if (isNumericColumn) {
+        // Sort numerically
+        tableVaccin->sortItems(column, order);
+        qDebug() << "Sorted column" << column << "numerically (" << (order == Qt::AscendingOrder ? "ascending" : "descending") << ").";
+    } else {
+        // Sort alphabetically
+        tableVaccin->sortItems(column, order);
+        qDebug() << "Sorted column" << column << "alphabetically (" << (order == Qt::AscendingOrder ? "ascending" : "descending") << ").";
+    }
 }
