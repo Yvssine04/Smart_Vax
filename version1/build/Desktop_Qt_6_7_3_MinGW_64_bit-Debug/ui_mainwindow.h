@@ -189,11 +189,9 @@ public:
     QCalendarWidget *calendarWidget;
     QLabel *label_34;
     QTableView *tableView_7;
-    QLabel *label_35;
     QLineEdit *lineEdit_29;
     QLineEdit *lineEdit_30;
     QLineEdit *rdv_rech;
-    QPushButton *pushButton_20;
     QLabel *label_36;
     QLabel *label_67;
     QLineEdit *lineEdit_69;
@@ -210,6 +208,8 @@ public:
     QPushButton *ajoutrdv;
     QLabel *label_50;
     QLabel *label_51;
+    QComboBox *tri_rdv;
+    QLabel *label_97;
     QWidget *tab_10;
     QWidget *tab_9;
     QTableView *tableView_27;
@@ -2388,10 +2388,6 @@ public:
         tableView_7->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;"));
-        label_35 = new QLabel(tab_4);
-        label_35->setObjectName("label_35");
-        label_35->setGeometry(QRect(530, 170, 41, 31));
-        label_35->setStyleSheet(QString::fromUtf8("image: url(:/icon8.png);"));
         lineEdit_29 = new QLineEdit(tab_4);
         lineEdit_29->setObjectName("lineEdit_29");
         lineEdit_29->setGeometry(QRect(190, 170, 301, 51));
@@ -2401,7 +2397,7 @@ public:
 ""));
         lineEdit_30 = new QLineEdit(tab_4);
         lineEdit_30->setObjectName("lineEdit_30");
-        lineEdit_30->setGeometry(QRect(520, 170, 61, 51));
+        lineEdit_30->setGeometry(QRect(510, 170, 121, 51));
         lineEdit_30->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
@@ -2417,14 +2413,6 @@ public:
 "\n"
 ""));
         rdv_rech->setCursorPosition(0);
-        pushButton_20 = new QPushButton(tab_4);
-        pushButton_20->setObjectName("pushButton_20");
-        pushButton_20->setGeometry(QRect(520, 160, 61, 51));
-        pushButton_20->setFont(font3);
-        pushButton_20->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
-"border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-""));
         label_36 = new QLabel(tab_4);
         label_36->setObjectName("label_36");
         label_36->setGeometry(QRect(190, 110, 341, 31));
@@ -2570,6 +2558,26 @@ public:
         label_51->setGeometry(QRect(180, 400, 341, 31));
         label_51->setFont(font13);
         label_51->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
+        tri_rdv = new QComboBox(tab_4);
+        tri_rdv->addItem(QString());
+        tri_rdv->addItem(QString());
+        tri_rdv->addItem(QString());
+        tri_rdv->addItem(QString());
+        tri_rdv->setObjectName("tri_rdv");
+        tri_rdv->setGeometry(QRect(507, 160, 124, 51));
+        tri_rdv->setFont(font3);
+        tri_rdv->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
+"background-color: rgb(93, 143, 157);\n"
+"color: rgb(0, 0, 0);\n"
+" border: 2px solid black;\n"
+"\n"
+""));
+        tri_rdv->setIconSize(QSize(16, 21));
+        tri_rdv->setFrame(true);
+        label_97 = new QLabel(tab_4);
+        label_97->setObjectName("label_97");
+        label_97->setGeometry(QRect(580, 170, 31, 31));
+        label_97->setStyleSheet(QString::fromUtf8("image: url(:/icon8.png);"));
         vaccin->addTab(tab_4, QString());
         label_34->raise();
         tableView_22->raise();
@@ -2578,8 +2586,6 @@ public:
         lineEdit_29->raise();
         lineEdit_30->raise();
         rdv_rech->raise();
-        pushButton_20->raise();
-        label_35->raise();
         label_36->raise();
         label_67->raise();
         lineEdit_69->raise();
@@ -2596,6 +2602,8 @@ public:
         ajoutrdv->raise();
         label_50->raise();
         label_51->raise();
+        tri_rdv->raise();
+        label_97->raise();
         tab_10 = new QWidget();
         tab_10->setObjectName("tab_10");
         vaccin->addTab(tab_10, QString());
@@ -2770,8 +2778,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 29), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 29), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 28), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 28), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3442,8 +3450,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 28), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 28), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 27), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 27), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -4056,10 +4064,8 @@ public:
         save_eq->setText(QString());
         vaccin->setTabText(vaccin->indexOf(tab_3), QCoreApplication::translate("MainWindow", "Page", nullptr));
         label_34->setText(QString());
-        label_35->setText(QString());
         rdv_rech->setText(QString());
         rdv_rech->setPlaceholderText(QCoreApplication::translate("MainWindow", "  Chercher...", nullptr));
-        pushButton_20->setText(QString());
         label_36->setText(QCoreApplication::translate("MainWindow", "Liste des rendez-vous", nullptr));
         label_67->setText(QCoreApplication::translate("MainWindow", "Calendrier des rendez-vous", nullptr));
         Quit_4->setText(QString());
@@ -4069,6 +4075,13 @@ public:
         ajoutrdv->setText(QCoreApplication::translate("MainWindow", "Ajouter un rendez-vous +", nullptr));
         label_50->setText(QCoreApplication::translate("MainWindow", "Liste d'attente", nullptr));
         label_51->setText(QCoreApplication::translate("MainWindow", "Rendez vous planifi\303\251s", nullptr));
+        tri_rdv->setItemText(0, QCoreApplication::translate("MainWindow", "CIN", nullptr));
+        tri_rdv->setItemText(1, QCoreApplication::translate("MainWindow", "Nom", nullptr));
+        tri_rdv->setItemText(2, QCoreApplication::translate("MainWindow", "Pr\303\251nom", nullptr));
+        tri_rdv->setItemText(3, QCoreApplication::translate("MainWindow", "Vaccin", nullptr));
+
+        tri_rdv->setPlaceholderText(QCoreApplication::translate("MainWindow", "Trier", nullptr));
+        label_97->setText(QString());
         vaccin->setTabText(vaccin->indexOf(tab_4), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_10), QCoreApplication::translate("MainWindow", "Page", nullptr));
         label_68->setText(QString());
