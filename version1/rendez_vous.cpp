@@ -168,9 +168,8 @@ void rendez_vous::modifier_rdv(int CINi, const QString &vaccin, const QString &d
 
 void rendez_vous::loadAppointments(QListWidget *liste_att)
 {
-
-    liste_att->clear();
-    liste_att->addItem("CIN           Nom   Prenom        Vaccin");
+    liste_att->clear(); // Clear the list before loading new items
+    liste_att->addItem("CIN           Nom   Prenom        Vaccin"); // Add header
     qDebug() << "Loading appointments...";
 
     QSqlQuery query("SELECT ID_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM RENDEZ_VOUS");
@@ -179,11 +178,19 @@ void rendez_vous::loadAppointments(QListWidget *liste_att)
         QString nom = query.value(1).toString();
         QString prenom = query.value(2).toString();
         QString vaccin = query.value(3).toString();
-        QString itemText = CIN + "    " + nom + "     " + prenom + "         " + vaccin;
-        liste_att->addItem(itemText);
 
+        // Create a new QListWidgetItem
+        QListWidgetItem *item = new QListWidgetItem();
+        item->setText(CIN + "    " + nom + "     " + prenom + "         " + vaccin); // Display text
 
+        // Store additional data using setData()
+        item->setData(Qt::UserRole, CIN);          // Store CIN (ID_RDV)
+        item->setData(Qt::UserRole + 1, nom);      // Store Nom
+        item->setData(Qt::UserRole + 2, prenom);  // Store Prenom
+        item->setData(Qt::UserRole + 3, vaccin);  // Store Vaccin
 
+        // Add the item to the list
+        liste_att->addItem(item);
     }
 }
 

@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
         vaccinManager->filterVaccinTable(ui->tabvaccin, cherche_vac->text());
     });
     connect(ui->choix_vac, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onComboBoxIndexChanged);
+    connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
     connect(ui->tabvaccin, &QTableWidget::itemSelectionChanged, this, &MainWindow::onVaccinTableSelectionChanged);
     connect(edit_vac, &QPushButton::clicked, this, &MainWindow::on_edit_vac_2_clicked);
     connect(save_vac_2, &QPushButton::clicked, this, &MainWindow::on_save_2_clicked);
@@ -100,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->supprimerevent_3, &QPushButton::clicked, this, &MainWindow::on_supprime_eq_clicked);
     connect(ui->choix_equi, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onEquipementComboBoxIndexChanged);
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
+    connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
 
 
     QLabel *main = ui->main;
@@ -196,6 +198,8 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
     tabequi->resizeRowsToContents();
+
+
 }
 
 MainWindow::~MainWindow() {
@@ -398,11 +402,9 @@ void MainWindow::on_supprimerevent_clicked() {
     // Vérifier si une ligne est sélectionnée
     QModelIndexList selection = ui->tabevent->selectionModel()->selectedRows();
     if (!selection.isEmpty()) {
-        // Récupérer l'identifiant depuis la première colonne de la ligne sélectionnée
         identifiant = ui->tabevent->model()->data(selection.first()).toInt();
         ok = true; // On a un identifiant valide
     } else {
-        // Demander l'identifiant avec un QInputDialog si aucune ligne n'est sélectionnée
         identifiant = QInputDialog::getInt(this, "Supprimer un événement",
                                            "Entrez l'identifiant de l'événement :",
                                            0, 0, INT_MAX, 1, &ok);
@@ -727,6 +729,12 @@ void MainWindow::on_supprime_eq_clicked() {
 //Equipements::calculateStatistics(model);
 
 //RENDEZ_VOUS
+
+
+
+
+
+
 void MainWindow::on_ajoutrdv_clicked() {
     vaccinTab->setCurrentIndex(8);
     rdvWindow->loadVaccins(ui->vaccin_2,ui->medecin_att,ui->infirmier_att);
@@ -869,4 +877,60 @@ void MainWindow::rdv_recherche(const QString &text){
     }
 
 }
+
+
+void MainWindow::comboIndex_rdv(int index){
+
+
+    QList<QListWidgetItem*> items;
+
+    // Remove all items from the list and store them temporarily
+    while (ui->liste_att->count() > 0) {
+        items.append(ui->liste_att->takeItem(0));
+    }
+
+    // Sort items based on the selected criteria (CIN, Nom, Prénom, Vaccin)
+    std::sort(items.begin(), items.end(), [index](QListWidgetItem *a, QListWidgetItem *b) {
+        int cinA = a->data(Qt::UserRole).toInt();
+        int cinB = b->data(Qt::UserRole).toInt();
+        QString nomA = a->data(Qt::UserRole + 1).toString().toLower();
+        QString nomB = b->data(Qt::UserRole + 1).toString().toLower();
+        QString prenomA = a->data(Qt::UserRole + 2).toString().toLower();
+        QString prenomB = b->data(Qt::UserRole + 2).toString().toLower();
+        QString vaccinA = a->data(Qt::UserRole + 3).toString().toLower();
+        QString vaccinB = b->data(Qt::UserRole + 3).toString().toLower();
+
+        if (index == 0) {  // Sort by CIN, then Nom, then Prénom, then Vaccin
+            if (cinA != cinB) return cinA < cinB;
+            if (nomA != nomB) return nomA < nomB;
+            if (prenomA != prenomB) return prenomA < prenomB;
+            return vaccinA < vaccinB;
+        }
+        else if (index == 1) {  // Sort by Nom, then Prénom, then CIN, then Vaccin
+            if (nomA != nomB) return nomA < nomB;
+            if (prenomA != prenomB) return prenomA < prenomB;
+            if (cinA != cinB) return cinA < cinB;
+            return vaccinA < vaccinB;
+        }
+        else if (index == 2) {  // Sort by Prénom, then Nom, then CIN, then Vaccin
+            if (prenomA != prenomB) return prenomA < prenomB;
+            if (nomA != nomB) return nomA < nomB;
+            if (cinA != cinB) return cinA < cinB;
+            return vaccinA < vaccinB;
+        }
+        else if (index == 3) {  // Sort by Vaccin, then Nom, then Prénom, then CIN
+            if (vaccinA != vaccinB) return vaccinA < vaccinB;
+            if (nomA != nomB) return nomA < nomB;
+            if (prenomA != prenomB) return prenomA < prenomB;
+            return cinA < cinB;
+        }
+        return false;
+    });
+
+    // Reinsert sorted items into the list
+    for (QListWidgetItem *item : items) {
+        ui->liste_att->addItem(item);
+    }
+}
+
 

@@ -5,6 +5,7 @@
 #include <QTabWidget>
 #include <QPushButton>
 #include <QLabel>
+
 #include "vaccin.h"
 #include "evenement.h"
 #include "equipements.h"
@@ -48,6 +49,7 @@ private slots:
     void on_sauvegarderevent_clicked();
     void onVaccinTableSelectionChanged();
     void onComboBoxIndexChanged(int index);
+    void comboIndex_rdv (int index);
     void onRechercheEqReturnPressed();
     void on_edit_equi_clicked();
     void on_modif_save_clicked();
@@ -58,7 +60,8 @@ private slots:
     void on_edit_rdv_clicked();
     void on_save_rdv_2_clicked();
     void on_rdv_pdf_clicked();
-     void rdv_recherche(const QString &text);
+    void rdv_recherche(const QString &text);
+
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
