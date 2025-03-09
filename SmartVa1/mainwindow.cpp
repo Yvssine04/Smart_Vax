@@ -383,15 +383,24 @@ void MainWindow::onVaccinTableSelectionChanged() {
 
 void MainWindow::on_delete_2_clicked() {
     if (selectedRow != -1) {
-        QTableWidgetItem* referenceItem = ui->tabvaccin->item(selectedRow, 0);
-        int reference = referenceItem->text().toInt();
-        vaccinManager->deleteVaccin(reference);
-        vaccinManager->loadVaccinData(ui->tabvaccin);
-        selectedRow = -1;
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Confirmer la suppression", "Êtes-vous sûr de vouloir supprimer cet élément?",
+                                      QMessageBox::Yes | QMessageBox::No);
+
+        if (reply == QMessageBox::Yes) {
+            QTableWidgetItem* referenceItem = ui->tabvaccin->item(selectedRow, 0);
+            int reference = referenceItem->text().toInt();
+            vaccinManager->deleteVaccin(reference);
+            vaccinManager->loadVaccinData(ui->tabvaccin);
+            selectedRow = -1;
+        } else {
+            QMessageBox::information(this, "Opération annulée", "La suppression a été annulée.");
+        }
     } else {
-        QMessageBox::warning(this, "No Selection", "veuillez selectionner un élément du tableau");
+        QMessageBox::warning(this, "Aucune sélection", "Veuillez sélectionner un élément du tableau.");
     }
 }
+
 
 void MainWindow::on_edit_vac_2_clicked() {
     if (selectedRow != -1) {
@@ -555,8 +564,6 @@ void MainWindow::onPdfVaccinButtonClicked() {
         QMessageBox::warning(this, "Sélection requise", "Veuillez sélectionner un vaccin.");
         return;
     }
-
-    // Appeler la fonction d'exportation PDF pour la ligne sélectionnée
     vaccinManager->exporterVaccinPDF(ui->tabvaccin);
 }
 
