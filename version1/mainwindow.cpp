@@ -221,28 +221,6 @@ void MainWindow::onvaccinBclicked() {
     vaccinManager->loadVaccinData(ui->tabvaccin);
 }
 
-void MainWindow::on_save_vac_clicked() {
-    int reference = ui->reference->text().toInt();
-    QString nom = ui->nom_vac->text();
-    QString type = ui->type_vac->text();
-    int age_min = ui->age_vac->text().toInt();
-    QString mode_admin = ui->mode_vac->text();
-    QString dose = ui->dose_vac->text();
-    QDate date_exp = ui->date_vac->date();
-    double prix = ui->prix_vac->text().toDouble();
-    int quantite = ui->quantite_vac->text().toInt();
-
-    vaccinManager->saveVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
-    ui->reference->clear();
-    ui->nom_vac->clear();
-    ui->type_vac->clear();
-    ui->age_vac->clear();
-    ui->mode_vac->clear();
-    ui->dose_vac->clear();
-    ui->date_vac->clear();
-    ui->prix_vac->clear();
-    ui->quantite_vac->clear();
-}
 
 void MainWindow::onajouteventclicked() {
     vaccinTab->setCurrentIndex(3);
@@ -286,6 +264,58 @@ void MainWindow::on_Quit_4_clicked() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::on_save_vac_clicked() {
+    bool isValid = true;
+    int reference = ui->reference->text().toInt(&isValid);
+    if (!isValid || reference <= 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Référence doit être un nombre positif.");
+        return;
+    }
+
+    QString nom = ui->nom_vac->text();
+    QString type = ui->type_vac->text();
+
+    int age_min = ui->age_vac->text().toInt(&isValid);
+    if (!isValid || age_min <= 0|| age_min < 1 || age_min >= 120) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Âge minimum doit être un un nombre entre 1 et 120");
+        return;
+    }
+
+    QString mode_admin = ui->mode_vac->text();
+    QString dose = ui->dose_vac->text();
+
+    QDate date_exp = ui->date_vac->date();
+    QDate currentDate = QDate::currentDate();
+    if (date_exp <= currentDate) {
+        QMessageBox::warning(this, "Date invalide", "La date d'expiration doit être postérieure à la date actuelle.");
+        return;
+    }
+
+    double prix = ui->prix_vac->text().toDouble(&isValid);
+    if (!isValid || prix < 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Prix doit être un positif ou 0.");
+        return;
+    }
+
+    int quantite = ui->quantite_vac->text().toInt(&isValid);
+    if (!isValid || quantite <= 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Quantité doit être un nombre positif.");
+        return;
+    }
+
+    vaccinManager->saveVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
+    ui->reference->clear();
+    ui->nom_vac->clear();
+    ui->type_vac->clear();
+    ui->age_vac->clear();
+    ui->mode_vac->clear();
+    ui->dose_vac->clear();
+    ui->date_vac->clear();
+    ui->prix_vac->clear();
+    ui->quantite_vac->clear();
+}
+
 
 void MainWindow::onDateChanged() {
     QDate selectedDate;
@@ -369,15 +399,44 @@ void MainWindow::on_edit_vac_2_clicked() {
 
 
 void MainWindow::on_save_2_clicked() {
-    int reference = ui->reference_2->text().toInt();
+    bool isValid = true;
+    int reference = ui->reference_2->text().toInt(&isValid);
+    if (!isValid || reference <= 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Référence doit être un nombre positif.");
+        return;
+    }
+
     QString nom = ui->nom_vac_2->text();
     QString type = ui->type_vac_2->text();
-    int age_min = ui->age_vac_2->text().toInt();
+
+    int age_min = ui->age_vac_2->text().toInt(&isValid);
+    if (!isValid || age_min <= 0|| age_min < 1 || age_min >= 120) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Âge minimum doit être un nombre entre 1 et 120");
+        return;
+    }
+
     QString mode_admin = ui->mode_vac_2->text();
     QString dose = ui->dose_vac_2->text();
+
     QDate date_exp = ui->date_vac_2->date();
-    double prix = ui->prix_vac_2->text().toDouble();
-    int quantite = ui->quantite_vac_2->text().toInt();
+    QDate currentDate = QDate::currentDate();
+    if (date_exp <= currentDate) {
+        QMessageBox::warning(this, "Date invalide", "La date d'expiration doit être postérieure à la date actuelle.");
+        return;
+    }
+
+    double prix = ui->prix_vac_2->text().toDouble(&isValid);
+    if (!isValid || prix < 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Prix doit être un nombre positif ou 0.");
+        return;
+    }
+
+    int quantite = ui->quantite_vac_2->text().toInt(&isValid);
+    if (!isValid || quantite <= 0) {
+        QMessageBox::warning(this, "Erreur de saisie", "Le champ Quantité doit être un nombre positif.");
+        return;
+    }
+
     vaccinManager->updateVaccinData(reference, nom, type, age_min, mode_admin, dose, date_exp, prix, quantite);
 
     // Clear the input fields
@@ -402,7 +461,6 @@ void MainWindow::showAllRows() {
         ui->tabvaccin->setRowHidden(row, false);
     }
 }
-
 
 
 void MainWindow::onVaccinHeaderSectionClicked(int logicalIndex) {
@@ -614,8 +672,6 @@ void MainWindow::onRechercheEqReturnPressed() {
         QMessageBox::warning(this, "Non trouvé", "Aucune référence trouvée.");
     }
 }
-
-
 
 void MainWindow::on_ajoutequi_clicked() {
     vaccinTab->setCurrentIndex(5);
