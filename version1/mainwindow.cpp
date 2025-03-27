@@ -55,6 +55,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->choix_vac->addItem("quantite");
     ui->tabequi->setSortingEnabled(true);
 
+
+
+
+
+
+
+
+
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
         "QTabBar::tab { height: 0; width: 0; }"
@@ -102,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->choix_equi, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onEquipementComboBoxIndexChanged);
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
-
+    connect(ui->calendrier_rdv, &QCalendarWidget::clicked, this, &MainWindow::on_calendarWidget_clicked);
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -884,12 +892,10 @@ void MainWindow::comboIndex_rdv(int index){
 
     QList<QListWidgetItem*> items;
 
-    // Remove all items from the list and store them temporarily
     while (ui->liste_att->count() > 0) {
         items.append(ui->liste_att->takeItem(0));
     }
 
-    // Sort items based on the selected criteria (CIN, Nom, Prénom, Vaccin)
     std::sort(items.begin(), items.end(), [index](QListWidgetItem *a, QListWidgetItem *b) {
         int cinA = a->data(Qt::UserRole).toInt();
         int cinB = b->data(Qt::UserRole).toInt();
@@ -900,25 +906,25 @@ void MainWindow::comboIndex_rdv(int index){
         QString vaccinA = a->data(Qt::UserRole + 3).toString().toLower();
         QString vaccinB = b->data(Qt::UserRole + 3).toString().toLower();
 
-        if (index == 0) {  // Sort by CIN, then Nom, then Prénom, then Vaccin
+        if (index == 0) {
             if (cinA != cinB) return cinA < cinB;
             if (nomA != nomB) return nomA < nomB;
             if (prenomA != prenomB) return prenomA < prenomB;
             return vaccinA < vaccinB;
         }
-        else if (index == 1) {  // Sort by Nom, then Prénom, then CIN, then Vaccin
+        else if (index == 1) {
             if (nomA != nomB) return nomA < nomB;
             if (prenomA != prenomB) return prenomA < prenomB;
             if (cinA != cinB) return cinA < cinB;
             return vaccinA < vaccinB;
         }
-        else if (index == 2) {  // Sort by Prénom, then Nom, then CIN, then Vaccin
+        else if (index == 2) {
             if (prenomA != prenomB) return prenomA < prenomB;
             if (nomA != nomB) return nomA < nomB;
             if (cinA != cinB) return cinA < cinB;
             return vaccinA < vaccinB;
         }
-        else if (index == 3) {  // Sort by Vaccin, then Nom, then Prénom, then CIN
+        else if (index == 3) {
             if (vaccinA != vaccinB) return vaccinA < vaccinB;
             if (nomA != nomB) return nomA < nomB;
             if (prenomA != prenomB) return prenomA < prenomB;
@@ -927,10 +933,13 @@ void MainWindow::comboIndex_rdv(int index){
         return false;
     });
 
-    // Reinsert sorted items into the list
+
     for (QListWidgetItem *item : items) {
         ui->liste_att->addItem(item);
     }
+}
+void MainWindow::on_calendarWidget_clicked(const QDate &date) {
+    qDebug() << "Date clicked:" << date;
 }
 
 

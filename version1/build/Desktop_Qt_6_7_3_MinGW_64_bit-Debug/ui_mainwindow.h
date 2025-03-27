@@ -186,7 +186,7 @@ public:
     QPushButton *save_eq;
     QWidget *tab_4;
     QTableView *tableView_22;
-    QCalendarWidget *calendarWidget;
+    QCalendarWidget *calendrier_rdv;
     QLabel *label_34;
     QTableView *tableView_7;
     QLineEdit *lineEdit_29;
@@ -2287,10 +2287,10 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        calendarWidget = new QCalendarWidget(tab_4);
-        calendarWidget->setObjectName("calendarWidget");
-        calendarWidget->setGeometry(QRect(710, 190, 491, 381));
-        calendarWidget->setMinimumSize(QSize(431, 0));
+        calendrier_rdv = new QCalendarWidget(tab_4);
+        calendrier_rdv->setObjectName("calendrier_rdv");
+        calendrier_rdv->setGeometry(QRect(710, 190, 491, 381));
+        calendrier_rdv->setMinimumSize(QSize(431, 0));
         QPalette palette11;
         palette11.setBrush(QPalette::Active, QPalette::WindowText, brush1);
         palette11.setBrush(QPalette::Active, QPalette::Button, brush7);
@@ -2358,23 +2358,23 @@ public:
         palette11.setBrush(QPalette::Disabled, QPalette::PlaceholderText, brush20);
 #endif
         palette11.setBrush(QPalette::Disabled, QPalette::Accent, brush1);
-        calendarWidget->setPalette(palette11);
-        calendarWidget->setAcceptDrops(false);
-        calendarWidget->setAutoFillBackground(false);
-        calendarWidget->setStyleSheet(QString::fromUtf8("background-color: rgb(121, 167, 173);\n"
+        calendrier_rdv->setPalette(palette11);
+        calendrier_rdv->setAcceptDrops(false);
+        calendrier_rdv->setAutoFillBackground(false);
+        calendrier_rdv->setStyleSheet(QString::fromUtf8("background-color: rgb(121, 167, 173);\n"
 "gridline-color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0); \n"
 "alternate-background-color: rgb(31, 109, 119);\n"
 "selection-color: rgb(255, 255, 255);\n"
 "\n"
 ""));
-        calendarWidget->setLocale(QLocale(QLocale::French, QLocale::France));
-        calendarWidget->setFirstDayOfWeek(Qt::DayOfWeek::Monday);
-        calendarWidget->setGridVisible(false);
-        calendarWidget->setSelectionMode(QCalendarWidget::SelectionMode::SingleSelection);
-        calendarWidget->setHorizontalHeaderFormat(QCalendarWidget::HorizontalHeaderFormat::ShortDayNames);
-        calendarWidget->setVerticalHeaderFormat(QCalendarWidget::VerticalHeaderFormat::ISOWeekNumbers);
-        calendarWidget->setDateEditAcceptDelay(1500);
+        calendrier_rdv->setLocale(QLocale(QLocale::French, QLocale::France));
+        calendrier_rdv->setFirstDayOfWeek(Qt::DayOfWeek::Monday);
+        calendrier_rdv->setGridVisible(false);
+        calendrier_rdv->setSelectionMode(QCalendarWidget::SelectionMode::SingleSelection);
+        calendrier_rdv->setHorizontalHeaderFormat(QCalendarWidget::HorizontalHeaderFormat::ShortDayNames);
+        calendrier_rdv->setVerticalHeaderFormat(QCalendarWidget::VerticalHeaderFormat::ISOWeekNumbers);
+        calendrier_rdv->setDateEditAcceptDelay(1500);
         label_34 = new QLabel(tab_4);
         label_34->setObjectName("label_34");
         label_34->setGeometry(QRect(10, 20, 1381, 691));
@@ -2582,7 +2582,7 @@ public:
         label_34->raise();
         tableView_22->raise();
         tableView_7->raise();
-        calendarWidget->raise();
+        calendrier_rdv->raise();
         lineEdit_29->raise();
         lineEdit_30->raise();
         rdv_rech->raise();
@@ -2778,8 +2778,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 28), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 28), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 26), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 26), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3450,8 +3450,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 27), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 27), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 25), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 25), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");

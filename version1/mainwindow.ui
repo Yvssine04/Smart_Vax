@@ -1652,6 +1652,16 @@
        <string>Alertes</string>
       </property>
      </widget>
+     <widget class="QWidget" name="widget_4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>-10</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QLabel" name="main">
      <property name="geometry">
@@ -8306,7 +8316,7 @@ border-radius: 15px;
 </string>
        </property>
       </widget>
-      <widget class="QCalendarWidget" name="calendarWidget">
+      <widget class="QCalendarWidget" name="calendrier_rdv">
        <property name="geometry">
         <rect>
          <x>710</x>
@@ -9499,7 +9509,7 @@ color: rgb(0, 0, 0);
       <zorder>label_34</zorder>
       <zorder>tableView_22</zorder>
       <zorder>tableView_7</zorder>
-      <zorder>calendarWidget</zorder>
+      <zorder>calendrier_rdv</zorder>
       <zorder>lineEdit_29</zorder>
       <zorder>lineEdit_30</zorder>
       <zorder>rdv_rech</zorder>
@@ -10407,7 +10417,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>28</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -10417,7 +10427,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>28</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -12377,7 +12387,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>27</day>
+         <day>25</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -12387,7 +12397,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>27</day>
+         <day>25</day>
         </datetime>
        </property>
        <property name="displayFormat">

@@ -61,7 +61,7 @@ private slots:
     void on_save_rdv_2_clicked();
     void on_rdv_pdf_clicked();
     void rdv_recherche(const QString &text);
-
+    void on_calendarWidget_clicked(const QDate &date);
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;

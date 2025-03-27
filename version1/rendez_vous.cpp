@@ -42,7 +42,7 @@ void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox 
 
     query.prepare("SELECT NOM_E, PRENOM_E FROM EMPLOYEES WHERE SPECIALITE = 'docteur'");
     if (!query.exec()) {
-        qDebug() << "Doctor Query failed:" << query.lastError().text();
+        qDebug() << "Problème avec liste des docteurs:" << query.lastError().text();
         return;
     }
 
@@ -57,7 +57,7 @@ void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox 
 
     query.prepare("SELECT NOM_E, PRENOM_E FROM EMPLOYEES WHERE SPECIALITE = 'infirmier'");
     if (!query.exec()) {
-        qDebug() << "Nurse Query failed:" << query.lastError().text();
+        qDebug() << "Problème avec liste des infirmiers:" << query.lastError().text();
         return;
     }
 
@@ -69,56 +69,175 @@ void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox 
     }
 }
 
+bool rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, const QString &dateVaccination,
+                                  const QString &adresse, const QString &nom, const QString &prenom,
+                                  const QString &dispo, const QString &medecin, const QString &infirmier,
+                                  const QString &salle, double facturation)
+{
+    // Trim all input strings
+    QString trimmedCIN = CIN.trimmed();
+    QString trimmedNom = nom.trimmed();
+    QString trimmedPrenom = prenom.trimmed();
+    QString trimmedAdresse = adresse.trimmed();
+    QString trimmedSalle = salle.trimmed();
+    QString trimmedVaccin = vaccin.trimmed();
+    QString trimmedMedecin = medecin.trimmed();
+    QString trimmedInfirmier = infirmier.trimmed();
+    QString trimmedDateVaccination = dateVaccination.trimmed();
+    QString trimmedDispo = dispo.trimmed();
 
-bool rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, const QString &date_rdvNaiss, const QString &adresse,
-                                  const QString &nom, const QString &prenom, const QString &dispo,
-                                  const QString &medecin, const QString &infirmier, const QString &salle,
-                                  double facturation) {
-    if (!QSqlDatabase::database().isOpen()) {
-        QMessageBox::critical(nullptr, "Database Error", "Database is not connected.");
-
+    // Validate required fields
+    if (trimmedCIN.isEmpty() || trimmedNom.isEmpty() || trimmedPrenom.isEmpty() ||
+        trimmedAdresse.isEmpty() || trimmedSalle.isEmpty() || trimmedVaccin.isEmpty()) {
+        QMessageBox::warning(nullptr, "Erreur", "Tous les champs obligatoires doivent être remplis.", QMessageBox::Ok);
+        return false;
     }
 
-    QString trimmedDispo = dispo.trimmed();
-    QString trimmedDateNaiss = date_rdvNaiss.trimmed();
+    // Validate CIN format (exactly 7 digits)
+    QRegularExpression cinRegex("^\\d{7}$");
+    if (!cinRegex.match(trimmedCIN).hasMatch()) {
+        QMessageBox::warning(nullptr, "Erreur", "Le CIN doit contenir exactement 7 chiffres.", QMessageBox::Ok);
+        return false;
+    }
 
-    qDebug() << "Formatted DateTime:" << trimmedDispo;
-    qDebug() << "Formatted Birth Date:" << trimmedDateNaiss;
+    // Validate names (letters, accents, and hyphens only)
+    QRegularExpression nameRegex("^[A-Za-zÀ-ÖØ-öø-ÿ\\s-]+$");
+    if (!nameRegex.match(trimmedNom).hasMatch()) {
+        QMessageBox::warning(nullptr, "Erreur", "Le nom ne doit contenir que des lettres.", QMessageBox::Ok);
+        return false;
+    }
+    if (!nameRegex.match(trimmedPrenom).hasMatch()) {
+        QMessageBox::warning(nullptr, "Erreur", "Le prénom ne doit contenir que des lettres.", QMessageBox::Ok);
+        return false;
+    }
+
+    // Validate dates
+    QDate today = QDate::currentDate();
+    QDate vaccinDate = QDate::fromString(trimmedDateVaccination, "yyyy-MM-dd");
+    QDateTime dispoDateTime = QDateTime::fromString(trimmedDispo, "yyyy-MM-dd HH:mm:ss");
+
+    if (!vaccinDate.isValid()) {
+        QMessageBox::warning(nullptr, "Erreur", "Format de date de vaccination invalide (utilisez AAAA-MM-JJ).", QMessageBox::Ok);
+        return false;
+    }
+
+    if (vaccinDate > today) {
+        QMessageBox::warning(nullptr, "Erreur", "La date de vaccination ne peut pas être dans le futur.", QMessageBox::Ok);
+        return false;
+    }
+
+    if (!dispoDateTime.isValid()) {
+        QMessageBox::warning(nullptr, "Erreur", "Format de date/heure de rendez-vous invalide.", QMessageBox::Ok);
+        return false;
+    }
+
+    if (dispoDateTime <= QDateTime::currentDateTime()) {
+        QMessageBox::warning(nullptr, "Erreur", "Le rendez-vous doit être programmé dans le futur.", QMessageBox::Ok);
+        return false;
+    }
+
+    // Validate facturation (must be positive)
+    if (facturation < 0) {
+        QMessageBox::warning(nullptr, "Erreur", "La facturation ne peut pas être négative.", QMessageBox::Ok);
+        return false;
+    }
+
+    // Start database transaction
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.transaction()) {
+        QMessageBox::warning(nullptr, "Erreur", "Impossible de démarrer la transaction.", QMessageBox::Ok);
+        return false;
+    }
+
+    // Convert CIN to int (leading zeros will be lost, ensure your database can handle this)
+    bool conversionOk;
+    int CINi = trimmedCIN.toInt(&conversionOk);
+    if (!conversionOk) {
+        db.rollback();
+        QMessageBox::warning(nullptr, "Erreur", "CIN invalide.", QMessageBox::Ok);
+        return false;
+    }
+     int idRdv = 2;
+    // Insert into RENDEZ_VOUS
+
+     QSqlQuery checkPatientQuery;
+     checkPatientQuery.prepare("SELECT 1 FROM PATIENT WHERE CIN_PASSP = :cin");
+     checkPatientQuery.bindValue(":cin", CINi); // CINi is your converted integer CIN
+
+     if (!checkPatientQuery.exec() || !checkPatientQuery.next()) {
+         // Patient doesn't exist - ask if we should create one
+         QMessageBox::StandardButton reply;
+         reply = QMessageBox::question(nullptr, "Il s'agit d'un nouveau patient",
+                                       "Le CIN correspondant n'est pas trouvé. Voulez-vous créer un nouveau patient par la suite?",
+                                       QMessageBox::Yes|QMessageBox::No);
+
+     }
+
+
 
     QSqlQuery query;
-    int CINi = CIN.toInt();
-    if (CIN.length()!=7){
-        QMessageBox::warning(nullptr, "Erreur", "CIN doit avoir 7 chiffres",QMessageBox::Ok);
+    query.prepare("INSERT INTO RENDEZ_VOUS (CIN_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV) "
+                  "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'), :lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv, TO_DATE(:date_rdvNaiss, 'YYYY-MM-DD'))"
+                  "RETURNING ID_RDV INTO :new_id");
+
+
+    query.bindValue(":id_rdv", idRdv);
+    query.bindValue(":cin", CINi);
+    query.bindValue(":dispo", trimmedDispo);
+    query.bindValue(":lieu", trimmedAdresse);
+    query.bindValue(":doc_att", medecin);
+    query.bindValue(":infirmier_att", infirmier);
+    query.bindValue(":salle_att", trimmedSalle);
+    query.bindValue(":facturation", facturation);
+    query.bindValue(":nom_rdv", trimmedNom);
+    query.bindValue(":prenom_rdv", trimmedPrenom);
+    query.bindValue(":vaccin_rdv", trimmedVaccin);
+    query.bindValue(":date_rdvNaiss", trimmedDateVaccination);
+
+    int newRdvId = -1;
+    query.bindValue(":new_id", newRdvId,QSql::Out);
+    if (!query.exec()) {
+        db.rollback();
+        QMessageBox::warning(nullptr, "Erreur",
+                             "Échec de l'enregistrement du rendez-vous:\n" + query.lastError().text(),
+                             QMessageBox::Ok);
         return false;
-    }else{
+    }
+    newRdvId = query.boundValue(":new_id").toInt();
 
-        query.prepare("INSERT INTO RENDEZ_VOUS (ID_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV) "
-                      "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'), :lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv, TO_DATE(:date_rdvNaiss, 'YYYY-MM-DD'))");
+    if (newRdvId <= 0) {
+        db.rollback();
+        QMessageBox::warning(nullptr, "Erreur", "Échec de récupération de l'ID du rendez-vous.", QMessageBox::Ok);
+        return false;
+    }
 
+    qDebug() << "ID_RDV " << newRdvId;
+    // Insert into RESERVER
+    QSqlQuery insertReserverQuery;
+    insertReserverQuery.prepare("INSERT INTO RESERVER (CIN_PASSP,ID_RDV,VACCIN_RSV,DATE_RSV) "
+                                "VALUES (:cin, :id_rdv, :vaccin_rdv,  TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'))");
+    insertReserverQuery.bindValue(":id_rdv", newRdvId);
+    insertReserverQuery.bindValue(":vaccin_rdv", trimmedVaccin);
+    insertReserverQuery.bindValue(":cin", CINi);
+    insertReserverQuery.bindValue(":dispo", trimmedDispo);
 
-        query.bindValue(":cin", CINi);
-        query.bindValue(":dispo", trimmedDispo);
-        query.bindValue(":lieu", adresse);
-        query.bindValue(":doc_att", medecin);
-        query.bindValue(":infirmier_att", infirmier);
-        query.bindValue(":salle_att", salle);
-        query.bindValue(":facturation", facturation);
-        query.bindValue(":nom_rdv", nom);
-        query.bindValue(":prenom_rdv", prenom);
-        query.bindValue(":vaccin_rdv", vaccin);
-        query.bindValue(":date_rdvNaiss", trimmedDateNaiss);
+    if (!insertReserverQuery.exec()) {
+        db.rollback();
+        QMessageBox::warning(nullptr, "Erreur",
+                             "Échec de l'enregistrement de la réservation:\n" + insertReserverQuery.lastError().text(),
+                             QMessageBox::Ok);
+        return false;
+    }
 
+    // Commit transaction if everything succeeded
+    if (!db.commit()) {
+        QMessageBox::warning(nullptr, "Erreur", "Échec de la validation des modifications.", QMessageBox::Ok);
+        return false;
+    }
 
-        if (!query.exec()) {
-            QMessageBox::critical(nullptr, "Error", "j'ai pas pu le faire :(( : " + query.lastError().text());
-            qDebug() << "SQL Error: " << query.lastError().text();
-            qDebug() << "Query: " << query.lastQuery();
-            return false;
-        } else {
-            QMessageBox::information(nullptr, "Success", "Les informations ont été sauvegrdés");
-            return true;
-        }
-    }}
+    QMessageBox::information(nullptr, "Succès", "Le rendez-vous a été enregistré avec succès.");
+    return true;
+}
 void rendez_vous::modifier_rdv(int CINi, const QString &vaccin, const QString &date_rdvNaiss, const QString &adresse,
                                const QString &nom, const QString &prenom, const QString &dispo,
                                const QString &medecin, const QString &infirmier, const QString &salle,
