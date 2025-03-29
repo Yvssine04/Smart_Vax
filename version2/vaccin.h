@@ -8,6 +8,8 @@
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QComboBox>  // Include this header
+#include <QSqlQueryModel>
+
 
 class Vaccin : public QObject
 {
@@ -24,6 +26,8 @@ public:
     void filterVaccinTable(QTableWidget *table, const QString &searchText);
     void sortVaccinTable(QTableWidget *tablevaccin, int column, Qt::SortOrder order = Qt::AscendingOrder);
     void exporterVaccinPDF(QTableWidget *tabvaccin);
+    QSqlQueryModel* fetchVaccineStatistics();
+
 
 private:
     void insertVaccinData(int reference, QString nom, QString type, int age_min, QString mode_admin, QString dose, QDate date_exp, double prix, int quantite);

@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QPdfWriter>
 #include <QTextDocument>
+#include <QSqlQueryModel>
+
 
 Vaccin::Vaccin(QObject *parent) : QObject(parent) {}
 
@@ -235,12 +237,12 @@ void Vaccin::exporterVaccinPDF(QTableWidget *tabvaccin) {
         return;
     }
 
-    QString fileName = QFileDialog::getSaveFileName(nullptr, "Enregistrer le rapport de vaccin", "", "PDF Files (*.pdf)");
+    QString fileName = QFileDialog::getSaveFileName(nullptr, "Détail le rapport de vaccin", "", "PDF Files (*.pdf)");
     if (fileName.isEmpty()) return;
 
     QPdfWriter writer(fileName);
     writer.setPageSize(QPageSize::A4);
-    writer.setTitle("Rapport de Vaccin - SmartVax");
+    writer.setTitle("Détail de Vaccin - SmartVax");
     QTextDocument doc;
 
     QString html = "<!DOCTYPE html>"
@@ -298,4 +300,20 @@ void Vaccin::exporterVaccinPDF(QTableWidget *tabvaccin) {
     doc.setPageSize(QSizeF(QPageSize(QPageSize::A4).rectPixels(96).size()));
     doc.print(&writer);
     QMessageBox::information(nullptr, "Exportation réussie", "Le rapport de vaccin a été enregistré avec succès !");
+}
+QSqlQueryModel* Vaccin::fetchVaccineStatistics() {
+    // Create a new QSqlQueryModel to hold the query results
+    QSqlQueryModel *model = new QSqlQueryModel();
+
+    // Execute the query to get the vaccine names and quantities
+    model->setQuery("SELECT NOM, QUANTITE FROM VACCIN");
+
+    // Check if the query was successful
+    if (model->lastError().isValid()) {
+        qDebug() << "Error executing query:" << model->lastError().text();
+        delete model;
+        return nullptr;
+    }
+
+    return model;
 }

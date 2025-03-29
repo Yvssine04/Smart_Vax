@@ -43,6 +43,7 @@ public:
     QAction *actionGestion_d_acc_s;
     QAction *actionChanger_d_utilisateur;
     QAction *actionQuitter;
+    QAction *actionVaccin;
     QWidget *centralwidget;
     QFrame *frame;
     QWidget *widget_2;
@@ -78,7 +79,6 @@ public:
     QTableView *tableView;
     QTableView *tableView_2;
     QLineEdit *age_vac;
-    QLineEdit *mode_vac;
     QLineEdit *prix_vac;
     QLineEdit *dose_vac;
     QLabel *label_4;
@@ -97,11 +97,12 @@ public:
     QLabel *label_32;
     QLabel *label_33;
     QLineEdit *quantite_vac;
-    QLineEdit *nom_vac;
     QLineEdit *reference;
-    QLineEdit *type_vac;
     QDateEdit *date_vac;
     QLineEdit *container;
+    QComboBox *mode_vac;
+    QComboBox *type_vac;
+    QComboBox *nom_vac;
     QWidget *Tab3;
     QLabel *label_20;
     QLineEdit *lineEdit_14;
@@ -256,8 +257,6 @@ public:
     QCheckBox *checkBox_69;
     QCheckBox *checkBox_70;
     QWidget *tab_5;
-    QLineEdit *mode_vac_2;
-    QLineEdit *nom_vac_2;
     QLabel *label_39;
     QLineEdit *age_vac_2;
     QLabel *label_40;
@@ -273,7 +272,6 @@ public:
     QLabel *label_45;
     QLabel *label_46;
     QLabel *label_47;
-    QLineEdit *type_vac_2;
     QLineEdit *prix_vac_2;
     QLineEdit *reference_2;
     QLineEdit *quantite_vac_2;
@@ -282,6 +280,9 @@ public:
     QPushButton *save_vac_2;
     QTableView *tableView_8;
     QTableView *tableView_9;
+    QComboBox *mode_vac_2;
+    QComboBox *type_vac_2;
+    QComboBox *nom_vac_2;
     QWidget *tab_6;
     QTableView *tableView_35;
     QLabel *label_132;
@@ -369,6 +370,7 @@ public:
     QCheckBox *checkBox_78;
     QCheckBox *checkBox_79;
     QCheckBox *checkBox_80;
+    QWidget *tab_8;
     QWidget *widget;
     QLabel *Medecin;
     QPushButton *pushButton_2;
@@ -387,7 +389,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1546, 1400);
+        MainWindow->resize(1666, 1124);
         QPalette palette;
         QBrush brush(QColor(0, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -467,6 +469,8 @@ public:
         actionChanger_d_utilisateur->setObjectName("actionChanger_d_utilisateur");
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName("actionQuitter");
+        actionVaccin = new QAction(MainWindow);
+        actionVaccin->setObjectName("actionVaccin");
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         frame = new QFrame(centralwidget);
@@ -696,7 +700,7 @@ public:
         main->setGeometry(QRect(130, 0, 1411, 771));
         vaccin = new QTabWidget(frame);
         vaccin->setObjectName("vaccin");
-        vaccin->setGeometry(QRect(140, 0, 3061, 901));
+        vaccin->setGeometry(QRect(130, 0, 1481, 771));
         Tab1 = new QWidget();
         Tab1->setObjectName("Tab1");
         label_11 = new QLabel(Tab1);
@@ -1103,12 +1107,6 @@ public:
         age_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
-        mode_vac = new QLineEdit(Tab2);
-        mode_vac->setObjectName("mode_vac");
-        mode_vac->setGeometry(QRect(590, 350, 321, 41));
-        mode_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         prix_vac = new QLineEdit(Tab2);
         prix_vac->setObjectName("prix_vac");
         prix_vac->setGeometry(QRect(590, 500, 321, 41));
@@ -1227,12 +1225,6 @@ public:
         quantite_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
-        nom_vac = new QLineEdit(Tab2);
-        nom_vac->setObjectName("nom_vac");
-        nom_vac->setGeometry(QRect(590, 200, 321, 41));
-        nom_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         reference = new QLineEdit(Tab2);
         reference->setObjectName("reference");
         reference->setGeometry(QRect(590, 150, 321, 41));
@@ -1240,12 +1232,6 @@ public:
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
         reference->setReadOnly(false);
-        type_vac = new QLineEdit(Tab2);
-        type_vac->setObjectName("type_vac");
-        type_vac->setGeometry(QRect(590, 250, 321, 41));
-        type_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         date_vac = new QDateEdit(Tab2);
         date_vac->setObjectName("date_vac");
         date_vac->setGeometry(QRect(600, 460, 301, 26));
@@ -1258,12 +1244,29 @@ public:
         container->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);"));
+        mode_vac = new QComboBox(Tab2);
+        mode_vac->setObjectName("mode_vac");
+        mode_vac->setGeometry(QRect(590, 350, 321, 41));
+        mode_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        type_vac = new QComboBox(Tab2);
+        type_vac->setObjectName("type_vac");
+        type_vac->setGeometry(QRect(590, 250, 321, 41));
+        type_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        nom_vac = new QComboBox(Tab2);
+        nom_vac->setObjectName("nom_vac");
+        nom_vac->setGeometry(QRect(590, 200, 321, 41));
+        nom_vac->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
         vaccin->addTab(Tab2, QString());
         label_19->raise();
         tableView->raise();
         tableView_2->raise();
         age_vac->raise();
-        mode_vac->raise();
         prix_vac->raise();
         dose_vac->raise();
         label_4->raise();
@@ -1281,11 +1284,12 @@ public:
         label_32->raise();
         label_33->raise();
         quantite_vac->raise();
-        nom_vac->raise();
         reference->raise();
-        type_vac->raise();
         container->raise();
         date_vac->raise();
+        mode_vac->raise();
+        type_vac->raise();
+        nom_vac->raise();
         Tab3 = new QWidget();
         Tab3->setObjectName("Tab3");
         label_20 = new QLabel(Tab3);
@@ -2843,8 +2847,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 27), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 27), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 18), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 18), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3033,18 +3037,6 @@ public:
         checkBox_66->raise();
         tab_5 = new QWidget();
         tab_5->setObjectName("tab_5");
-        mode_vac_2 = new QLineEdit(tab_5);
-        mode_vac_2->setObjectName("mode_vac_2");
-        mode_vac_2->setGeometry(QRect(590, 350, 321, 41));
-        mode_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
-        nom_vac_2 = new QLineEdit(tab_5);
-        nom_vac_2->setObjectName("nom_vac_2");
-        nom_vac_2->setGeometry(QRect(590, 200, 321, 41));
-        nom_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         label_39 = new QLabel(tab_5);
         label_39->setObjectName("label_39");
         label_39->setGeometry(QRect(240, 460, 251, 31));
@@ -3123,12 +3115,6 @@ public:
         label_47->setObjectName("label_47");
         label_47->setGeometry(QRect(240, 240, 231, 41));
         label_47->setFont(font3);
-        type_vac_2 = new QLineEdit(tab_5);
-        type_vac_2->setObjectName("type_vac_2");
-        type_vac_2->setGeometry(QRect(590, 250, 321, 41));
-        type_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
-"border-radius: 15px;\n"
-"background-color: rgb(255, 255, 255);"));
         prix_vac_2 = new QLineEdit(tab_5);
         prix_vac_2->setObjectName("prix_vac_2");
         prix_vac_2->setGeometry(QRect(590, 500, 321, 41));
@@ -3179,6 +3165,24 @@ public:
         tableView_9->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;"));
+        mode_vac_2 = new QComboBox(tab_5);
+        mode_vac_2->setObjectName("mode_vac_2");
+        mode_vac_2->setGeometry(QRect(588, 350, 321, 41));
+        mode_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        type_vac_2 = new QComboBox(tab_5);
+        type_vac_2->setObjectName("type_vac_2");
+        type_vac_2->setGeometry(QRect(590, 250, 321, 41));
+        type_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
+        nom_vac_2 = new QComboBox(tab_5);
+        nom_vac_2->setObjectName("nom_vac_2");
+        nom_vac_2->setGeometry(QRect(590, 200, 321, 41));
+        nom_vac_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
+"border-radius: 15px;\n"
+"background-color: rgb(255, 255, 255);"));
         vaccin->addTab(tab_5, QString());
         tableView_8->raise();
         tableView_9->raise();
@@ -3193,10 +3197,7 @@ public:
         label_41->raise();
         label_44->raise();
         reference_2->raise();
-        nom_vac_2->raise();
-        type_vac_2->raise();
         age_vac_2->raise();
-        mode_vac_2->raise();
         dose_vac_2->raise();
         container_2->raise();
         date_vac_2->raise();
@@ -3206,6 +3207,9 @@ public:
         save_vac_2->raise();
         Quit_5->raise();
         label_46->raise();
+        mode_vac_2->raise();
+        type_vac_2->raise();
+        nom_vac_2->raise();
         tab_6 = new QWidget();
         tab_6->setObjectName("tab_6");
         tableView_35 = new QTableView(tab_6);
@@ -3515,8 +3519,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 26), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 26), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 17), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 17), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -3826,6 +3830,9 @@ public:
         checkBox_75->raise();
         checkBox_72->raise();
         checkBox_71->raise();
+        tab_8 = new QWidget();
+        tab_8->setObjectName("tab_8");
+        vaccin->addTab(tab_8, QString());
         main->raise();
         widget_2->raise();
         widget_3->raise();
@@ -3973,7 +3980,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 22));
+        menubar->setGeometry(QRect(0, 0, 1666, 22));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -3988,6 +3995,8 @@ public:
         menuSessio->addAction(actionGestion_d_acc_s);
         menuSessio->addAction(actionChanger_d_utilisateur);
         menuSessio->addAction(actionQuitter);
+        menuStatistique->addSeparator();
+        menuStatistique->addAction(actionVaccin);
 
         retranslateUi(MainWindow);
 
@@ -4003,6 +4012,7 @@ public:
         actionGestion_d_acc_s->setText(QCoreApplication::translate("MainWindow", "Gestion d'acc\303\251s", nullptr));
         actionChanger_d_utilisateur->setText(QCoreApplication::translate("MainWindow", "Changer d'utilisateur", nullptr));
         actionQuitter->setText(QCoreApplication::translate("MainWindow", "Quitter", nullptr));
+        actionVaccin->setText(QCoreApplication::translate("MainWindow", "Vaccin", nullptr));
         pushButton_4->setText(QString());
         rdv->setText(QString());
         label_6->setText(QCoreApplication::translate("MainWindow", "Rendez-vous", nullptr));
@@ -4248,6 +4258,7 @@ public:
         checkBox_79->setText(QCoreApplication::translate("MainWindow", "Mardi", nullptr));
         checkBox_80->setText(QCoreApplication::translate("MainWindow", "L'apr\303\250s-midi", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_34), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        vaccin->setTabText(vaccin->indexOf(tab_8), QCoreApplication::translate("MainWindow", "Page", nullptr));
         Medecin->setText(QCoreApplication::translate("MainWindow", "M\303\251decins", nullptr));
         pushButton_2->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "Vaccins", nullptr));

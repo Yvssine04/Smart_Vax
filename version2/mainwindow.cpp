@@ -11,6 +11,16 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QHeaderView>
+#include <QtCharts/QBarSet>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QChartView>
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QValueAxis>
+#include <QtCharts/QChart>
+#include <QtCharts>
+#include <QPainter>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 Connection::Connection() {}
 
@@ -162,6 +172,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->choix_equi, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onEquipementComboBoxIndexChanged);
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
+    connect(ui->actionVaccin, &QAction::triggered, this, &MainWindow::onActionVaccinTriggered);
+
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -314,6 +326,78 @@ void MainWindow::on_Quit_4_clicked() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
+void MainWindow::onActionVaccinTriggered() {
+    vaccinTab->setCurrentIndex(13);
+
+    QSqlQueryModel* model = vaccinManager->fetchVaccineStatistics();
+    if (!model) return;
+
+    QPieSeries *series = new QPieSeries();
+    int totalQuantite = 0;
+
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; ++i) {
+        totalQuantite += model->data(model->index(i, 1)).toInt();
+    }
+
+    QList<QColor> colors = {
+        QColor(0, 120, 150), QColor(0, 160, 180), QColor(0, 190, 200),
+        QColor(0, 220, 230), QColor(50, 130, 150), QColor(30, 160, 180),
+        QColor(20, 190, 210), QColor(0, 100, 120)
+    };
+
+    for (int i = 0; i < rows; ++i) {
+        QString nom = model->data(model->index(i, 0)).toString();
+        int quantite = model->data(model->index(i, 1)).toInt();
+
+        double percentage = (double(quantite) / totalQuantite) * 100;
+        QPieSlice *slice = series->append(nom, quantite);
+        slice->setLabel(QString("%1: %2% (%3 unités)").arg(nom).arg(percentage, 0, 'f', 1).arg(quantite));
+        slice->setLabelVisible(true);
+        slice->setBrush(colors[i % colors.size()]);
+
+        if (quantite == model->data(model->index(0, 1)).toInt()) {
+            slice->setExploded(true);
+            slice->setPen(QPen(Qt::black, 2));
+        }
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Répartition des Vaccins (en fonction des quantités)");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    chart->legend()->setAlignment(Qt::AlignRight);
+
+    // Modifier la couleur de fond pour correspondre aux couleurs du tableau
+    chart->setBackgroundBrush(QBrush(QColor(240, 230, 220))); // Couleur douce et neutre
+    chart->setTitleBrush(QBrush(Qt::black));
+    chart->legend()->setLabelBrush(QBrush(Qt::black));
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->setMinimumSize(1450, 750);
+    chartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // Modifier la couleur du cadre pour qu'elle corresponde à l'onglet
+    chartView->setStyleSheet("background: rgb(240, 230, 220); border: 2px solid rgb(50, 130, 150);");
+
+    QWidget *currentTab = vaccinTab->widget(13);
+    QLayout *oldLayout = currentTab->layout();
+    if (oldLayout) {
+        QLayoutItem *item;
+        while ((item = oldLayout->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+        delete oldLayout;
+    }
+
+    QHBoxLayout *mainLayout = new QHBoxLayout(currentTab);
+    currentTab->setLayout(mainLayout);
+
+    mainLayout->addWidget(chartView, 1, Qt::AlignCenter);
+}
+
 void MainWindow::onVaccineNameChanged()
 {
     QString vaccine = ui->nom_vac->currentText();

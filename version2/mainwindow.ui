@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1546</width>
-    <height>1400</height>
+    <width>1666</width>
+    <height>1124</height>
    </rect>
   </property>
   <property name="palette">
@@ -1669,14 +1669,14 @@
     <widget class="QTabWidget" name="vaccin">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>130</x>
        <y>0</y>
-       <width>3061</width>
-       <height>901</height>
+       <width>1481</width>
+       <height>771</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -10875,7 +10875,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>22</day>
+         <day>18</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -10885,7 +10885,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>22</day>
+         <day>18</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -12845,7 +12845,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>21</day>
+         <day>17</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -12855,7 +12855,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>21</day>
+         <day>17</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -14890,7 +14890,7 @@ border-radius: 15px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1546</width>
+     <width>1666</width>
      <height>22</height>
     </rect>
    </property>

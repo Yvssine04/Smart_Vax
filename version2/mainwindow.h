@@ -7,6 +7,13 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QMap>
+#include <QSqlQueryModel>
+#include <QtCharts/QChartView>
+#include <QtCharts/QBarSet>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QChart>
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QValueAxis>
 
 #include "vaccin.h"
 #include "evenement.h"
@@ -72,6 +79,8 @@ private slots:
     void onVaccineName2Changed();
     void sortEquipementTable(QTableWidget *tableEqui, int column);
     void setVaccineModeBasedOnName(const QString &vaccineName, QComboBox *modeCombo);
+    void onActionVaccinTriggered();
+
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
