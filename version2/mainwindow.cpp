@@ -421,7 +421,7 @@ void MainWindow::onVaccineName2Changed()
         return;
     }
     setVaccineTypeBasedOnName(vaccine, ui->type_vac_2);
-    setVaccineTypeBasedOnName(vaccine, ui->mode_vac_2);
+    setVaccineModeBasedOnName(vaccine, ui->mode_vac_2);;
 }
 
 
@@ -467,7 +467,7 @@ void MainWindow::setVaccineModeBasedOnName(const QString &vaccineName, QComboBox
         return;
     }
 
-    QString mode = modeMap.value(vaccineName, "Injection intramusculaire"); // Default mode
+    QString mode = modeMap.value(vaccineName, "Injection intramusculaire");
     int modeIndex = modeCombo->findText(mode);
     if (modeIndex != -1) {
         modeCombo->setCurrentIndex(modeIndex);
