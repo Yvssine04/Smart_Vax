@@ -1,0 +1,14 @@
+release/customdelegate.o
+release/equipements.o
+release/evenement.o
+release/main.o
+release/mainwindow.o
+release/rendez_vous.o
+release/vaccin.o
+release/qrc_image.o
+release/qrc_sounds.o
+release/moc_customdelegate.o
+release/moc_evenement.o
+release/moc_mainwindow.o
+release/moc_rendez_vous.o
+release/moc_vaccin.o
