@@ -21,6 +21,10 @@
 #include <QPainter>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QStandardItemModel>
+#include "chatbot.h"
+
+
 
 Connection::Connection() {}
 
@@ -42,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , vaccinManager(new Vaccin(this))
     , rdvWindow(new rendez_vous(this))
+    , chatbot(new ChatBot(this))
+
 {
     ui->setupUi(this);
     vaccinTab = ui->vaccin;
@@ -123,7 +129,6 @@ MainWindow::MainWindow(QWidget *parent)
         "QTabBar::tab { height: 0; width: 0; }"
         "QTabBar { height: 0; }"
         );
-
     // Connect signals to slots
     connect(ui->nom_vac, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onVaccineNameChanged);
@@ -173,6 +178,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
     connect(ui->actionVaccin, &QAction::triggered, this, &MainWindow::onActionVaccinTriggered);
+    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
+    connect(chatbot, &ChatBot::responseReceived, this, [this](const QString &response) {
+        ui->chatbot_display->append("ChatBot: " + response);
+    });
 
 
     QLabel *main = ui->main;
@@ -268,6 +277,30 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
     tabequi->resizeRowsToContents();
+    ui->chatbot_display->setStyleSheet(R"(
+    QListView {
+        background-color: #f8f9fa;
+        border: none;
+        font-size: 14px;
+    }
+    QListView::item {
+        padding: 12px;
+        border-radius: 10px;
+        margin: 5px;
+    }
+    QListView::item:selected {
+        background-color: transparent;
+    }
+)");
+    ui->chatbot_line->setStyleSheet(R"(
+    QLineEdit {
+        border: 2px solid #0078D7;
+        border-radius: 8px;
+        padding: 8px;
+        font-size: 14px;
+    }
+)");
+
 }
 
 MainWindow::~MainWindow() {
@@ -325,7 +358,27 @@ void MainWindow::on_Quit_4_clicked() {
     vaccinTab->setCurrentIndex(7);
 }
 
+void MainWindow::on_chatbot_page_clicked()
+{
+    vaccinTab->setCurrentIndex(14);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
+void MainWindow::sendMessageToChatbot() {
+    QString userMessage = ui->chatbot_line->text();
+    if (!userMessage.isEmpty()) {
+        // Display user message in chatbot_display
+        ui->chatbot_display->append("<b style='color:blue'>User</b>: " + userMessage);
+
+        // Send message to chatbot
+        chatbot->sendMessageToChatbot(userMessage);
+
+        // Clear the input field
+        ui->chatbot_line->clear();
+    }
+}
+
+
 void MainWindow::onActionVaccinTriggered() {
     vaccinTab->setCurrentIndex(13);
 
@@ -450,17 +503,17 @@ void MainWindow::setVaccineTypeBasedOnName(const QString &vaccineName, QComboBox
 void MainWindow::setVaccineModeBasedOnName(const QString &vaccineName, QComboBox *modeCombo)
 {
     static const QMap<QString, QString> modeMap = {
-        {"Pfizer-BioNTech", "Injection intramusculaire"},
-        {"Moderna", "Injection intramusculaire"},
-        {"AstraZeneca", "Injection intramusculaire"},
-        {"Johnson & Johnson", "Injection intramusculaire"},
-        {"Sinopharm", "Injection intramusculaire"},
-        {"Sputnik V", "Injection intramusculaire"},
-        {"Novavax", "Injection intramusculaire"},
-        {"Sinovac", "Injection intramusculaire"},
-        {"Comirnaty", "Injection intramusculaire"},
-        {"Spikevax", "Injection intramusculaire"},
-    };
+                                                   {"Pfizer-BioNTech", "Injection intramusculaire"},
+                                                   {"Moderna", "Injection intramusculaire"},
+                                                   {"AstraZeneca", "Injection intramusculaire"},
+                                                   {"Johnson & Johnson", "Injection intramusculaire"},
+                                                   {"Sinopharm", "Injection intramusculaire"},
+                                                   {"Sputnik V", "Injection intramusculaire"},
+                                                   {"Novavax", "Injection intramusculaire"},
+                                                   {"Sinovac", "Injection intramusculaire"},
+                                                   {"Comirnaty", "Injection intramusculaire"},
+                                                   {"Spikevax", "Injection intramusculaire"},
+                                                   };
 
     if (vaccineName == "nouveau vaccin") {
         modeCombo->setCurrentIndex(0);

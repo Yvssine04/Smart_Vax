@@ -3,7 +3,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
-
+#include "qpainter.h"
 rendez_vous::rendez_vous(QObject *parent)
     : QObject(parent) {
 
@@ -386,6 +386,30 @@ void rendez_vous::generateCertificate(int id_rdv)
     doc.print(&printer);
 
     QMessageBox::information(nullptr, "Succès", "Le certificat de vaccination a été généré avec succès !");
+}
+CustomCalendar::CustomCalendar(QWidget *parent) : QCalendarWidget(parent) {}
+
+void CustomCalendar::addEvent(QDate date, QString text) {
+    if (date.isValid()) {
+
+        for (const SpecialDate &sd : specialDates) {
+            if (sd.date == date) return;
+        }
+        specialDates.append({date, text});
+        updateCell(date);
+    }
+}
+
+void CustomCalendar::paintCell(QPainter *painter, const QRect &rect, const QDate &date) const {
+    QCalendarWidget::paintCell(painter, rect, date);
+
+    for (const SpecialDate &sd : specialDates) {
+        if (sd.date == date) {
+            painter->setPen(Qt::red);
+            painter->drawText(rect, Qt::AlignBottom | Qt::AlignHCenter, sd.text);
+            break;
+        }
+    }
 }
 
 

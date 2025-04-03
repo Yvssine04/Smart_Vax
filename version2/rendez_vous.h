@@ -1,6 +1,7 @@
 #ifndef RENDEZ_VOUS_H
 #define RENDEZ_VOUS_H
 
+#include "qcalendarwidget.h"
 #include "qlistwidget.h"
 #include <QObject>
 #include <QSqlQuery>
@@ -39,4 +40,24 @@ private:
     bool rdv_existe(int ID_RDV);
 
 };
+struct SpecialDate {
+    QDate date;
+    QString text;
+};
+
+class CustomCalendar : public QCalendarWidget {
+    Q_OBJECT
+
+private:
+    QVector<SpecialDate> specialDates;
+
+public:
+    explicit CustomCalendar(QWidget *parent = nullptr);
+
+    void addEvent(QDate date, QString text);
+
+protected:
+    void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const ;
+};
+
 #endif

@@ -7,6 +7,7 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("DEEPSEEK_API_KEY", "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");
     QApplication a(argc, argv);
     Connection c;
     // Configuration de la traduction (si nécessaire)

@@ -15,10 +15,13 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
 
+#include "qstandarditemmodel.h"
 #include "vaccin.h"
 #include "evenement.h"
 #include "equipements.h"
 #include "rendez_vous.h"
+#include "chatbot.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -80,6 +83,9 @@ private slots:
     void sortEquipementTable(QTableWidget *tableEqui, int column);
     void setVaccineModeBasedOnName(const QString &vaccineName, QComboBox *modeCombo);
     void onActionVaccinTriggered();
+    void on_chatbot_page_clicked();
+    void sendMessageToChatbot();
+
 
 private:
     Ui::MainWindow *ui;
@@ -108,6 +114,7 @@ private:
     QPushButton *tri_vac;
     QPushButton *pdfvaccin;
     int selectedRow = -1;
+    ChatBot *chatbot;
 
     void setVaccineTypeBasedOnName(const QString &vaccineName, QComboBox *typeCombo);
     bool checkDatabaseConnection();
