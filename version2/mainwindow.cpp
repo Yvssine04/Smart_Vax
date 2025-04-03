@@ -178,11 +178,22 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
     connect(ui->actionVaccin, &QAction::triggered, this, &MainWindow::onActionVaccinTriggered);
-    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
     connect(chatbot, &ChatBot::responseReceived, this, [this](const QString &response) {
-        ui->chatbot_display->append("ChatBot: " + response);
+        ui->chatbot_display->append("<b style='color:green'>ChatBot</b>: " + response);
     });
 
+    connect(chatbot, &ChatBot::errorOccurred, this, [this](const QString &errorMessage) {
+        ui->chatbot_display->append("<b style='color:red'>Error</b>: " + errorMessage);
+    });
+
+    // Connect the send button to the sendMessageToChatbot slot
+    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
+
+    // Connect the returnPressed signal to sendMessageToChatbot slot
+    connect(ui->chatbot_line, &QLineEdit::returnPressed, this, &MainWindow::sendMessageToChatbot);
+
+    // Connect the returnPressed signal of chatbot_line_2 to the custom slot
+    connect(ui->chatbot_line_2, &QLineEdit::returnPressed, this, &MainWindow::handleChatbotLine2ReturnPressed);
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -300,7 +311,22 @@ MainWindow::MainWindow(QWidget *parent)
         font-size: 14px;
     }
 )");
-
+    ui->send_button->setStyleSheet(R"(
+    QPushButton {
+        background-color: #0078D7;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #005f9e;
+    }
+    QPushButton:pressed {
+        background-color: #004c80;
+    }
+)");
 }
 
 MainWindow::~MainWindow() {
@@ -364,6 +390,23 @@ void MainWindow::on_chatbot_page_clicked()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
+void MainWindow::handleChatbotLine2ReturnPressed() {
+    // Get the text from chatbot_line_2
+    QString text = ui->chatbot_line_2->text();
+
+    // Change the current index to 14
+    ui->vaccin->setCurrentIndex(14);
+
+    // Transfer the text to chatbot_line
+    ui->chatbot_line->setText(text);
+
+    // Optionally, clear chatbot_line_2
+    ui->chatbot_line_2->clear();
+
+    // Send the message to the chatbot
+    sendMessageToChatbot();
+}
+
 void MainWindow::sendMessageToChatbot() {
     QString userMessage = ui->chatbot_line->text();
     if (!userMessage.isEmpty()) {

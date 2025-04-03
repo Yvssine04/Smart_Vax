@@ -85,6 +85,7 @@ private slots:
     void onActionVaccinTriggered();
     void on_chatbot_page_clicked();
     void sendMessageToChatbot();
+    void handleChatbotLine2ReturnPressed();
 
 
 private:
