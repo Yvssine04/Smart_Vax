@@ -4,27 +4,35 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDebug>
+#include <QRegularExpression>
+#include <QTimer>
 
-class NewsFetcher : public QObject {
+class NewsFetcher : public QObject
+{
     Q_OBJECT
-
 public:
-    NewsFetcher(QObject *parent = nullptr);
-
-private slots:
-    void fetchNews();
-    void onNewsFetched(QNetworkReply *reply);
+    explicit NewsFetcher(QObject *parent = nullptr);
 
 signals:
-    void newSicknessDetected(const QString &sicknessName, const QString &date);
+    void newSicknessDetected(const QString &sicknessName,
+                             const QString &date,
+                             const QString &location,
+                             const QString &vaccineInfo,
+                             const QString &detail,
+                             const QString &source);
+
+public slots:
+    void fetchNews();
+
+private slots:
+    void onNewsFetched(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *manager;
+    QString extractLocationFromContent(const QString &content);
 };
 
 #endif // NEWSFETCHER_H

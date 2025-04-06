@@ -1,7 +1,8 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include "qpieseries.h"
 #include "qpieslice.h"
-#include "ui_mainwindow.h"
+
 #include <QPixmap>
 #include <QGraphicsOpacityEffect>
 #include "connection.h"
@@ -26,6 +27,10 @@
 #include <QToolTip>
 #include <vector>
 #include <iostream>
+#include "chatbot.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QStandardItemModel>
 
 
 Connection::Connection() {}
@@ -48,7 +53,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , vaccinManager(new Vaccin(this))
     , rdvWindow (new rendez_vous(this))
+    , chatbot(new ChatBot(this))
     , notificationWidget (new NotificationWidget(this))
+
 {
 
 
@@ -231,6 +238,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->recherche_eq, &QLineEdit::returnPressed, this, &MainWindow::onRechercheEqReturnPressed);
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
     connect(ui->calendrier_rdv, &QCalendarWidget::clicked, this, &MainWindow::on_calendarWidget_clicked);
+    // Connect the send button to the sendMessageToChatbot slot
+    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
+
+    // Connect the returnPressed signal to sendMessageToChatbot slot
+    connect(ui->chatbot_line, &QLineEdit::returnPressed, this, &MainWindow::sendMessageToChatbot);
+
+    // Connect the returnPressed signal of chatbot_line_2 to the custom slot
+    connect(ui->chatbot_line_2, &QLineEdit::returnPressed, this, &MainWindow::handleChatbotLine2ReturnPressed);
+
+    // Connect the responseReceived signal from the ChatBot class to a lambda function
+    connect(chatbot, &ChatBot::responseReceived, this, [this](const QString &response) {
+        ui->chatbot_display->append("<b style='color:green'>ChatBot</b>: " + response);
+    });
+
+    // Connect the errorOccurred signal from the ChatBot class to a lambda function
+    connect(chatbot, &ChatBot::errorOccurred, this, [this](const QString &errorMessage) {
+        ui->chatbot_display->append("<b style='color:red'>Error</b>: " + errorMessage);
+    });
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -326,7 +351,45 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
     tabequi->resizeRowsToContents();
-
+    ui->chatbot_display->setStyleSheet(R"(
+    QListView {
+        background-color: #f8f9fa;
+        border: none;
+        font-size: 14px;
+    }
+    QListView::item {
+        padding: 12px;
+        border-radius: 10px;
+        margin: 5px;
+    }
+    QListView::item:selected {
+        background-color: transparent;
+    }
+)");
+    ui->chatbot_line->setStyleSheet(R"(
+    QLineEdit {
+        border: 2px solid #0078D7;
+        border-radius: 8px;
+        padding: 8px;
+        font-size: 14px;
+    }
+)");
+    ui->send_button->setStyleSheet(R"(
+    QPushButton {
+        background-color: #0078D7;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    QPushButton:hover {
+        background-color: #005f9e;
+    }
+    QPushButton:pressed {
+        background-color: #004c80;
+    }
+)");
 
 }
 
@@ -378,7 +441,30 @@ void MainWindow::on_Quit_clicked() {
 void MainWindow::on_Quit_4_clicked() {
     vaccinTab->setCurrentIndex(7);
 }
+void MainWindow::on_chatbot_page_clicked()
+{
+    vaccinTab->setCurrentIndex(15);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MainWindow::sendMessageToChatbot()
+{
+    QString userMessage = ui->chatbot_line->text();
+    if (!userMessage.isEmpty()) {
+        ui->chatbot_display->append("<b style='color:blue'>User</b>: " + userMessage);
+        chatbot->sendMessageToChatbot(userMessage);
+        ui->chatbot_line->clear();
+    }
+}
+
+void MainWindow::handleChatbotLine2ReturnPressed()
+{
+    QString text = ui->chatbot_line_2->text();
+    ui->vaccin->setCurrentIndex(15); // Switch to chatbot tab
+    ui->chatbot_line->setText(text);
+    ui->chatbot_line_2->clear();
+    sendMessageToChatbot();
+}
 void MainWindow::showNotifications1() {
     if (centralWidget()->isVisible()) {
         centralWidget()->hide();
@@ -389,32 +475,91 @@ void MainWindow::showNotifications1() {
     }
 }
 
-void MainWindow::handleNewSicknessDetected(const QString &sicknessName, const QString &date) {
+void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
+                                           const QString &date,
+                                           const QString &location,
+                                           const QString &vaccineInfo,
+                                           const QString &detail,
+                                           const QString &source) {
+    // Play sound
     QSoundEffect *soundEffect = new QSoundEffect(this);
     soundEffect->setSource(QUrl::fromLocalFile("C:/Users/MSI/Downloads/ding-101492.wav"));
     if (soundEffect->status() == QSoundEffect::Ready) {
         soundEffect->play();
-    } else {
-        qDebug() << "Erreur : Le son n'est pas prêt. Statut :" << soundEffect->status();
     }
 
+    // Show notification
     ui->bellN->show();
     notificationWidget->setStyleSheet(
         "background: rgb(70, 148, 156);"
         "color: white;"
-        "text-align: left;"
         "border-radius: 8px;"
         "padding: 10px;"
-        "QLabel {"
-        "   min-width: 200px;"
-        "   max-width: 250px;"
-        "   word-wrap: break-word;"
-        "}");
-    notificationWidget->addNotification(QString("Nouvelle maladie détectée : %1\nDate : %2").arg(sicknessName, date));
+        "QLabel { min-width: 200px; max-width: 250px; word-wrap: break-word; }");
+
+    QString notificationMessage = QString("Nouvelle maladie détectée : %1\n"
+                                          "Date : %2\n"
+                                          "Lieu : %3\n"
+                                          "Vaccin : %4\n"
+                                          "Source : %5")
+                                      .arg(sicknessName, date, location, vaccineInfo, source);
+
+    notificationWidget->addNotification(notificationMessage);
     notificationWidget->show();
     QTimer::singleShot(5000, notificationWidget, &QWidget::hide);
+
+    static int uniqueNumero = 1;
+    saveNotificationToDatabase(uniqueNumero++,
+                               detail,
+                               vaccineInfo,
+                               QDate::fromString(date, "yyyy-MM-dd"),
+                               source,
+                               sicknessName,
+                               location);
 }
 
+void MainWindow::saveNotificationToDatabase(int numero,
+                                            const QString &detail,
+                                            const QString &status,
+                                            const QDate &date,
+                                            const QString &source,
+                                            const QString &maladie,
+                                            const QString &lieu) {
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "Database not open";
+        return;
+    }
+
+    // Check for existing notification
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT COUNT(*) FROM NOTIFICATIONS WHERE DETAIL_NOTIF = :detail AND DATE_NOTIF = TO_DATE(:date, 'YYYY-MM-DD')");
+    checkQuery.bindValue(":detail", detail);
+    checkQuery.bindValue(":date", date.toString("yyyy-MM-dd"));
+
+    if (!checkQuery.exec() || (checkQuery.next() && checkQuery.value(0).toInt() > 0)) {
+        qDebug() << "Notification exists or error:" << checkQuery.lastError().text();
+        return;
+    }
+
+    // Insert new notification
+    QSqlQuery query;
+    query.prepare("INSERT INTO NOTIFICATIONS (NUMERO, DETAIL_NOTIF, STATUS, DATE_NOTIF, SOURCE, MALADIE, LIEU) "
+                  "VALUES (:numero, :detail, :status, TO_DATE(:date, 'YYYY-MM-DD'), :source, :maladie, :lieu)");
+
+    query.bindValue(":numero", numero);
+    query.bindValue(":detail", detail);
+    query.bindValue(":status", status);
+    query.bindValue(":date", date.toString("yyyy-MM-dd"));
+    query.bindValue(":source", source);
+    query.bindValue(":maladie", maladie);
+    query.bindValue(":lieu", lieu);
+
+    if (!query.exec()) {
+        qDebug() << "Error inserting notification:" << query.lastError().text();
+        qDebug() << "Query:" << query.lastQuery();
+    }
+}
 void MainWindow::handleNotificationClicked1(const QString &message) {
     QMessageBox::information(this, "Notification", message);
 }

@@ -23,6 +23,7 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QValueAxis>
 #include "NewsFetcher.h"  // Include the NewsFetcher header
+#include "chatbot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -90,7 +91,12 @@ private slots:
     void setVaccineModeBasedOnName(const QString &vaccineName, QComboBox *modeCombo);
     void onActionVaccinTriggered();
 
-    void handleNewSicknessDetected(const QString &title, const QString &date);  // Slot to handle new sickness notifications
+    void handleNewSicknessDetected(const QString &sicknessName,
+                                   const QString &date,
+                                   const QString &location,
+                                   const QString &vaccineInfo,
+                                   const QString &detail,
+                                   const QString &source);
 
 
     void showNotifications1();
@@ -99,7 +105,9 @@ private slots:
     void handleNotificationClicked1(const QString &message);
 
     void on_actiontaux_des_rendez_vous_triggered();
-
+    void on_chatbot_page_clicked();
+    void sendMessageToChatbot();
+    void handleChatbotLine2ReturnPressed();
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
@@ -131,7 +139,14 @@ private:
     int selectedRow = -1;
     QLineEdit *cherche_vac;
     QPushButton *pdfvaccin;
-
+    ChatBot *chatbot;
+    void saveNotificationToDatabase(int numero,
+                                    const QString &detail,
+                                    const QString &status,
+                                    const QDate &date,
+                                    const QString &source,
+                                    const QString &maladie,
+                                    const QString &lieu);
     void setVaccineTypeBasedOnName(const QString &vaccineName, QComboBox *typeCombo);
     bool checkDatabaseConnection();
     void loadEquipementsData();
