@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+    this->showFullScreen();
     vaccinTab = ui->vaccin;
     ajoutvac = ui->ajoutvac;
     vaccinB = ui->vaccinB;
@@ -174,10 +175,34 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->alert, &QPushButton::clicked, this, &MainWindow::showNotifications);
 
+    ////////////////////////////////////
+    connect(chatbot, &ChatBot::historyLoaded, this, &MainWindow::loadChatHistory);
+    connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::showChatHistory);
+    connect(ui->newChatButton, &QPushButton::clicked, this, &MainWindow::createNewChat);
+    // Change this connection in the constructor
+    connect(chatbot, &ChatBot::responseReceived, this, [this](const QString &response) {
+        QString formattedResponse = QString("<div style='margin:10px; padding:12px; border-radius:12px; "
+                                            "background-color:#ffffff; color:#2d3748;"
+                                            "border: 1px solid #e2e8f0;'>"
+                                            "<b style='color:#48bb78;'>SmartChat:</b> %1</div>").arg(response);
+        ui->chatbot_display->append(formattedResponse);
+    });
+    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
+
+    // Connect the returnPressed signal to sendMessageToChatbot slot
+    connect(ui->chatbot_line, &QLineEdit::returnPressed, this, &MainWindow::sendMessageToChatbot);
+
+    connect(ui->chatbot_line_2, &QLineEdit::returnPressed, this, &MainWindow::handleChatbotLine2ReturnPressed);
+
+    connect(chatbot, &ChatBot::errorOccurred, this, [this](const QString &errorMessage) {
+        ui->chatbot_display->append("<b style='color:red'>Error</b>: " + errorMessage);
+    });
 
 
-    connect(notificationWidget, &NotificationWidget::notificationClicked, this, &MainWindow::handleNotificationClicked);
-
+    ////////////////////////////////////////////
+    connect(notificationWidget, &NotificationWidget::notificationClicked,
+            this, &MainWindow::handleNotificationClicked);
+    ui->tabvaccin->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     vaccinTab->setStyleSheet(
         "QTabWidget::pane { border: none; background: transparent; }"
@@ -239,23 +264,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->tri_rdv, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::comboIndex_rdv);
     connect(ui->calendrier_rdv, &QCalendarWidget::clicked, this, &MainWindow::on_calendarWidget_clicked);
     // Connect the send button to the sendMessageToChatbot slot
-    connect(ui->send_button, &QPushButton::clicked, this, &MainWindow::sendMessageToChatbot);
-
-    // Connect the returnPressed signal to sendMessageToChatbot slot
-    connect(ui->chatbot_line, &QLineEdit::returnPressed, this, &MainWindow::sendMessageToChatbot);
-
-    // Connect the returnPressed signal of chatbot_line_2 to the custom slot
-    connect(ui->chatbot_line_2, &QLineEdit::returnPressed, this, &MainWindow::handleChatbotLine2ReturnPressed);
-
-    // Connect the responseReceived signal from the ChatBot class to a lambda function
-    connect(chatbot, &ChatBot::responseReceived, this, [this](const QString &response) {
-        ui->chatbot_display->append("<b style='color:green'>ChatBot</b>: " + response);
-    });
-
-    // Connect the errorOccurred signal from the ChatBot class to a lambda function
-    connect(chatbot, &ChatBot::errorOccurred, this, [this](const QString &errorMessage) {
-        ui->chatbot_display->append("<b style='color:red'>Error</b>: " + errorMessage);
-    });
 
     QLabel *main = ui->main;
     QPixmap pixmap(":/logo.png");
@@ -351,45 +359,94 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
     tabequi->resizeRowsToContents();
-    ui->chatbot_display->setStyleSheet(R"(
-    QListView {
-        background-color: #f8f9fa;
-        border: none;
-        font-size: 14px;
-    }
-    QListView::item {
-        padding: 12px;
-        border-radius: 10px;
-        margin: 5px;
-    }
-    QListView::item:selected {
-        background-color: transparent;
-    }
-)");
-    ui->chatbot_line->setStyleSheet(R"(
-    QLineEdit {
-        border: 2px solid #0078D7;
-        border-radius: 8px;
-        padding: 8px;
-        font-size: 14px;
-    }
-)");
-    ui->send_button->setStyleSheet(R"(
-    QPushButton {
-        background-color: #0078D7;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-    QPushButton:hover {
-        background-color: #005f9e;
-    }
-    QPushButton:pressed {
-        background-color: #004c80;
-    }
-)");
+    ui->chatbot_display->setStyleSheet(
+        "QTextEdit {"
+        "    background-color: #f5f7fa;"
+        "    border: 1px solid #e2e8f0;"
+        "    border-radius: 12px;"
+        "    padding: 16px;"
+        "    font-size: 15px;"
+        "    color: #2d3748;"
+        "    font-family: 'Segoe UI', system-ui, sans-serif;"
+        "    selection-background-color: #4c51bf;"
+        "    selection-color: #f7fafc;"
+        "    line-height: 1.5;"
+        "}"
+        );
+    ui->chatbot_line->setStyleSheet(
+        "QLineEdit {"
+        "    background-color: #ffffff;"      // Pure white only for input
+        "    border: 2px solid #e2e8f0;"
+        "    border-radius: 20px;"
+        "    padding: 14px 20px;"
+        "    font-size: 15px;"
+        "    color: #2d3748;"
+        "    font-family: 'Segoe UI', system-ui, sans-serif;"
+        "    margin-right: 8px;"
+        "    min-height: 20px;"
+        "}"
+        "QLineEdit:focus {"
+        "    border-color: #667eea;"          // Soft blue accent
+        "    background-color: #f8fafc;"
+        "}"
+        );
+    ui->send_button->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #4a90e2;"      // Original blue color
+        "    color: white;"
+        "    border: none;"
+        "    border-radius: 20px;"            // Matches input field
+        "    padding: 8px 16px;"              // Original padding
+        "    font-size: 14px;"
+        "    font-weight: bold;"
+        "    min-width: 0px;"                 // Ensures original size
+        "    min-height: 0px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #3a7bc8;"      // Original hover color
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #2a6bb4;"      // Original pressed color
+        "}"
+        );
+    ui->newChatButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #48bb78;"      // Vibrant green
+        "    color: #f7fafc;"
+        "    border: none;"
+        "    border-radius: 6px;"
+        "    padding: 10px 18px;"
+        "    font-size: 13px;"
+        "    font-weight: 600;"
+        "    font-family: 'Segoe UI', system-ui, sans-serif;"
+        "    margin-right: 8px;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #38a169;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #2f855a;"
+        "}"
+        );
+    ui->historyButton->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #667eea;"
+        "    color: #f7fafc;"
+        "    border: none;"
+        "    border-radius: 6px;"
+        "    padding: 10px 18px;"
+        "    font-size: 13px;"
+        "    font-weight: 600;"
+        "    font-family: 'Segoe UI', system-ui, sans-serif;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #5a67d8;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #4c51bf;"
+        "}"
+        );
+    ui->detail_label->setStyleSheet("QLabel { padding: 10px; background: #f8f8f8; border-radius: 5px; }");
 
 }
 
@@ -435,7 +492,7 @@ void MainWindow::on_rdv_clicked() {
 }
 
 void MainWindow::on_Quit_clicked() {
-    vaccinTab->setCurrentIndex(7);
+    vaccinTab->setCurrentIndex(0);
 }
 
 void MainWindow::on_Quit_4_clicked() {
@@ -445,35 +502,50 @@ void MainWindow::on_chatbot_page_clicked()
 {
     vaccinTab->setCurrentIndex(15);
 }
+void MainWindow::on_Quit_5_clicked()
+{
+    vaccinTab->setCurrentIndex(0);
+
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MainWindow::sendMessageToChatbot()
-{
+void MainWindow::loadChatHistory(const QString &history) {
+    ui->chatbot_display->clear();
+    ui->chatbot_display->append(history);
+}
+
+void MainWindow::showChatHistory() {
+    chatbot->loadChatHistory();
+}
+
+void MainWindow::createNewChat() {
+    ui->chatbot_display->clear();
+}
+
+void MainWindow::sendMessageToChatbot() {
     QString userMessage = ui->chatbot_line->text();
     if (!userMessage.isEmpty()) {
-        ui->chatbot_display->append("<b style='color:blue'>User</b>: " + userMessage);
+        QString formattedUserMessage = QString("<div style='margin:5px; padding:12px; border-radius:12px; "
+                                               "background-color:#ffffff; color:#2d3748;"
+                                               "border: 1px solid #e2e8f0;'>"
+                                               "<b style='color:#4a90e2;'>Utilisateur:</b> %1</div>").arg(userMessage);
+        ui->chatbot_display->append(formattedUserMessage);
         chatbot->sendMessageToChatbot(userMessage);
         ui->chatbot_line->clear();
     }
 }
 
+
 void MainWindow::handleChatbotLine2ReturnPressed()
 {
     QString text = ui->chatbot_line_2->text();
-    ui->vaccin->setCurrentIndex(15); // Switch to chatbot tab
+    ui->vaccin->setCurrentIndex(15);
     ui->chatbot_line->setText(text);
     ui->chatbot_line_2->clear();
     sendMessageToChatbot();
 }
-void MainWindow::showNotifications1() {
-    if (centralWidget()->isVisible()) {
-        centralWidget()->hide();
-    } else {
-        centralWidget()->show();
-        // Hide the centralWidget after 5 seconds
-        QTimer::singleShot(5000, centralWidget(), &QWidget::hide);
-    }
-}
+
 
 void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
                                            const QString &date,
@@ -560,9 +632,7 @@ void MainWindow::saveNotificationToDatabase(int numero,
         qDebug() << "Query:" << query.lastQuery();
     }
 }
-void MainWindow::handleNotificationClicked1(const QString &message) {
-    QMessageBox::information(this, "Notification", message);
-}
+
 
 void MainWindow::onActionVaccinTriggered() {
     vaccinTab->setCurrentIndex(14);
@@ -1409,8 +1479,8 @@ void MainWindow::on_deleteRdv_clicked()
                                   QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-       rdvWindow->supprimerRdv(idRdv);
-            rdvWindow->loadAppointments(ui->liste_att);
+        rdvWindow->supprimerRdv(idRdv);
+        rdvWindow->loadAppointments(ui->liste_att);
 
     }
 }
@@ -1430,9 +1500,9 @@ void MainWindow::on_edit_rdv_clicked()
 
 
 
-        rdvWindow->infoEdit(idRdv,ui->CIN_rdv_2,ui->date_rdv_2,ui->vaccin_3,ui->adresse_2,ui->nom_rdv_2,ui->prenom_rdv_2,ui->dispo_2,ui->medecin_att_2,ui->infirmier_att_2,ui->salle_att_2,ui->facturation_2);
+    rdvWindow->infoEdit(idRdv,ui->CIN_rdv_2,ui->date_rdv_2,ui->vaccin_3,ui->adresse_2,ui->nom_rdv_2,ui->prenom_rdv_2,ui->dispo_2,ui->medecin_att_2,ui->infirmier_att_2,ui->salle_att_2,ui->facturation_2);
 
-        vaccinTab->setCurrentIndex(12);
+    vaccinTab->setCurrentIndex(12);
 
 
 }
@@ -1457,21 +1527,21 @@ void MainWindow::on_save_rdv_2_clicked()
     double facturation2 = ui->facturation_2->value();
 
 
-     int verif=rdvWindow->modifier_rdv(currentIdRdv, CIN2, vaccin2, date_rdv2, adresse2, nom2, prenom2, dispo2, medecin2, infirmier2, salle2, facturation2);
+    int verif=rdvWindow->modifier_rdv(currentIdRdv, CIN2, vaccin2, date_rdv2, adresse2, nom2, prenom2, dispo2, medecin2, infirmier2, salle2, facturation2);
     if (verif==1){
-    ui->CIN_rdv->clear();
-    ui->adresse->clear();
-    ui->date_rdv->clear();
-    ui->nom_rdv->clear();
-    ui->prenom_rdv->clear();
-    ui->medecin_att->clear();
-    ui->infirmier_att->clear();
-    ui->salle_att->clear();
-    ui->reference->clear();
-    ui->vaccin_2->clear();
-    ui->dispo->clear();
-    rdvWindow->loadAppointments(ui->liste_att);
-    vaccinTab->setCurrentIndex(6);}
+        ui->CIN_rdv->clear();
+        ui->adresse->clear();
+        ui->date_rdv->clear();
+        ui->nom_rdv->clear();
+        ui->prenom_rdv->clear();
+        ui->medecin_att->clear();
+        ui->infirmier_att->clear();
+        ui->salle_att->clear();
+        ui->reference->clear();
+        ui->vaccin_2->clear();
+        ui->dispo->clear();
+        rdvWindow->loadAppointments(ui->liste_att);
+        vaccinTab->setCurrentIndex(6);}
     if (verif==2){
 
 
@@ -1579,10 +1649,62 @@ void MainWindow::showNotifications() {
     }
 }
 
-void MainWindow::handleNotificationClicked(const QString &message) {
-    QMessageBox::information(this, "Notification", message);
-}
+void MainWindow::handleNotificationClicked(const QString &message)
+{
+    // 1. Extract disease name
+    QString diseaseName = message.split('\n').first();
+    diseaseName = diseaseName.remove("Nouvelle maladie détectée :").trimmed();
 
+    // 2. Fetch complete article from database
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "Database connection error";
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT DETAIL_NOTIF FROM NOTIFICATIONS WHERE MALADIE = :disease");
+    query.bindValue(":disease", diseaseName);
+
+    QString fullArticle;
+    if (query.exec() && query.next()) {
+        fullArticle = query.value(0).toString();
+
+        // Enhance formatting for QTextBrowser
+        fullArticle = "<html><body style='font-family:Arial; font-size:12pt;'>"
+                      + fullArticle.replace("\n", "<br>")
+                      + "</body></html>";
+    } else {
+        fullArticle = "<i>Article complet non disponible</i>";
+        qDebug() << "Query error:" << query.lastError().text();
+    }
+
+    // 3. Show notification dialog
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Détails - " + diseaseName);
+    msgBox.setText(message);
+
+    QPushButton *articleButton = msgBox.addButton("Afficher l'article", QMessageBox::ActionRole);
+    articleButton->setStyleSheet("background-color: #46949c; color: white;");
+    msgBox.addButton(QMessageBox::Ok);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == articleButton) {
+        // 4. Display full article in QTextBrowser
+        ui->detail_label->setHtml(fullArticle);
+        ui->detail_label->setOpenExternalLinks(true); // Enable hyperlinks if present
+
+        // 5. Navigate to tab and ensure visibility
+        if (vaccinTab) {
+            vaccinTab->setCurrentIndex(16);
+            QTimer::singleShot(100, [this]() {
+                ui->detail_label->moveCursor(QTextCursor::Start);
+                ui->detail_label->ensureCursorVisible();
+            });
+        }
+    }
+}
 void MainWindow::ajoutNotification(const QString message) {
 
     QSoundEffect *soundEffect = new QSoundEffect(this);
@@ -1662,97 +1784,96 @@ void MainWindow::on_actiontaux_des_rendez_vous_triggered()
     qDebug() << "New patients (first visit):" << nv_patient;
     qDebug() << "Recurrent patients (returning):" << patient;
 
-     vaccinTab->setCurrentIndex(13);
+    vaccinTab->setCurrentIndex(13);
 
 
 
 
-QBarSet *patientSet = new QBarSet("Patients");
-*patientSet << pourcentageNouveaux << pourcentageRecurrents;
+    QBarSet *patientSet = new QBarSet("Patients");
+    *patientSet << pourcentageNouveaux << pourcentageRecurrents;
 
 
-QColor barColor(0x8bc1c7);
-QColor textColor("#ffffff");
+    QColor barColor(0x8bc1c7);
+    QColor textColor("#ffffff");
 
 
-patientSet->setColor(barColor);
+    patientSet->setColor(barColor);
 
-QBarSeries *series = new QBarSeries();
-series->append(patientSet);
+    QBarSeries *series = new QBarSeries();
+    series->append(patientSet);
 
-QChart *chart = new QChart();
-chart->addSeries(series);
-chart->setTitle("Nouveaux patients vs Patients récurrents");
-chart->setAnimationOptions(QChart::SeriesAnimations);
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Nouveaux patients vs Patients récurrents");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
 
-chart->setBackgroundBrush(Qt::transparent);
-chart->setTitleBrush(QBrush(textColor));
-QFont titleFont;
-titleFont.setFamily("Arial");
-titleFont.setPointSize(18);
-titleFont.setBold(true);
-titleFont.setItalic(false);
-titleFont.setUnderline(true);
+    chart->setBackgroundBrush(Qt::transparent);
+    chart->setTitleBrush(QBrush(textColor));
+    QFont titleFont;
+    titleFont.setFamily("Arial");
+    titleFont.setPointSize(18);
+    titleFont.setBold(true);
+    titleFont.setItalic(false);
+    titleFont.setUnderline(true);
 
-chart->setTitleFont(titleFont);
+    chart->setTitleFont(titleFont);
 
-QStringList categories = { "Nouveaux", "Récurrents" };
-QBarCategoryAxis *axisX = new QBarCategoryAxis();
-axisX->append(categories);
-axisX->setLabelsBrush(QBrush(textColor));
+    QStringList categories = { "Nouveaux", "Récurrents" };
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    axisX->setLabelsBrush(QBrush(textColor));
 
-QFont axisFont;
-axisFont.setPointSize(10);
-axisFont.setFamily("Arial");
-axisFont.setBold(true);
+    QFont axisFont;
+    axisFont.setPointSize(10);
+    axisFont.setFamily("Arial");
+    axisFont.setBold(true);
 
-axisX->setLabelsFont(axisFont);
-chart->addAxis(axisX, Qt::AlignBottom);
-series->attachAxis(axisX);
+    axisX->setLabelsFont(axisFont);
+    chart->addAxis(axisX, Qt::AlignBottom);
+    series->attachAxis(axisX);
 
-QValueAxis *axisY = new QValueAxis();
-axisY->setRange(0, 100);
-axisY->setLabelFormat("%d%%");
-axisY->setLabelsBrush(QBrush(textColor));
-chart->addAxis(axisY, Qt::AlignLeft);
-series->attachAxis(axisY);
-
-
-chart->legend()->setVisible(true);
-chart->legend()->setLabelColor(textColor);
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setRange(0, 100);
+    axisY->setLabelFormat("%d%%");
+    axisY->setLabelsBrush(QBrush(textColor));
+    chart->addAxis(axisY, Qt::AlignLeft);
+    series->attachAxis(axisY);
 
 
-QChartView *chartView = new QChartView(chart);
-chartView->setRenderHint(QPainter::Antialiasing, true);
-chartView->setStyleSheet("background: transparent; border: none;");
+    chart->legend()->setVisible(true);
+    chart->legend()->setLabelColor(textColor);
 
 
-if (ui->stat->layout()) {
-    QLayoutItem *item;
-    while ((item = ui->stat->layout()->takeAt(0))) {
-        delete item->widget();
-        delete item;
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing, true);
+    chartView->setStyleSheet("background: transparent; border: none;");
+
+
+    if (ui->stat->layout()) {
+        QLayoutItem *item;
+        while ((item = ui->stat->layout()->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+        delete ui->stat->layout();
     }
-    delete ui->stat->layout();
+
+
+
+    QObject::connect(series, &QBarSeries::hovered, [](bool state, int index, QBarSet* set) {
+        if (state) {
+            QString tooltipText = QString("%1: %2%").arg(set->label()).arg(set->at(index));
+            QToolTip::showText(QCursor::pos(), tooltipText);
+        } else {
+            QToolTip::hideText();
+        }
+    });
+
+
+
+
+    QVBoxLayout *layout = new QVBoxLayout(ui->stat);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(chartView);
+    ui->stat->setLayout(layout);
 }
-
-
-
-QObject::connect(series, &QBarSeries::hovered, [](bool state, int index, QBarSet* set) {
-    if (state) {
-        QString tooltipText = QString("%1: %2%").arg(set->label()).arg(set->at(index));
-        QToolTip::showText(QCursor::pos(), tooltipText);
-    } else {
-        QToolTip::hideText();
-    }
-});
-
-
-
-
-QVBoxLayout *layout = new QVBoxLayout(ui->stat);
-layout->setContentsMargins(0, 0, 0, 0);
-layout->addWidget(chartView);
-ui->stat->setLayout(layout);
-}
-

@@ -29,10 +29,12 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -388,6 +390,15 @@ public:
     QPushButton *send_button;
     QTextEdit *chatbot_display;
     QLineEdit *chatbot_line;
+    QPushButton *newChatButton;
+    QPushButton *historyButton;
+    QLabel *label;
+    QWidget *tab_13;
+    QTableView *detail;
+    QScrollArea *detail_2;
+    QWidget *scrollAreaWidgetContents;
+    QTextBrowser *detail_label;
+    QLabel *label_35;
     QWidget *centralWidget;
     QWidget *widget;
     QLabel *Medecin;
@@ -741,7 +752,7 @@ public:
         main->setGeometry(QRect(130, 0, 1411, 771));
         vaccin = new QTabWidget(frame);
         vaccin->setObjectName("vaccin");
-        vaccin->setGeometry(QRect(130, 0, 1421, 781));
+        vaccin->setGeometry(QRect(130, 0, 1421, 771));
         Tab1 = new QWidget();
         Tab1->setObjectName("Tab1");
         label_11 = new QLabel(Tab1);
@@ -753,14 +764,14 @@ public:
         label_11->setMidLineWidth(0);
         recherche_vac = new QLineEdit(Tab1);
         recherche_vac->setObjectName("recherche_vac");
-        recherche_vac->setGeometry(QRect(60, 60, 301, 51));
+        recherche_vac->setGeometry(QRect(50, 60, 341, 51));
         recherche_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
         cherche_vac = new QLineEdit(Tab1);
         cherche_vac->setObjectName("cherche_vac");
-        cherche_vac->setGeometry(QRect(60, 50, 301, 51));
+        cherche_vac->setGeometry(QRect(50, 50, 341, 51));
         QFont font5;
         font5.setFamilies({QString::fromUtf8("Segoe UI")});
         font5.setPointSize(18);
@@ -1016,7 +1027,7 @@ public:
 ""));
         label_27 = new QLabel(Tab1);
         label_27->setObjectName("label_27");
-        label_27->setGeometry(QRect(540, 60, 41, 31));
+        label_27->setGeometry(QRect(600, 60, 41, 31));
         label_27->setStyleSheet(QString::fromUtf8("image: url(:/icon8.png);"));
         lineEdit_8 = new QLineEdit(Tab1);
         lineEdit_8->setObjectName("lineEdit_8");
@@ -1098,7 +1109,7 @@ public:
         pdfvaccin->setIconSize(QSize(42, 36));
         choix_vac = new QComboBox(Tab1);
         choix_vac->setObjectName("choix_vac");
-        choix_vac->setGeometry(QRect(430, 50, 171, 51));
+        choix_vac->setGeometry(QRect(490, 50, 171, 51));
         choix_vac->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
 "font: 12pt \"Segoe UI\";\n"
 "border: 2px solid #000000;\n"
@@ -1106,7 +1117,7 @@ public:
 ""));
         lineEdit_9 = new QLineEdit(Tab1);
         lineEdit_9->setObjectName("lineEdit_9");
-        lineEdit_9->setGeometry(QRect(430, 60, 171, 51));
+        lineEdit_9->setGeometry(QRect(490, 60, 171, 51));
         lineEdit_9->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
@@ -1203,7 +1214,6 @@ public:
         vaccin->addTab(Tab1, QString());
         label_11->raise();
         recherche_vac->raise();
-        cherche_vac->raise();
         lineEdit_4->raise();
         ajoutvac->raise();
         tableView_3->raise();
@@ -1220,6 +1230,7 @@ public:
         line_edit9->raise();
         chatbot_line_2->raise();
         chatbot_page->raise();
+        cherche_vac->raise();
         Tab2 = new QWidget();
         Tab2->setObjectName("Tab2");
         tableView = new QTableView(Tab2);
@@ -2995,8 +3006,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 10), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 10), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 3), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 3), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3667,8 +3678,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 9), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 9), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 2), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 2), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -4138,21 +4149,55 @@ public:
         tab_12->setObjectName("tab_12");
         send_button = new QPushButton(tab_12);
         send_button->setObjectName("send_button");
-        send_button->setGeometry(QRect(1210, 620, 41, 41));
-        QIcon icon10(QIcon::fromTheme(QIcon::ThemeIcon::DocumentSend));
-        send_button->setIcon(icon10);
+        send_button->setGeometry(QRect(1300, 610, 51, 51));
+        send_button->setIcon(icon6);
         send_button->setIconSize(QSize(34, 33));
         chatbot_display = new QTextEdit(tab_12);
         chatbot_display->setObjectName("chatbot_display");
-        chatbot_display->setGeometry(QRect(90, 40, 1161, 581));
+        chatbot_display->setGeometry(QRect(150, 0, 1141, 611));
         chatbot_line = new QLineEdit(tab_12);
         chatbot_line->setObjectName("chatbot_line");
-        chatbot_line->setGeometry(QRect(90, 620, 1121, 41));
+        chatbot_line->setGeometry(QRect(150, 610, 1151, 51));
         chatbot_line->setStyleSheet(QString::fromUtf8(""));
+        newChatButton = new QPushButton(tab_12);
+        newChatButton->setObjectName("newChatButton");
+        newChatButton->setGeometry(QRect(1050, 60, 211, 51));
+        historyButton = new QPushButton(tab_12);
+        historyButton->setObjectName("historyButton");
+        historyButton->setGeometry(QRect(1050, 130, 201, 51));
+        label = new QLabel(tab_12);
+        label->setObjectName("label");
+        label->setGeometry(QRect(1060, 10, 181, 31));
+        label->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 700 26pt \"Segoe UI\";"));
         vaccin->addTab(tab_12, QString());
+        tab_13 = new QWidget();
+        tab_13->setObjectName("tab_13");
+        detail = new QTableView(tab_13);
+        detail->setObjectName("detail");
+        detail->setGeometry(QRect(360, 40, 551, 661));
+        detail->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;"));
+        detail_2 = new QScrollArea(tab_13);
+        detail_2->setObjectName("detail_2");
+        detail_2->setGeometry(QRect(370, 140, 531, 541));
+        detail_2->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 529, 539));
+        detail_label = new QTextBrowser(scrollAreaWidgetContents);
+        detail_label->setObjectName("detail_label");
+        detail_label->setGeometry(QRect(10, 10, 511, 511));
+        detail_2->setWidget(scrollAreaWidgetContents);
+        label_35 = new QLabel(tab_13);
+        label_35->setObjectName("label_35");
+        label_35->setGeometry(QRect(480, 60, 331, 41));
+        label_35->setStyleSheet(QString::fromUtf8("font: 700 22pt \"Segoe UI\";"));
+        vaccin->addTab(tab_13, QString());
         centralWidget = new QWidget(frame);
         centralWidget->setObjectName("centralWidget");
-        centralWidget->setGeometry(QRect(100, 0, 501, 491));
+        centralWidget->setGeometry(QRect(100, 170, 401, 171));
         QFont font17;
         font17.setPointSize(15);
         centralWidget->setFont(font17);
@@ -4241,9 +4286,9 @@ public:
         pushButton_2->setObjectName("pushButton_2");
         pushButton_2->setGeometry(QRect(0, -10, 131, 141));
         pushButton_2->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon11;
-        icon11.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_2->setIcon(icon11);
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_2->setIcon(icon10);
         pushButton_2->setIconSize(QSize(71, 71));
         label_2 = new QLabel(widget);
         label_2->setObjectName("label_2");
@@ -4254,9 +4299,9 @@ public:
         pushButton_3->setObjectName("pushButton_3");
         pushButton_3->setGeometry(QRect(130, 0, 131, 131));
         pushButton_3->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon12;
-        icon12.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_3->setIcon(icon12);
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_3->setIcon(icon11);
         pushButton_3->setIconSize(QSize(102, 78));
         label_3 = new QLabel(widget);
         label_3->setObjectName("label_3");
@@ -4271,9 +4316,9 @@ public:
         vaccinB->setToolTipDuration(12);
         vaccinB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         vaccinB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon13;
-        icon13.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        vaccinB->setIcon(icon13);
+        QIcon icon12;
+        icon12.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        vaccinB->setIcon(icon12);
         vaccinB->setIconSize(QSize(68, 68));
         vaccinB->setFlat(false);
         equiB = new QPushButton(widget);
@@ -4283,9 +4328,9 @@ public:
         equiB->setToolTipDuration(12);
         equiB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         equiB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon14;
-        icon14.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        equiB->setIcon(icon14);
+        QIcon icon13;
+        icon13.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        equiB->setIcon(icon13);
         equiB->setIconSize(QSize(100, 89));
         equiB->setFlat(false);
         label_8 = new QLabel(widget);
@@ -4304,7 +4349,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 22));
+        menubar->setGeometry(QRect(0, 0, 1546, 26));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -4324,7 +4369,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(15);
+        vaccin->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4591,9 +4636,13 @@ public:
         vaccin->setTabText(vaccin->indexOf(tab_34), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_8), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_11), QCoreApplication::translate("MainWindow", "Page", nullptr));
-        send_button->setText(QString());
         chatbot_line->setPlaceholderText(QCoreApplication::translate("MainWindow", "Demandez ce que vous voulez ...", nullptr));
+        newChatButton->setText(QCoreApplication::translate("MainWindow", "Nouveau Chat", nullptr));
+        historyButton->setText(QCoreApplication::translate("MainWindow", "Afficher Historique", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "SmartChat", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_12), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        label_35->setText(QCoreApplication::translate("MainWindow", "D\303\251tails du Maladie", nullptr));
+        vaccin->setTabText(vaccin->indexOf(tab_13), QCoreApplication::translate("MainWindow", "Page", nullptr));
         Medecin->setText(QCoreApplication::translate("MainWindow", "M\303\251decins", nullptr));
         pushButton_2->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "Vaccins", nullptr));

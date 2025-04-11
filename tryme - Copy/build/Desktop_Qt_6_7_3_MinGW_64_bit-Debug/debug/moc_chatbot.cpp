@@ -42,9 +42,8 @@ constexpr auto qt_meta_stringdata_CLASSChatBotENDCLASS = QtMocHelpers::stringDat
     "response",
     "errorOccurred",
     "errorMessage",
-    "handleResponse",
-    "QNetworkReply*",
-    "reply"
+    "historyLoaded",
+    "history"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -62,21 +61,17 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSChatBotENDCLASS[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
        1,    1,   32,    2, 0x06,    1 /* Public */,
        4,    1,   35,    2, 0x06,    3 /* Public */,
-
- // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       6,    1,   38,    2, 0x08,    5 /* Private */,
+       6,    1,   38,    2, 0x06,    5 /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
     QMetaType::Void, QMetaType::QString,    5,
-
- // slots: parameters
-    QMetaType::Void, 0x80000000 | 7,    8,
+    QMetaType::Void, QMetaType::QString,    7,
 
        0        // eod
 };
@@ -96,9 +91,9 @@ Q_CONSTINIT const QMetaObject ChatBot::staticMetaObject = { {
         // method 'errorOccurred'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'handleResponse'
+        // method 'historyLoaded'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<QNetworkReply *, std::false_type>
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>
     >,
     nullptr
 } };
@@ -111,19 +106,8 @@ void ChatBot::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         switch (_id) {
         case 0: _t->responseReceived((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 1: _t->errorOccurred((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 2: _t->handleResponse((*reinterpret_cast< std::add_pointer_t<QNetworkReply*>>(_a[1]))); break;
+        case 2: _t->historyLoaded((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-        case 2:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
-            case 0:
-                *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< QNetworkReply* >(); break;
-            }
-            break;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
@@ -138,6 +122,13 @@ void ChatBot::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
             using _t = void (ChatBot::*)(const QString & );
             if (_t _q_method = &ChatBot::errorOccurred; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 1;
+                return;
+            }
+        }
+        {
+            using _t = void (ChatBot::*)(const QString & );
+            if (_t _q_method = &ChatBot::historyLoaded; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 2;
                 return;
             }
         }
@@ -168,7 +159,7 @@ int ChatBot::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 3)
-            qt_static_metacall(this, _c, _id, _a);
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 3;
     }
     return _id;
@@ -186,5 +177,12 @@ void ChatBot::errorOccurred(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void ChatBot::historyLoaded(const QString & _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_WARNING_POP

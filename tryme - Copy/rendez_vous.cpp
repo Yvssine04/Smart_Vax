@@ -27,7 +27,7 @@ NotificationWidget::NotificationWidget(QWidget *parent)
 
 void NotificationWidget::addNotification(const QString &message) {
     QPushButton *notificationButton = new QPushButton(message, this);
-    notificationButton->setFixedSize(240, 50);
+    notificationButton->setFixedSize(310, 50);
     connect(notificationButton, &QPushButton::clicked, [this, message]() {
         qDebug() << "Notification clicked:" << message;
         emit notificationClicked(message);

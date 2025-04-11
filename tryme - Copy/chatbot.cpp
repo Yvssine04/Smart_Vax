@@ -1,18 +1,55 @@
+// chatbot.cpp
 #include "chatbot.h"
+#include <QStandardPaths>
+#include <QDir>
+#include <QDebug>
 
 ChatBot::ChatBot(QObject *parent) : QObject(parent) {
     manager = new QNetworkAccessManager(this);
+
+    // Set up history file path
+    QString documentsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    historyFilePath = documentsPath + "/chatbot_history.txt";
+}
+
+void ChatBot::saveChatHistory(const QString &userMessage, const QString &botResponse) {
+    QFile file(historyFilePath);
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss] ")
+            << "User: " << userMessage << "\n"
+            << QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss] ")
+            << "Bot: " << botResponse << "\n\n";
+        file.close();
+    }
+}
+
+void ChatBot::loadChatHistory() {
+    QFile file(historyFilePath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString history = in.readAll();
+        emit historyLoaded(history);
+        file.close();
+    }
+}
+
+void ChatBot::clearChatHistory() {
+    QFile file(historyFilePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        file.close();
+    }
 }
 
 void ChatBot::sendMessageToChatbot(const QString &userMessage) {
-    QString apiKey = "fe4429ae05mshe9b08fc10a6eaefp1e30c9jsn26fb0b6e7731"; // Replace with your actual API key
-    QString endpoint = "https://chatgpt-api8.p.rapidapi.com/"; // Replace with the actual endpoint
+    QString apiKey = "dc602c131amsh31b9145a0457e53p10d544jsnfe36726f607d";
+    QString endpoint = "https://chatgpt-api8.p.rapidapi.com/";
 
     QNetworkRequest request;
     request.setUrl(QUrl(endpoint));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("X-RapidAPI-Key", apiKey.toUtf8());
-    request.setRawHeader("X-RapidAPI-Host", "chatgpt-api8.p.rapidapi.com"); // Adjust if necessary
+    request.setRawHeader("X-RapidAPI-Host", "chatgpt-api8.p.rapidapi.com");
 
     QJsonArray messagesArray;
     QJsonObject userMessageObject;
@@ -23,12 +60,12 @@ void ChatBot::sendMessageToChatbot(const QString &userMessage) {
     QByteArray postData = doc.toJson();
 
     QNetworkReply *reply = manager->post(request, postData);
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
-        handleResponse(reply);
+    connect(reply, &QNetworkReply::finished, this, [this, reply, userMessage]() {
+        handleResponse(reply, userMessage);
     });
 }
 
-void ChatBot::handleResponse(QNetworkReply *reply) {
+void ChatBot::handleResponse(QNetworkReply *reply, const QString &userMessage) {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray responseData = reply->readAll();
         QJsonDocument jsonResponse = QJsonDocument::fromJson(responseData);
@@ -36,6 +73,7 @@ void ChatBot::handleResponse(QNetworkReply *reply) {
 
         if (responseObject.contains("text")) {
             QString botResponse = responseObject["text"].toString();
+            saveChatHistory(userMessage, botResponse);
             emit responseReceived(botResponse);
         } else {
             emit errorOccurred("Invalid response format, missing 'text' field");

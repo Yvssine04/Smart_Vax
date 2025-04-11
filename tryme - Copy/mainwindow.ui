@@ -1728,11 +1728,11 @@ background-color: rgb(31, 109, 119);</string>
        <x>130</x>
        <y>0</y>
        <width>1421</width>
-       <height>781</height>
+       <height>771</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>15</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -1766,9 +1766,9 @@ background-color: rgb(31, 109, 119);</string>
       <widget class="QLineEdit" name="recherche_vac">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>50</x>
          <y>60</y>
-         <width>301</width>
+         <width>341</width>
          <height>51</height>
         </rect>
        </property>
@@ -1782,9 +1782,9 @@ border-radius: 15px;
       <widget class="QLineEdit" name="cherche_vac">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>50</x>
          <y>50</y>
-         <width>301</width>
+         <width>341</width>
          <height>51</height>
         </rect>
        </property>
@@ -2973,7 +2973,7 @@ border-radius: 25px;
       <widget class="QLabel" name="label_27">
        <property name="geometry">
         <rect>
-         <x>540</x>
+         <x>600</x>
          <y>60</y>
          <width>41</width>
          <height>31</height>
@@ -3506,7 +3506,7 @@ border-radius: 25px;
       <widget class="QComboBox" name="choix_vac">
        <property name="geometry">
         <rect>
-         <x>430</x>
+         <x>490</x>
          <y>50</y>
          <width>171</width>
          <height>51</height>
@@ -3523,7 +3523,7 @@ border-radius: 15px;
       <widget class="QLineEdit" name="lineEdit_9">
        <property name="geometry">
         <rect>
-         <x>430</x>
+         <x>490</x>
          <y>60</y>
          <width>171</width>
          <height>51</height>
@@ -4078,7 +4078,6 @@ background-color:rgba(63, 123, 134,0.5);</string>
       </widget>
       <zorder>label_11</zorder>
       <zorder>recherche_vac</zorder>
-      <zorder>cherche_vac</zorder>
       <zorder>lineEdit_4</zorder>
       <zorder>ajoutvac</zorder>
       <zorder>tableView_3</zorder>
@@ -4095,6 +4094,7 @@ background-color:rgba(63, 123, 134,0.5);</string>
       <zorder>line_edit9</zorder>
       <zorder>chatbot_line_2</zorder>
       <zorder>chatbot_page</zorder>
+      <zorder>cherche_vac</zorder>
      </widget>
      <widget class="QWidget" name="Tab2">
       <attribute name="title">
@@ -11516,7 +11516,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>10</day>
+         <day>3</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -11526,7 +11526,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>10</day>
+         <day>3</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -13486,7 +13486,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>8</month>
-         <day>9</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -13496,7 +13496,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>8</month>
-         <day>9</day>
+         <day>2</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -15889,17 +15889,14 @@ border-radius: 15px;
       <widget class="QPushButton" name="send_button">
        <property name="geometry">
         <rect>
-         <x>1210</x>
-         <y>620</y>
-         <width>41</width>
-         <height>41</height>
+         <x>1300</x>
+         <y>610</y>
+         <width>51</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="text">
-        <string/>
-       </property>
        <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::DocumentSend"/>
+        <iconset theme="QIcon::ThemeIcon::AppointmentNew"/>
        </property>
        <property name="iconSize">
         <size>
@@ -15911,20 +15908,20 @@ border-radius: 15px;
       <widget class="QTextEdit" name="chatbot_display">
        <property name="geometry">
         <rect>
-         <x>90</x>
-         <y>40</y>
-         <width>1161</width>
-         <height>581</height>
+         <x>150</x>
+         <y>0</y>
+         <width>1141</width>
+         <height>611</height>
         </rect>
        </property>
       </widget>
       <widget class="QLineEdit" name="chatbot_line">
        <property name="geometry">
         <rect>
-         <x>90</x>
-         <y>620</y>
-         <width>1121</width>
-         <height>41</height>
+         <x>150</x>
+         <y>610</y>
+         <width>1151</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -15934,15 +15931,127 @@ border-radius: 15px;
         <string>Demandez ce que vous voulez ...</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="newChatButton">
+       <property name="geometry">
+        <rect>
+         <x>1050</x>
+         <y>60</y>
+         <width>211</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Nouveau Chat</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="historyButton">
+       <property name="geometry">
+        <rect>
+         <x>1050</x>
+         <y>130</y>
+         <width>201</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Afficher Historique</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>1060</x>
+         <y>10</y>
+         <width>181</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 0, 0);
+font: 700 26pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>SmartChat</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_13">
+      <attribute name="title">
+       <string>Page</string>
+      </attribute>
+      <widget class="QTableView" name="detail">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>40</y>
+         <width>551</width>
+         <height>661</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(63, 123, 134);
+border: 2px solid #000000;
+border-radius: 15px;</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="detail_2">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>140</y>
+         <width>531</width>
+         <height>541</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>529</width>
+          <height>539</height>
+         </rect>
+        </property>
+        <widget class="QTextBrowser" name="detail_label">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>511</width>
+           <height>511</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_35">
+       <property name="geometry">
+        <rect>
+         <x>480</x>
+         <y>60</y>
+         <width>331</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 700 22pt &quot;Segoe UI&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Détails du Maladie</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="centralWidget" native="true">
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>0</y>
-       <width>501</width>
-       <height>491</height>
+       <y>170</y>
+       <width>401</width>
+       <height>171</height>
       </rect>
      </property>
      <property name="font">
@@ -16697,7 +16806,7 @@ border-radius: 15px;
      <x>0</x>
      <y>0</y>
      <width>1546</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSessio">

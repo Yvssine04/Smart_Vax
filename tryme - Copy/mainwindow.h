@@ -80,7 +80,7 @@ private slots:
     void ajoutNotification(const QString message);
     void handleNotificationClicked(const QString &message);
     void autoFillPatientInfo(const QString &cin);
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     void onVaccinHeaderSectionClicked(int logicalIndex);
     void onPdfVaccinButtonClicked();
     void showAllRows();
@@ -99,15 +99,20 @@ private slots:
                                    const QString &source);
 
 
-    void showNotifications1();
 
 
-    void handleNotificationClicked1(const QString &message);
 
     void on_actiontaux_des_rendez_vous_triggered();
     void on_chatbot_page_clicked();
     void sendMessageToChatbot();
     void handleChatbotLine2ReturnPressed();
+    void on_Quit_5_clicked();
+    void loadChatHistory(const QString &history);
+    void showChatHistory();
+    void createNewChat();
+
+
+
 private:
     Ui::MainWindow *ui;
     Vaccin *vaccinManager;
