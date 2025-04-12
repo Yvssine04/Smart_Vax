@@ -110,6 +110,9 @@ private slots:
     void loadChatHistory(const QString &history);
     void showChatHistory();
     void createNewChat();
+    void showNotificationHistory();
+    void clearNotificationHistory();
+
 
 
 
@@ -145,13 +148,13 @@ private:
     QLineEdit *cherche_vac;
     QPushButton *pdfvaccin;
     ChatBot *chatbot;
-    void saveNotificationToDatabase(int numero,
-                                    const QString &detail,
-                                    const QString &status,
-                                    const QDate &date,
-                                    const QString &source,
-                                    const QString &maladie,
-                                    const QString &lieu);
+    void saveNotificationToFile(int numero,
+                                const QString &detail,
+                                const QString &status,
+                                const QDate &date,
+                                const QString &source,
+                                const QString &maladie,
+                                const QString &lieu);
     void setVaccineTypeBasedOnName(const QString &vaccineName, QComboBox *typeCombo);
     bool checkDatabaseConnection();
     void loadEquipementsData();

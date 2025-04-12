@@ -1,8 +1,8 @@
-// chatbot.cpp
 #include "chatbot.h"
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
+#include <QRegularExpression>
 
 ChatBot::ChatBot(QObject *parent) : QObject(parent) {
     manager = new QNetworkAccessManager(this);
@@ -17,9 +17,9 @@ void ChatBot::saveChatHistory(const QString &userMessage, const QString &botResp
     if (file.open(QIODevice::Append | QIODevice::Text)) {
         QTextStream out(&file);
         out << QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss] ")
-            << "User: " << userMessage << "\n"
+            << "Utilisateur: " << userMessage << "\n"
             << QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss] ")
-            << "Bot: " << botResponse << "\n\n";
+            << "SmartChat: " << botResponse << "\n\n";
         file.close();
     }
 }
@@ -41,7 +41,38 @@ void ChatBot::clearChatHistory() {
     }
 }
 
+bool ChatBot::isMedicalQuestion(const QString &userMessage) {
+    // Liste de mots-clés médicaux
+    QStringList medicalKeywords = {
+        "vaccin", "maladie", "santé", "médical", "médecin", "traitement",
+        "symptôme", "diagnostic", "médicament", "hôpital", "grippe", "virus",
+        "bactérie", "infection", "inflammation", "cancer", "diabète", "asthme",
+        "cardiaque", "neurologique", "dermatologique", "gastro-entérologie"
+    };
+
+    // Vérifier si le message contient l'un des mots-clés
+    for (const QString &keyword : medicalKeywords) {
+        if (userMessage.contains(keyword, Qt::CaseInsensitive)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void ChatBot::sendMessageToChatbot(const QString &userMessage) {
+    // Check for greeting
+    if (userMessage.trimmed().toLower() == "bonjour") {
+        QString botResponse = "Bonjour ! Comment puis-je vous aider aujourd'hui ?";
+        saveChatHistory(userMessage, botResponse);
+        emit responseReceived(botResponse);
+        return;
+    }
+
+    if (!isMedicalQuestion(userMessage)) {
+        emit errorOccurred("Désolé, je ne peux répondre qu'aux questions médicales.");
+        return;
+    }
+
     QString apiKey = "dc602c131amsh31b9145a0457e53p10d544jsnfe36726f607d";
     QString endpoint = "https://chatgpt-api8.p.rapidapi.com/";
 

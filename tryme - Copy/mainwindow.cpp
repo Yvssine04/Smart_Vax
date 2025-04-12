@@ -173,6 +173,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     centralLayout->addWidget(notificationWidget);
 
+
     connect(ui->alert, &QPushButton::clicked, this, &MainWindow::showNotifications);
 
     ////////////////////////////////////
@@ -581,7 +582,7 @@ void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
     QTimer::singleShot(5000, notificationWidget, &QWidget::hide);
 
     static int uniqueNumero = 1;
-    saveNotificationToDatabase(uniqueNumero++,
+    saveNotificationToFile(uniqueNumero++,
                                detail,
                                vaccineInfo,
                                QDate::fromString(date, "yyyy-MM-dd"),
@@ -590,49 +591,151 @@ void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
                                location);
 }
 
-void MainWindow::saveNotificationToDatabase(int numero,
-                                            const QString &detail,
-                                            const QString &status,
-                                            const QDate &date,
-                                            const QString &source,
-                                            const QString &maladie,
-                                            const QString &lieu) {
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        qDebug() << "Database not open";
-        return;
-    }
+void MainWindow::saveNotificationToFile(int numero,
+                                        const QString &detail,
+                                        const QString &status,
+                                        const QDate &date,
+                                        const QString &source,
+                                        const QString &maladie,
+                                        const QString &lieu) {
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
+    QFile file(filePath);
 
-    // Check for existing notification
-    QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT COUNT(*) FROM NOTIFICATIONS WHERE DETAIL_NOTIF = :detail AND DATE_NOTIF = TO_DATE(:date, 'YYYY-MM-DD')");
-    checkQuery.bindValue(":detail", detail);
-    checkQuery.bindValue(":date", date.toString("yyyy-MM-dd"));
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString content = in.readAll();
+        file.close();
 
-    if (!checkQuery.exec() || (checkQuery.next() && checkQuery.value(0).toInt() > 0)) {
-        qDebug() << "Notification exists or error:" << checkQuery.lastError().text();
-        return;
-    }
+        // Check for existing notification with the same disease name
+        bool isDuplicate = content.contains("Maladie: " + maladie, Qt::CaseInsensitive);
 
-    // Insert new notification
-    QSqlQuery query;
-    query.prepare("INSERT INTO NOTIFICATIONS (NUMERO, DETAIL_NOTIF, STATUS, DATE_NOTIF, SOURCE, MALADIE, LIEU) "
-                  "VALUES (:numero, :detail, :status, TO_DATE(:date, 'YYYY-MM-DD'), :source, :maladie, :lieu)");
-
-    query.bindValue(":numero", numero);
-    query.bindValue(":detail", detail);
-    query.bindValue(":status", status);
-    query.bindValue(":date", date.toString("yyyy-MM-dd"));
-    query.bindValue(":source", source);
-    query.bindValue(":maladie", maladie);
-    query.bindValue(":lieu", lieu);
-
-    if (!query.exec()) {
-        qDebug() << "Error inserting notification:" << query.lastError().text();
-        qDebug() << "Query:" << query.lastQuery();
+        if (!isDuplicate) {
+            // Append new notification if it doesn't already exist
+            file.open(QIODevice::Append | QIODevice::Text);
+            QTextStream out(&file);
+            out << QString("[%1] Notification Numero: %2\nDetail: %3\nStatus: %4\nDate: %5\nSource: %6\nMaladie: %7\nLieu: %8\n\n")
+                       .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+                       .arg(numero)
+                       .arg(detail)
+                       .arg(status)
+                       .arg(date.toString("yyyy-MM-dd"))
+                       .arg(source)
+                       .arg(maladie)
+                       .arg(lieu);
+            file.close();
+        } else {
+            qDebug() << "Duplicate notification detected for disease:" << maladie;
+        }
+    } else {
+        qDebug() << "Failed to open file for reading notifications.";
     }
 }
 
+void MainWindow::showNotificationHistory() {
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
+    QFile file(filePath);
+    QString historyContent;
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        historyContent = in.readAll();
+        file.close();
+    } else {
+        qDebug() << "Failed to open file for reading notification history.";
+        historyContent = "<i>Historique non disponible</i>";
+    }
+
+    // Display the history in a QTextBrowser or similar widget
+    ui->detail_label->setHtml("<html><body style='font-family:Arial; font-size:12pt;'>"
+                              + historyContent.replace("\n", "<br>")
+                              + "</body></html>");
+    ui->detail_label->setOpenExternalLinks(true);
+
+    // Navigate to the tab where the history is displayed
+    if (vaccinTab) {
+        vaccinTab->setCurrentIndex(16);
+        QTimer::singleShot(100, [this]() {
+            ui->detail_label->moveCursor(QTextCursor::Start);
+            ui->detail_label->ensureCursorVisible();
+        });
+    }
+}
+
+void MainWindow::handleNotificationClicked(const QString &message) {
+    // 1. Extract disease name
+    QString diseaseName = message.split('\n').first();
+    diseaseName = diseaseName.remove("Nouvelle maladie détectée :").trimmed();
+
+    // 2. Read notification details from file
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
+    QFile file(filePath);
+    QString fullArticle;
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString content = in.readAll();
+        file.close();
+
+        // Debug: Print the content read from the file
+        qDebug() << "File content:" << content;
+
+        // Find the relevant notification block
+        QStringList blocks = content.split("\n\n");
+        for (const QString &block : std::as_const(blocks)) {
+            if (block.contains("Maladie: " + diseaseName, Qt::CaseInsensitive)) {
+                fullArticle = block;
+                break;
+            }
+        }
+
+        if (!fullArticle.isEmpty()) {
+            // Debug: Print the full article found
+            qDebug() << "Full article found:" << fullArticle;
+
+            // Enhance formatting for QTextBrowser
+            fullArticle = "<html><body style='font-family:Arial; font-size:12pt;'>"
+                          + fullArticle.replace("\n", "<br>")
+                          + "</body></html>";
+        } else {
+            fullArticle = "<i>Article complet non disponible</i>";
+        }
+    } else {
+        qDebug() << "Failed to open file for reading notifications.";
+        fullArticle = "<i>Article complet non disponible</i>";
+    }
+    // 3. Show notification dialog
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Détails - " + diseaseName);
+    msgBox.setText(message);
+
+    QPushButton *historiqueButton = msgBox.addButton("Afficher l'historique", QMessageBox::ActionRole);
+    historiqueButton->setStyleSheet("background-color: #46949c; color: white;");
+
+    QPushButton *clearHistoryButton = msgBox.addButton("Effacer l'historique", QMessageBox::ActionRole);
+    clearHistoryButton->setStyleSheet("background-color: #46949c; color: white;");
+
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == historiqueButton) {
+        showNotificationHistory();
+    } else if (msgBox.clickedButton() == clearHistoryButton) {
+        clearNotificationHistory();
+    }
+}
+
+void MainWindow::clearNotificationHistory() {
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
+    QFile file(filePath);
+
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        // No need to write anything, just open and close to clear the file
+        file.close();
+        qDebug() << "Notification history cleared.";
+    } else {
+        qDebug() << "Failed to open file for clearing notifications.";
+    }
+}
 
 void MainWindow::onActionVaccinTriggered() {
     vaccinTab->setCurrentIndex(14);
@@ -1649,62 +1752,7 @@ void MainWindow::showNotifications() {
     }
 }
 
-void MainWindow::handleNotificationClicked(const QString &message)
-{
-    // 1. Extract disease name
-    QString diseaseName = message.split('\n').first();
-    diseaseName = diseaseName.remove("Nouvelle maladie détectée :").trimmed();
 
-    // 2. Fetch complete article from database
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        qDebug() << "Database connection error";
-        return;
-    }
-
-    QSqlQuery query;
-    query.prepare("SELECT DETAIL_NOTIF FROM NOTIFICATIONS WHERE MALADIE = :disease");
-    query.bindValue(":disease", diseaseName);
-
-    QString fullArticle;
-    if (query.exec() && query.next()) {
-        fullArticle = query.value(0).toString();
-
-        // Enhance formatting for QTextBrowser
-        fullArticle = "<html><body style='font-family:Arial; font-size:12pt;'>"
-                      + fullArticle.replace("\n", "<br>")
-                      + "</body></html>";
-    } else {
-        fullArticle = "<i>Article complet non disponible</i>";
-        qDebug() << "Query error:" << query.lastError().text();
-    }
-
-    // 3. Show notification dialog
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Détails - " + diseaseName);
-    msgBox.setText(message);
-
-    QPushButton *articleButton = msgBox.addButton("Afficher l'article", QMessageBox::ActionRole);
-    articleButton->setStyleSheet("background-color: #46949c; color: white;");
-    msgBox.addButton(QMessageBox::Ok);
-
-    msgBox.exec();
-
-    if (msgBox.clickedButton() == articleButton) {
-        // 4. Display full article in QTextBrowser
-        ui->detail_label->setHtml(fullArticle);
-        ui->detail_label->setOpenExternalLinks(true); // Enable hyperlinks if present
-
-        // 5. Navigate to tab and ensure visibility
-        if (vaccinTab) {
-            vaccinTab->setCurrentIndex(16);
-            QTimer::singleShot(100, [this]() {
-                ui->detail_label->moveCursor(QTextCursor::Start);
-                ui->detail_label->ensureCursorVisible();
-            });
-        }
-    }
-}
 void MainWindow::ajoutNotification(const QString message) {
 
     QSoundEffect *soundEffect = new QSoundEffect(this);

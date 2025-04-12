@@ -1,4 +1,3 @@
-// chatbot.h
 #ifndef CHATBOT_H
 #define CHATBOT_H
 
@@ -21,16 +20,17 @@ public:
     void saveChatHistory(const QString &userMessage, const QString &botResponse);
     void loadChatHistory();
     void clearChatHistory();
+
+private:
+    QNetworkAccessManager *manager;
+    QString historyFilePath;
+    bool isMedicalQuestion(const QString &userMessage); // Declaration of the filtering method
     void handleResponse(QNetworkReply *reply, const QString &userMessage);
 
 signals:
     void responseReceived(const QString &response);
     void errorOccurred(const QString &errorMessage);
     void historyLoaded(const QString &history);
-
-private:
-    QNetworkAccessManager *manager;
-    QString historyFilePath;
 };
 
 #endif // CHATBOT_H
