@@ -3006,8 +3006,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 2), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 2), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 1), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 1), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3678,8 +3678,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 8, 1), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 8, 1), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 31), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 31), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -4192,7 +4192,7 @@ public:
         detail_2->setWidget(scrollAreaWidgetContents);
         label_35 = new QLabel(tab_13);
         label_35->setObjectName("label_35");
-        label_35->setGeometry(QRect(480, 60, 331, 41));
+        label_35->setGeometry(QRect(460, 60, 421, 41));
         label_35->setStyleSheet(QString::fromUtf8("font: 700 22pt \"Segoe UI\";"));
         vaccin->addTab(tab_13, QString());
         centralWidget = new QWidget(frame);
@@ -4349,7 +4349,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 22));
+        menubar->setGeometry(QRect(0, 0, 1546, 26));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -4641,7 +4641,7 @@ public:
         historyButton->setText(QCoreApplication::translate("MainWindow", "Afficher Historique", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "SmartChat", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_12), QCoreApplication::translate("MainWindow", "Page", nullptr));
-        label_35->setText(QCoreApplication::translate("MainWindow", "Historique du Maladie", nullptr));
+        label_35->setText(QCoreApplication::translate("MainWindow", "Historique des Maladies", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_13), QCoreApplication::translate("MainWindow", "Page", nullptr));
         Medecin->setText(QCoreApplication::translate("MainWindow", "M\303\251decins", nullptr));
         pushButton_2->setText(QString());

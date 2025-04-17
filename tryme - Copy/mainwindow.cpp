@@ -26,7 +26,6 @@
 #include <QtCharts/QBarCategoryAxis>
 #include <QToolTip>
 #include <vector>
-#include <iostream>
 #include "chatbot.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -707,6 +706,9 @@ void MainWindow::handleNotificationClicked(const QString &message) {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Détails - " + diseaseName);
     msgBox.setText(message);
+
+    QPushButton *ok = msgBox.addButton("Ok", QMessageBox::ActionRole);
+    ok->setStyleSheet("background-color: #46949c; color: white;");
 
     QPushButton *historiqueButton = msgBox.addButton("Afficher l'historique", QMessageBox::ActionRole);
     historiqueButton->setStyleSheet("background-color: #46949c; color: white;");
