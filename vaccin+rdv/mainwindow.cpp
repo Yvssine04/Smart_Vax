@@ -586,18 +586,12 @@ void MainWindow::checkVaccineExpiration() {
         qDebug() << "Query failed:" << query.lastError().text();
         return;
     }
-
-    qDebug() << "Query executed successfully.";
-
     while (query.next()) {
         QString nom = query.value(0).toString();
         QDate dateExp = query.value(1).toDate();
         if (!notifiedVaccines.contains(nom)) {
-            qDebug() << "Expired vaccine found:" << nom << dateExp;
             notifiedVaccines.insert(nom);
             triggerExpiredVaccineNotification(nom, dateExp);
-        } else {
-            qDebug() << "Already notified about expired vaccine:" << nom;
         }
     }
 }
