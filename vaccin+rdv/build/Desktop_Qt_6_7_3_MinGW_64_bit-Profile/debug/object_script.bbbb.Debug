@@ -1,0 +1,14 @@
+debug/customdelegate.o
+debug/equipements.o
+debug/evenement.o
+debug/main.o
+debug/mainwindow.o
+debug/rendez_vous.o
+debug/vaccin.o
+debug/qrc_image.o
+debug/qrc_qmake_qmake_qm_files.o
+debug/moc_customdelegate.o
+debug/moc_evenement.o
+debug/moc_mainwindow.o
+debug/moc_rendez_vous.o
+debug/moc_vaccin.o
