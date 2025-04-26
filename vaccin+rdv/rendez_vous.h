@@ -57,7 +57,7 @@ public:
     int saveAppointment(const QString &CIN, const QString &vaccin, const QString &date_rdvNaiss, const QString &adresse,
                         const QString &nom, const QString &prenom, const QString &dispo,
                         const QString &medecin, const QString &infirmier, const QString &salle,
-                        double facturation, const QString &SelectedDays, const QString &periode);
+                        double facturation, int attente);
     void loadAppointments(QListWidget *liste_att);
     void loadAppointmentsL(QListWidget *liste);
     void infoEdit(int idRDV, QLineEdit *CIN_rdv_2, QDateEdit *daterdv_2, QComboBox *vaccin_3, QLineEdit *adresse_2, QLineEdit *nom_rdv_2, QLineEdit *prenom_rdv_2, QDateTimeEdit *dispo_rdv_2, QComboBox *medecin_att_2, QComboBox *infirmier_att_2, QLineEdit *salle_att_2, QDoubleSpinBox *facturation_2);
@@ -76,8 +76,7 @@ public:
     QVBoxLayout *mainLayout;
     void showNotifications();
     void loadHolidaysFromFile(QCalendarWidget *calendrier);
-    QDateTime QDatefindBestAppointmentDate(int id);
-
+    QList<QDateTime> QDatefindBestAppointmentDate();
 
 private:
 

@@ -1732,7 +1732,7 @@ background-color: rgb(31, 109, 119);</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>17</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -11656,7 +11656,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>28</day>
+         <day>27</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -11666,7 +11666,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>28</day>
+         <day>27</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -13487,7 +13487,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>27</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -13497,7 +13497,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>27</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -15916,7 +15916,7 @@ border-radius: 15px;</string>
          <x>400</x>
          <y>100</y>
          <width>551</width>
-         <height>441</height>
+         <height>521</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -15931,7 +15931,7 @@ border-radius: 15px;</string>
          <x>440</x>
          <y>140</y>
          <width>471</width>
-         <height>371</height>
+         <height>441</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -15959,10 +15959,10 @@ border-radius: 15px;</string>
       <widget class="QTableWidget" name="tabPres">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>460</x>
          <y>160</y>
-         <width>411</width>
-         <height>321</height>
+         <width>431</width>
+         <height>391</height>
         </rect>
        </property>
        <property name="font">

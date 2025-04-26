@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    int attente;
     QString selectedDays;
     QString periode;
     QDate Date;
@@ -106,8 +107,7 @@ private slots:
 
 
 
-    void onCheckboxChanged();
-    void onCheckboxChangedP();
+
     void on_actiontaux_des_rendez_vous_triggered();
     void on_chatbot_page_clicked();
     void sendMessageToChatbot();
@@ -120,8 +120,9 @@ private slots:
     void clearNotificationHistory();
     void on_drag_clicked();
     void tri(int index);
-
-
+    void on_actionEmploy_s_triggered();
+    void on_actionQuitter_triggered();
+    void check_att();
 
 private:
     Ui::MainWindow *ui;
@@ -169,8 +170,10 @@ private:
     void loadAppointments();
     NotificationWidget *notificationWidget;
     int currentIdRdv;
+
     QMap<QDate, QStringList> appointmentTooltips;
     QMap<QDate, QList<QDateTime>> appointmentTimes;
+    QList<QDateTime> dateProp;
 
     QMap<QString, QString> holidayTranslation = {
         {"New Year", "Jour de l'An"},
@@ -193,13 +196,10 @@ private:
         {"Revolution and Youth Day", "Fête de la Révolution et de la Jeunesse"},
         {"December Solstice", "Solstice de décembre"}
     };
-    QCheckBox *lundiCheckBox;
-    QCheckBox *mardiCheckBox;
-    QCheckBox *mercrediCheckBox;
-    QCheckBox *jeudiCheckBox;
-    QCheckBox *vendrediCheckBox;
-    QCheckBox *samediCheckBox;
+    QCheckBox *attenteCheck;
+
     void handleNotificationClicked1();
+
 
 
 
@@ -207,6 +207,81 @@ private:
 
 };
 
+
+class AppointmentDialog : public QDialog {
+    Q_OBJECT
+public:
+    AppointmentDialog(const QList<QDateTime>& options, QWidget* parent = nullptr)
+        : QDialog(parent) {
+        setWindowTitle("Choisir une date de rendez-vous");
+        resize(400, 250);
+
+        QVBoxLayout* layout = new QVBoxLayout(this);
+
+        QLabel* label = new QLabel("Veuillez choisir l'une des dates proposées :", this);
+        layout->addWidget(label);
+
+        listWidget = new QListWidget(this);
+        for (const QDateTime& dt : options) {
+            listWidget->addItem(dt.toString("dddd dd MMMM yyyy - hh:mm"));
+        }
+        layout->addWidget(listWidget);
+
+        QDialogButtonBox* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+        connect(buttons, &QDialogButtonBox::accepted, this, &AppointmentDialog::accept);
+        connect(buttons, &QDialogButtonBox::rejected, this, &AppointmentDialog::reject);
+        layout->addWidget(buttons);
+
+        setStyleSheet(
+            "QDialog {"
+            "    background-color: #ffffff;"
+            "}"
+            "QLabel {"
+            "    font-size: 20px;"
+            "    color: rgb(63, 123, 134);"
+            "}"
+            "QListWidget {"
+            "   background-color: rgb(121, 167, 173);"
+            "   color: rgb(255, 255, 255);"
+            "    font-size: 15px;"
+            "}"
+            "QListWidget::item {"
+            "    padding: 5px;"
+            "    font-size: 20px"
+            "}"
+            "QListWidget::item:selected {"
+            "    background-color: #007acc;"
+            "    color: #fff;"
+            "}"
+            "QPushButton {"
+            "    background-color: rgb(63, 123, 134);"
+            "    color: rgb(0, 0, 0);"
+
+            "    border: none;"
+            "    padding: 10px 20px;"
+            "    border-radius: 5px;"
+            "}"
+            "QPushButton:hover {"
+            "    background-color: rgb(63, 123, 134);"
+            "}"
+            );
+    }
+
+    int selectedIndex() const {
+        return listWidget->currentRow();
+    }
+
+    QDateTime selectedDateTime(const QList<QDateTime>& options) const {
+        int index = selectedIndex();
+        if (index >= 0 && index < options.size()) {
+            return options[index];
+        }
+        return QDateTime();
+    }
+
+private:
+    QListWidget* listWidget;
+};
 
 
 

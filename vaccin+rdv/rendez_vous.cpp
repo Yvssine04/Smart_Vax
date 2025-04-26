@@ -1,12 +1,14 @@
-
 #include "rendez_vous.h"
 #include "qpainter.h"
-
+#include <QLocale>
+#include <climits>
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
 #include <QToolTip>
 #include <QMouseEvent>
+
+
 
 /////////////////////liste d'attente
 
@@ -68,8 +70,6 @@ void rendez_vous::fetchTunisianHolidays( const QString& year) {
 
 
 
-
-
 void rendez_vous::loadHolidaysFromFile(QCalendarWidget *calendrier) {
     QFile file("feries.txt");
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -109,24 +109,11 @@ void rendez_vous::loadHolidaysFromFile(QCalendarWidget *calendrier) {
 
 
 
-QDateTime rendez_vous::QDatefindBestAppointmentDate(int id) {
+QList<QDateTime> rendez_vous::QDatefindBestAppointmentDate() {
+    int maxOptions = 3;
     QMap<QDate, QList<QDateTime>> appointmentTimes;
     QDate today = QDate::currentDate();
-    QString periode, jour;
-
-    QSqlQuery prp;
-    prp.prepare("SELECT PERIODE, JOUR FROM RENDEZ_VOUS WHERE ID_RDV = :id");
-    prp.bindValue(":id", id);
-    if (prp.exec() && prp.next()) {
-        periode = prp.value(0).toString().trimmed().toLower();
-        jour = prp.value(1).toString().trimmed().toLower();
-    } else {
-        qWarning() << " Impossible de récupérer les préférences pour ID:" << id;
-        return QDateTime();
-    }
-
-    qDebug() << " Préférences - Période:" << periode << ", Jour préféré:" << jour;
-
+    QList<QDateTime> suggestions;
 
     QSqlQuery qry;
     qry.prepare("SELECT DATE_RDV FROM RENDEZ_VOUS");
@@ -135,105 +122,64 @@ QDateTime rendez_vous::QDatefindBestAppointmentDate(int id) {
             QDateTime dt = qry.value(0).toDateTime();
             appointmentTimes[dt.date()].append(dt);
         }
+    } else {
+        qWarning() << "Erreur lors de la récupération des rendez-vous:" << qry.lastError();
     }
 
+    struct ScoredDate {
+        QDate date;
+        int score;
+        int appointmentCount;
+    };
 
-    QLocale french(QLocale::French);
-    QDate bestExactMatch, bestPeriodMatch, bestAnyMatch;
-    int minExact = INT_MAX, minPeriod = INT_MAX, minAny = INT_MAX;
+    QList<ScoredDate> candidates;
+    QSet<QDate> tunisianHolidaysSet;
+    for (const auto& holiday : tunisianHolidays) {
+        tunisianHolidaysSet.insert(QDate::fromString(holiday.second, Qt::ISODate));
+    }
 
     for (int i = 1; i <= 30; ++i) {
         QDate date = today.addDays(i);
-        QString dayName = french.toString(date, "dddd").trimmed().toLower();
 
+        if (tunisianHolidaysSet.contains(date) || date.dayOfWeek() == Qt::Saturday || date.dayOfWeek() == Qt::Sunday) continue;
 
-        bool isHoliday = std::any_of(tunisianHolidays.begin(), tunisianHolidays.end(),
-                                     [&](const auto& h) { return QDate::fromString(h.second, Qt::ISODate) == date; });
-        if (isHoliday) {
-            qDebug() << " Ignorée (jour férié)";
-            continue;
-        }
-        if (date.dayOfWeek() == 7) {
-            qDebug() << " Ignorée (dimanche)";
-            continue;
-        }
+        int count = appointmentTimes[date].size();
+        int score = count * 10;
+        if (date.dayOfWeek() == Qt::Friday && date >= today.addDays(20)) score += 5;
+        if (date.dayOfWeek() == Qt::Wednesday && date < today.addDays(15)) score -= 5;
 
-        const int MAX_APPOINTMENTS = 3;
+        candidates.append({ date, score, count });
+    }
 
-        int count = 0;
-        for (const QDateTime& dt : appointmentTimes[date]) {
-            int hour = dt.time().hour();
-            if ((periode == "matin" && hour < 12) ||
-                (periode == "midi" && hour >= 12 && hour < 17) ||
-                (periode == "après midi" && hour >= 12 && hour < 17) ||
-                (periode == "soir" && hour >= 17) ||
-                (periode.isEmpty())) {
-                ++count;
+    std::sort(candidates.begin(), candidates.end(), [](const ScoredDate& a, const ScoredDate& b) {
+        return a.date < b.date;
+    });
+
+    for (const auto& candidate : candidates) {
+        if (suggestions.size() >= maxOptions) break;
+
+        QDate date = candidate.date;
+        QList<QDateTime>& times = appointmentTimes[date];
+
+        QSet<QTime> taken;
+        for (const QDateTime& dt : times)
+            taken.insert(dt.time());
+
+        QList<QTime> preferredTimes = { QTime(9, 0), QTime(10, 0), QTime(11, 0), QTime(14, 0), QTime(15, 0), QTime(16, 0) };
+        for (const QTime& time : preferredTimes) {
+            if (!taken.contains(time)) {
+                suggestions.append(QDateTime(date, time));
+                break;
             }
         }
-
-        if (count >= MAX_APPOINTMENTS) {
-            qDebug() << " Ignorée (trop de RDV dans la période) - " << count;
-            continue;
-        }
-
-
-        if (dayName == jour && count < minExact) {
-            minExact = count;
-            bestExactMatch = date;
-            qDebug() << " Exact match:" << date << "→" << count << "RDV";
-        }
-
-        if (periode != "" && count < minPeriod) {
-            minPeriod = count;
-            bestPeriodMatch = date;
-        }
-
-        if (count < minAny) {
-            minAny = count;
-            bestAnyMatch = date;
-        }
-
-        if (dayName != jour)
-            qDebug() << " Ignorée (jour ≠ préféré) - Trouvé:" << dayName << ", Attendu:" << jour;
     }
 
-
-    QDate finalDate;
-    if (bestExactMatch.isValid()) finalDate = bestExactMatch;
-    else if (bestPeriodMatch.isValid()) finalDate = bestPeriodMatch;
-    else finalDate = bestAnyMatch;
-
-    if (!finalDate.isValid()) {
-        qWarning() << "Aucune date valide trouvée.";
-        return QDateTime();
+    if (suggestions.isEmpty()) {
+        qWarning() << "Aucune date suggérée disponible.";
     }
 
-    QTime bestTime;
-    if (periode == "matin") bestTime = QTime(9, 0);
-    else if (periode == "midi" || periode == "après midi") bestTime = QTime(14, 0);
-    else if (periode == "soir") bestTime = QTime(17, 30);
-    else bestTime = QTime(10, 0);
-
-    qDebug() << " Rendez-vous proposé:" << finalDate << bestTime;
-    QDateTime suggested = QDateTime(finalDate, bestTime);
-    QMessageBox::information(nullptr,
-                             "Confirmation",
-                             "La date proposée est : " + suggested.toString("dd/MM/yyyy hh:mm"),
-                             QMessageBox::Ok);
-
-
-
-    return QDateTime(finalDate, bestTime);
+    return suggestions;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -327,10 +273,11 @@ void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox 
         QString prenom_e2 = query.value(1).toString();
         BoxInf->addItem(nom_e1 + " " + prenom_e2);
     }
+
+
+
+
 }
-
-
-
 
 
 
@@ -343,7 +290,7 @@ void rendez_vous::loadVaccins(QComboBox *comboBox, QComboBox *BoxMed, QComboBox 
 int rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, const QString &dateVaccination,
                                  const QString &adresse, const QString &nom, const QString &prenom,
                                  const QString &dispo, const QString &medecin, const QString &infirmier,
-                                 const QString &salle, double facturation, const QString &SelectedDays, const QString &periode)
+                                 const QString &salle, double facturation, int attente)
 {
     QString trimmedCIN = CIN.trimmed();
     QString trimmedNom = nom.trimmed();
@@ -358,23 +305,19 @@ int rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, cons
 
     if (trimmedCIN.isEmpty() || trimmedNom.isEmpty() || trimmedPrenom.isEmpty() ||
         trimmedAdresse.isEmpty() || trimmedSalle.isEmpty() || trimmedVaccin.isEmpty()) {
-        QMessageBox::warning(nullptr, "Erreur", "Tous les champs obligatoires doivent être remplis.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "Tous les champs obligatoires doivent être remplis.");
         return 0;
     }
 
     QRegularExpression cinRegex("^\\d{8}$");
     if (!cinRegex.match(trimmedCIN).hasMatch()) {
-        QMessageBox::warning(nullptr, "Erreur", "Le CIN doit contenir exactement 7 chiffres.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "Le CIN doit contenir exactement 8 chiffres.");
         return 0;
     }
 
     QRegularExpression nameRegex("^[A-Za-zÀ-ÖØ-öø-ÿ\\s-]+$");
-    if (!nameRegex.match(trimmedNom).hasMatch()) {
-        QMessageBox::warning(nullptr, "Erreur", "Le nom ne doit contenir que des lettres.", QMessageBox::Ok);
-        return 0;
-    }
-    if (!nameRegex.match(trimmedPrenom).hasMatch()) {
-        QMessageBox::warning(nullptr, "Erreur", "Le prénom ne doit contenir que des lettres.", QMessageBox::Ok);
+    if (!nameRegex.match(trimmedNom).hasMatch() || !nameRegex.match(trimmedPrenom).hasMatch()) {
+        QMessageBox::warning(nullptr, "Erreur", "Le nom et prénom doivent contenir uniquement des lettres.");
         return 0;
     }
 
@@ -382,115 +325,93 @@ int rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, cons
     QDate vaccinDate = QDate::fromString(trimmedDateVaccination, "yyyy-MM-dd");
     QDateTime dispoDateTime = QDateTime::fromString(trimmedDispo, "yyyy-MM-dd HH:mm:ss");
 
-    if (!vaccinDate.isValid()) {
-        QMessageBox::warning(nullptr, "Erreur", "Format de date de naissance invalide (utilisez AAAA-MM-JJ).", QMessageBox::Ok);
+    if (!vaccinDate.isValid() || vaccinDate > today) {
+        QMessageBox::warning(nullptr, "Erreur", "Date de naissance invalide ou future.");
         return 0;
     }
 
-    if (vaccinDate > today) {
-        QMessageBox::warning(nullptr, "Erreur", "La date de naissance ne peut pas être dans le futur.", QMessageBox::Ok);
-        return 0;
+    if (attente == 0) {
+        if (!dispoDateTime.isValid() || dispoDateTime <= QDateTime::currentDateTime()) {
+            QMessageBox::warning(nullptr, "Erreur", "Le rendez-vous doit être programmé dans le futur.");
+            return 0;
+        }
+
+        QSqlQuery checkQuery;
+        checkQuery.prepare("SELECT 1 FROM RENDEZ_VOUS WHERE DATE_RDV = :date AND SALLE_ATT = :salle");
+        checkQuery.bindValue(":date", dispoDateTime);
+        checkQuery.bindValue(":salle", trimmedSalle);
+
+        if (!checkQuery.exec() || checkQuery.next()) {
+            QMessageBox::warning(nullptr, "Erreur", "Conflit : un rendez-vous est déjà prévu dans cette salle à ce moment.");
+            return 0;
+        }
     }
-    if(SelectedDays=="" && periode==""){
-        if (!dispoDateTime.isValid()) {
-            QMessageBox::warning(nullptr, "Erreur", "Format de date/heure de rendez-vous invalide.", QMessageBox::Ok);
-            return 0;
-        }
-
-        if (dispoDateTime <= QDateTime::currentDateTime()) {
-            QMessageBox::warning(nullptr, "Erreur", "Le rendez-vous doit être programmé dans le futur.", QMessageBox::Ok);
-            return 0;
-        }
-
-        QSqlQuery qry;
-        qry.prepare("SELECT * FROM RENDEZ_VOUS WHERE DATE_RDV = :date AND SALLE_ATT = :salle");
-        qry.bindValue(":salle", salle);
-        qry.bindValue(":date", dispoDateTime);
-
-        if (!qry.exec()) {
-            QMessageBox::warning(nullptr, "Erreur", "Erreur lors de la vérification des rendez-vous: " + qry.lastError().text(), QMessageBox::Ok);
-            return 0;
-        }
-
-        if (qry.next()) {
-            QMessageBox::warning(nullptr, "Attention", "Un rendez-vous est déjà programmé à cette heure dans la même salle!", QMessageBox::Ok);
-            return 0;
-        }
-
-    }
-
-
 
     if (facturation < 0) {
-        QMessageBox::warning(nullptr, "Erreur", "La facturation ne peut pas être négative.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "La facturation ne peut pas être négative.");
         return 0;
     }
 
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.transaction()) {
-        QMessageBox::warning(nullptr, "Erreur", "Impossible de démarrer la transaction.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "Échec de la transaction.");
         return 0;
     }
 
-    bool conversionOk;
-    int CINi = trimmedCIN.toInt(&conversionOk);
-    if (!conversionOk) {
+    bool ok;
+    int CINi = trimmedCIN.toInt(&ok);
+    if (!ok) {
         db.rollback();
-        QMessageBox::warning(nullptr, "Erreur", "CIN invalide.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "CIN invalide.");
         return 0;
     }
-    int idRdv = 2;
 
-    ///// Verifier si patient existe
-
-    QSqlQuery checkPatientQuery;
-    checkPatientQuery.prepare("SELECT 1 FROM PATIENT WHERE CIN_PASSP = :cin");
-    checkPatientQuery.bindValue(":cin", CINi);
-
-    if (!checkPatientQuery.exec() || !checkPatientQuery.next()) {
-        QMessageBox::StandardButton reply;
-        reply =QMessageBox::question(nullptr, "Il s'agit d'un nouveau patient",
-                                      "Le CIN correspondant n'est pas trouvé. Voulez-vous créer un nouveau patient par la suite?",
-                                      QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::Yes) {
-            checkPatientQuery.prepare("INSERT INTO PATIENT (CIN_PASSP, NOM, PRÉNOM, DATE_NAISS, ADRESSE)"
-                                      "VALUES (:cin, :nom, :prenom, TO_DATE(:date_rdv,'YYYY-MM-DD HH24:MI:SS'), :lieu)");
-
-            checkPatientQuery.bindValue(":cin",CINi);
-            checkPatientQuery.bindValue(":nom", trimmedNom);
-            checkPatientQuery.bindValue(":prenom", trimmedPrenom);
-            checkPatientQuery.bindValue(":date_rdv", trimmedDateVaccination);
-            checkPatientQuery.bindValue(":lieu", trimmedAdresse);
-
-            if (!checkPatientQuery.exec()) {
-                QMessageBox::critical(nullptr, "Erreur", "Échec de l'ajout du nouveau patient : " + checkPatientQuery.lastError().text());
+    QSqlQuery patientQuery;
+    patientQuery.prepare("SELECT 1 FROM PATIENT WHERE CIN_PASSP = :cin");
+    patientQuery.bindValue(":cin", CINi);
+    if (!patientQuery.exec() || !patientQuery.next()) {
+        auto res = QMessageBox::question(nullptr, "Nouveau patient",
+                                         "Ce CIN n'existe pas. Voulez-vous créer un nouveau patient ?");
+        if (res == QMessageBox::Yes) {
+            patientQuery.prepare("INSERT INTO PATIENT (CIN_PASSP, NOM, PRÉNOM, DATE_NAISS, ADRESSE)"
+                                 " VALUES (:cin, :nom, :prenom, TO_DATE(:date_naiss, 'YYYY-MM-DD'), :adresse)");
+            patientQuery.bindValue(":cin", CINi);
+            patientQuery.bindValue(":nom", trimmedNom);
+            patientQuery.bindValue(":prenom", trimmedPrenom);
+            patientQuery.bindValue(":date_naiss", trimmedDateVaccination);
+            patientQuery.bindValue(":adresse", trimmedAdresse);
+            if (!patientQuery.exec()) {
+                QMessageBox::critical(nullptr, "Erreur", "Échec de création du patient: " + patientQuery.lastError().text());
             } else {
-                QMessageBox::information(nullptr, "Succès", "Le nouveau patient a été enregistré avec succès.");
+                QMessageBox::information(nullptr, "Succès", "Nouveau patient enregistré.");
             }
             return 2;
-
-
+        } else {
+            return 0;
         }
     }
-
-    //// Insertion dans rdv
-    QSqlQuery query;
-    if(SelectedDays=="" && periode==""){
-
-        query.prepare("INSERT INTO RENDEZ_VOUS (CIN_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV) "
-                      "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'), :lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv, TO_DATE(:date_rdvNaiss, 'YYYY-MM-DD'))"
-                      "RETURNING ID_RDV INTO :new_id");
-    }else{
-
-        query.prepare("INSERT INTO RENDEZ_VOUS (CIN_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV, JOUR, PERIODE) "
-                      "VALUES (:cin, :lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv, TO_DATE(:date_rdvNaiss, 'YYYY-MM-DD'), :jour, :periode)"
-                      "RETURNING ID_RDV INTO :new_id");
-
-
-
+    QSqlQuery docQuery;
+    docQuery.prepare("SELECT COUNT(*) FROM RENDEZ_VOUS WHERE DOC_ATT = :doc AND TRUNC(DATE_RDV) = TO_DATE(:date, 'YYYY-MM-DD')");
+    docQuery.bindValue(":doc", trimmedMedecin);
+    docQuery.bindValue(":date", dispoDateTime.date().toString("yyyy-MM-dd"));
+    if (docQuery.exec() && docQuery.next() && docQuery.value(0).toInt() >= 6) {
+        auto reply = QMessageBox::question(nullptr, "Surcharge", "Ce médecin a déjà 6 rendez-vous ce jour. Continuer ?");
+        if (reply != QMessageBox::Yes) return 0;
     }
 
-    query.bindValue(":id_rdv", idRdv);
+    QSqlQuery rdvQuery;
+    QSqlQuery query;
+
+
+        query.prepare("INSERT INTO RENDEZ_VOUS (CIN_RDV, DATE_RDV, LIEU, DOC_ATT, INFIRMIER_ATT, SALLE_ATT, FACTURATION_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV, DATENAISS_RDV, ATTENTE) "
+                      "VALUES (:cin, TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'), :lieu, :doc_att, :infirmier_att, :salle_att, :facturation, :nom_rdv, :prenom_rdv, :vaccin_rdv, TO_DATE(:date_rdvNaiss, 'YYYY-MM-DD'), :attente)"
+                      "RETURNING ID_RDV INTO :new_id");
+
+
+
+
+
+
     query.bindValue(":cin", CINi);
     query.bindValue(":dispo", trimmedDispo);
     query.bindValue(":lieu", trimmedAdresse);
@@ -502,8 +423,7 @@ int rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, cons
     query.bindValue(":prenom_rdv", trimmedPrenom);
     query.bindValue(":vaccin_rdv", trimmedVaccin);
     query.bindValue(":date_rdvNaiss", trimmedDateVaccination);
-    query.bindValue(":jour", SelectedDays);
-    query.bindValue(":periode", periode);
+    query.bindValue(":attente", attente);
 
 
     int newRdvId = -1;
@@ -521,38 +441,30 @@ int rendez_vous::saveAppointment(const QString &CIN, const QString &vaccin, cons
         db.rollback();
         QMessageBox::warning(nullptr, "Erreur", "Échec de récupération de l'ID du rendez-vous.", QMessageBox::Ok);
         return 0;
-    }
-
-    qDebug() << "ID_RDV " << newRdvId;
-    // Insert into RESERVER
-    QSqlQuery insertReserverQuery;
-    insertReserverQuery.prepare("INSERT INTO RESERVER (CIN_PASSP,ID_RDV,VACCIN_RSV,DATE_RSV) "
-                                "VALUES (:cin, :id_rdv, :vaccin_rdv,  TO_DATE(:dispo, 'YYYY-MM-DD HH24:MI:SS'))");
-    insertReserverQuery.bindValue(":id_rdv", newRdvId);
-    insertReserverQuery.bindValue(":vaccin_rdv", trimmedVaccin);
-    insertReserverQuery.bindValue(":cin", CINi);
-    insertReserverQuery.bindValue(":dispo", trimmedDispo);
-
-    if (!insertReserverQuery.exec()) {
+    };
+    QSqlQuery resvQuery;
+    resvQuery.prepare("INSERT INTO RESERVER (CIN_PASSP, ID_RDV, VACCIN_RSV, DATE_RSV) "
+                      "VALUES (:cin, :id_rdv, :vaccin, TO_DATE(:date, 'YYYY-MM-DD HH24:MI:SS'))");
+    resvQuery.bindValue(":cin", CINi);
+    resvQuery.bindValue(":id_rdv", newRdvId);
+    resvQuery.bindValue(":vaccin", trimmedVaccin);
+    resvQuery.bindValue(":date", trimmedDispo);
+    if (!resvQuery.exec()) {
         db.rollback();
-        QMessageBox::warning(nullptr, "Erreur",
-                             "Échec de l'enregistrement de la réservation:\n" + insertReserverQuery.lastError().text(),
-                             QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "Échec de la réservation: " + resvQuery.lastError().text());
         return 0;
     }
 
     if (!db.commit()) {
-        QMessageBox::warning(nullptr, "Erreur", "Échec de la validation des modifications.", QMessageBox::Ok);
+        QMessageBox::warning(nullptr, "Erreur", "Échec validation de la transaction.");
         return 0;
     }
 
-    QMessageBox::information(nullptr, "Succès", "Le rendez-vous a été enregistré avec succès.");
+
+
+    QMessageBox::information(nullptr, "Succès", "Rendez-vous enregistré avec succès.");
     return 1;
 }
-
-
-
-
 
 
 
@@ -630,7 +542,7 @@ int rendez_vous::modifier_rdv(int idRdv,const QString &CINi, const QString &vacc
 
     QSqlQuery checkPatientQuery;
     checkPatientQuery.prepare("SELECT 1 FROM PATIENT WHERE CIN_PASSP = :cin");
-    checkPatientQuery.bindValue(":cin", CINi); // CINi is your converted integer CIN
+    checkPatientQuery.bindValue(":cin", CINi);
 
     if (!checkPatientQuery.exec() || !checkPatientQuery.next()) {
         QMessageBox::StandardButton reply;
@@ -704,7 +616,7 @@ void rendez_vous::loadAppointmentsL(QListWidget *liste)
 
 
 
-    QSqlQuery query("SELECT ID_RDV, CIN_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM RENDEZ_VOUS WHERE DATE_RDV >= TRUNC(SYSDATE)");
+    QSqlQuery query("SELECT ID_RDV, CIN_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM RENDEZ_VOUS WHERE DATE_RDV >= TRUNC(SYSDATE) AND ATTENTE = 0");
 
     while (query.next()) {
         int idRdv = query.value(0).toInt();
@@ -744,7 +656,7 @@ void rendez_vous::loadAppointments(QListWidget *liste_att)
 
     qDebug() << "Loading appointments...";
 
-    QSqlQuery query("SELECT ID_RDV, CIN_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM RENDEZ_VOUS WHERE DATE_RDV IS NULL");
+    QSqlQuery query("SELECT ID_RDV, CIN_RDV, NOM_RDV, PRENOM_RDV, VACCIN_RDV FROM RENDEZ_VOUS WHERE ATTENTE = 1 ");
 
     while (query.next()) {
         int idRdv = query.value(0).toInt();

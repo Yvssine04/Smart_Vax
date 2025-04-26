@@ -214,18 +214,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ////////////////////////////////////////////
     ///  connect
-    connect(ui->lundi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-    connect(ui->mardi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-    connect(ui->mercredi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-    connect(ui->jeudi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-    connect(ui->vendredi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-    connect(ui->vendredi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChanged);
-
-
-
-    connect(ui->matin, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChangedP);
-    connect(ui->midi, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChangedP);
-    connect(ui->soir, &QCheckBox::stateChanged, this, &MainWindow::onCheckboxChangedP);
 
     connect(notificationWidget, &NotificationWidget::notificationClicked,
             this, &MainWindow::handleNotificationClicked);
@@ -292,6 +280,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->calendrier_rdv, &QCalendarWidget::clicked, this, &MainWindow::on_calendarWidget_clicked);
     // Connect the send button to the sendMessageToChatbot slot
 
+    connect(ui->attente, &QCheckBox::stateChanged, this, &MainWindow::check_att);
 
 
 
@@ -1597,8 +1586,13 @@ void MainWindow::on_ajoutrdv_clicked() {
     ui->dispo->setDateTime(QDateTime(Date, QTime::currentTime()));
 
     rdvWindow->loadVaccins(ui->vaccin_2,ui->medecin_att,ui->infirmier_att);
-
 }
+
+void MainWindow::check_att(){
+    attente = 0;
+if(ui->attente->isChecked()) attente=1;
+}
+
 
 void MainWindow::on_save_rdv_clicked() {
     QString CIN = ui->CIN_rdv->text();
@@ -1614,7 +1608,9 @@ void MainWindow::on_save_rdv_clicked() {
     double facturation = ui->facturation->value();
 
 
-    int verif =rdvWindow->saveAppointment(CIN, vaccin, date_rdv, adresse, nom, prenom, dispo, medecin, infirmier, salle, facturation,selectedDays,periode);
+
+
+    int verif =rdvWindow->saveAppointment(CIN, vaccin, date_rdv, adresse, nom, prenom, dispo, medecin, infirmier, salle, facturation,attente);
 
     if (verif==1){
         ui->CIN_rdv->clear();
@@ -1850,19 +1846,19 @@ void MainWindow::on_calendarWidget_clicked(const QDate &date)
         QList<QDateTime> timeList = appointmentTimes[date];
 
         int count = qMin(patientList.size(), timeList.size());
-
+        ui->rendez_v->clear();
         for (int i = 0; i < count; ++i) {
             QString timeString = timeList.at(i).toString("hh:mm");
-            displayList.append(patientList.at(i) + " - " + timeString);
+            QString rdv = patientList.at(i) + " - " + timeString;
+            ui->rendez_v->setFont(font);
+            ui->rendez_v->addItem(rdv);
         }
-
-        QString rdv = displayList.join("\n");
-        ui->rendez_v->setFont(font);
-        ui->rendez_v->setText(rdv);
     } else {
+        ui->rendez_v->clear();
         ui->rendez_v->setFont(font);
-        ui->rendez_v->setText("Aucun rendez-vous prévus ce jour.");
+        ui->rendez_v->addItem("Aucun rendez-vous prévus ce jour.");
     }
+
 }
 
 
@@ -2094,31 +2090,6 @@ void MainWindow::on_actiontaux_des_rendez_vous_triggered()
     ui->stat->setLayout(layout);
 }
 /////////////////liste d'attente
-void MainWindow::onCheckboxChanged()
-{
-
-
-    if (ui->lundi->isChecked()) selectedDays= "Lundi";
-    if (ui->mardi->isChecked()) selectedDays = "Mardi";
-    if (ui->mercredi->isChecked()) selectedDays = "Mercredi";
-    if (ui->jeudi->isChecked()) selectedDays = "Jeudi";
-    if (ui->vendredi->isChecked()) selectedDays = "Vendredi";
-    if (ui->samedi->isChecked()) selectedDays = "Samedi";
-    qDebug() << "Selected days:" << selectedDays;
-}
-
-void MainWindow::onCheckboxChangedP()
-{
-
-
-    if (ui->matin->isChecked()) periode= "Matin";
-    if (ui->midi->isChecked()) periode = "Midi";
-    if (ui->soir->isChecked()) periode = "Soir";
-
-
-    qDebug() << "Selected days:" << periode;
-}
-
 
 
 
@@ -2127,28 +2098,79 @@ void MainWindow::onCheckboxChangedP()
 void MainWindow::on_drag_clicked()
 {
     QListWidgetItem *selectedItem = ui->liste_att->currentItem();
+    if (!selectedItem) {
+        QMessageBox::warning(this, "Attention", "Veuillez sélectionner un élément de la liste.");
+        return;
+    }
+    int idRdvl;
     if (selectedItem) {
+         idRdvl = selectedItem->data(Qt::UserRole).toInt();}
+    dateProp = rdvWindow->QDatefindBestAppointmentDate();
 
-        int idRdv = selectedItem->data(Qt::UserRole).toInt();
-        currentIdRdv = idRdv;
-        QDateTime dateTime = rdvWindow->QDatefindBestAppointmentDate(currentIdRdv);
-        QDate date = dateTime.date();
+    AppointmentDialog dialog(dateProp, this);
+    if (dialog.exec() == QDialog::Accepted) {
+        QDateTime dateTime = dialog.selectedDateTime(dateProp);
+        if (dateTime.isValid()) {
+            qDebug()<<"date"<<dateTime;
+            qDebug() << "ID du rendez-vous :" << idRdvl;
 
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Confirmation",
+                                          "Désirez-vous fixer la date " + dateTime.toString("dd/MM/yyyy hh:mm") + " comme rendez-vous ?",
+                                          QMessageBox::Yes | QMessageBox::No);
 
+            if (reply == QMessageBox::Yes) {
+                QDate date = dateTime.date();
+                appointmentTimes[date].append(dateTime);
 
-        appointmentTimes[date].append(dateTime);
-        QSqlQuery pr;
-        pr.prepare("UPDATE RENDEZ_VOUS SET "
-                   "DATE_RDV = :date "
-                   "WHERE ID_RDV = :idRdv");
-
-        pr.bindValue(":date",dateTime);
-        pr.bindValue(":idRdv",idRdv);
-        if (!pr.exec()) {
-            QMessageBox::critical(nullptr, "Error", "erreur : " + pr.lastError().text());}
-
-    } else {
-        QMessageBox::warning(this, "Attention", "Veuillez sélectionner un élément de la liste d'attente.");
+                QSqlQuery pr;
+                pr.prepare("UPDATE RENDEZ_VOUS SET DATE_RDV = :date, ATTENTE = 0 WHERE ID_RDV = :idRdv");
+                pr.bindValue(":date", dateTime);
+                pr.bindValue(":idRdv", idRdvl);
+                if (!pr.exec()) {
+                    QMessageBox::critical(this, "Erreur", "Erreur lors de la mise à jour du rendez-vous : " + pr.lastError().text());
+                } else {
+                    QMessageBox::information(this, "Succès", "Le rendez-vous a été fixé avec succès.");
+                }
+            }
+        } else {
+            QMessageBox::warning(this, "Avertissement", "La date et l'heure sélectionnées ne sont pas valides.");
+        }
     }
     on_rdv_clicked();
 }
+
+
+
+
+
+void MainWindow::on_actionEmploy_s_triggered()
+{
+
+    QSqlQuery query("SELECT PRENOM_E, NOM_E FROM EMPLOYEES");
+    ui->tabPres->setRowCount(0);
+    int row = 0;
+
+    while (query.next()) {
+        ui->tabPres->insertRow(row);
+        ui->tabPres->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
+        ui->tabPres->setItem(row, 1, new QTableWidgetItem(query.value(1).toString()));
+        row++;
+    }
+
+
+    vaccinTab->setCurrentIndex(17);
+
+}
+
+
+void MainWindow::on_actionQuitter_triggered()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirmer", "Êtes-vous sûr de vouloir quitter l'application ?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        QApplication::quit();}
+}
+

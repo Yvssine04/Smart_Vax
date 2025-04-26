@@ -48,6 +48,7 @@ public:
     QAction *actionQuitter;
     QAction *actionVaccin;
     QAction *actiontaux_des_rendez_vous;
+    QAction *actionEmploy_s;
     QWidget *centralwidget;
     QFrame *frame;
     QWidget *widget_2;
@@ -224,9 +225,9 @@ public:
     QLabel *label_49;
     QLabel *feries;
     QLineEdit *lineEdit_38;
-    QLabel *rendez_v;
     QLabel *label_52;
     QListWidget *liste;
+    QListWidget *rendez_v;
     QWidget *tab_10;
     QWidget *tab_9;
     QTableView *tableView_27;
@@ -260,17 +261,7 @@ public:
     QLineEdit *salle_att;
     QLineEdit *adresse;
     QLabel *label_326;
-    QCheckBox *samedi;
-    QCheckBox *vendredi;
-    QCheckBox *matin;
-    QTableView *tableView_83;
-    QCheckBox *mercredi;
-    QCheckBox *midi;
-    QCheckBox *soir;
-    QTableView *tableView_84;
-    QCheckBox *lundi;
-    QCheckBox *mardi;
-    QCheckBox *jeudi;
+    QCheckBox *attente;
     QWidget *tab_5;
     QLabel *label_39;
     QLineEdit *age_vac_2;
@@ -373,18 +364,7 @@ public:
     QLabel *label_341;
     QComboBox *vaccin_3;
     QLineEdit *salle_att_2;
-    QCheckBox *checkBox_71;
-    QTableView *tableView_87;
-    QCheckBox *checkBox_72;
-    QCheckBox *checkBox_73;
-    QCheckBox *checkBox_74;
-    QCheckBox *checkBox_75;
-    QTableView *tableView_88;
-    QCheckBox *checkBox_76;
-    QCheckBox *checkBox_77;
-    QCheckBox *checkBox_78;
-    QCheckBox *checkBox_79;
-    QCheckBox *checkBox_80;
+    QCheckBox *attente_1;
     QWidget *tab_8;
     QWidget *stat;
     QTableView *tableView_25;
@@ -403,6 +383,11 @@ public:
     QWidget *scrollAreaWidgetContents;
     QTextBrowser *detail_label;
     QLabel *label_35;
+    QWidget *tab_14;
+    QTableView *detail_3;
+    QTableView *detail_4;
+    QLabel *label_53;
+    QTableWidget *tabPres;
     QWidget *centralWidget;
     QWidget *widget;
     QLabel *Medecin;
@@ -416,13 +401,14 @@ public:
     QMenuBar *menubar;
     QMenu *menuSessio;
     QMenu *menuStatistique;
+    QMenu *menuActivit;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1546, 1400);
+        MainWindow->resize(1827, 1400);
         QPalette palette;
         QBrush brush(QColor(0, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -498,19 +484,29 @@ public:
         MainWindow->setPalette(palette);
         actionGestion_d_acc_s = new QAction(MainWindow);
         actionGestion_d_acc_s->setObjectName("actionGestion_d_acc_s");
+        QIcon icon(QIcon::fromTheme(QIcon::ThemeIcon::DocumentProperties));
+        actionGestion_d_acc_s->setIcon(icon);
         actionChanger_d_utilisateur = new QAction(MainWindow);
         actionChanger_d_utilisateur->setObjectName("actionChanger_d_utilisateur");
+        QIcon icon1(QIcon::fromTheme(QIcon::ThemeIcon::SyncSynchronizing));
+        actionChanger_d_utilisateur->setIcon(icon1);
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName("actionQuitter");
+        QIcon icon2(QIcon::fromTheme(QIcon::ThemeIcon::SystemLogOut));
+        actionQuitter->setIcon(icon2);
         actionVaccin = new QAction(MainWindow);
         actionVaccin->setObjectName("actionVaccin");
         actiontaux_des_rendez_vous = new QAction(MainWindow);
         actiontaux_des_rendez_vous->setObjectName("actiontaux_des_rendez_vous");
+        actionEmploy_s = new QAction(MainWindow);
+        actionEmploy_s->setObjectName("actionEmploy_s");
+        QIcon icon3(QIcon::fromTheme(QIcon::ThemeIcon::UserAvailable));
+        actionEmploy_s->setIcon(icon3);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
-        frame->setGeometry(QRect(0, 130, 1601, 771));
+        frame->setGeometry(QRect(0, 130, 1841, 1281));
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
         QBrush brush7(QColor(121, 167, 173, 255));
@@ -674,17 +670,17 @@ public:
         pushButton_4->setObjectName("pushButton_4");
         pushButton_4->setGeometry(QRect(0, 50, 131, 131));
         pushButton_4->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/icon4.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_4->setIcon(icon);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/icon4.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_4->setIcon(icon4);
         pushButton_4->setIconSize(QSize(83, 85));
         rdv = new QPushButton(widget_3);
         rdv->setObjectName("rdv");
         rdv->setGeometry(QRect(0, 180, 131, 141));
         rdv->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/icon6.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        rdv->setIcon(icon1);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/icon6.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        rdv->setIcon(icon5);
         rdv->setIconSize(QSize(60, 74));
         label_6 = new QLabel(widget_3);
         label_6->setObjectName("label_6");
@@ -701,9 +697,9 @@ public:
         eventB->setObjectName("eventB");
         eventB->setGeometry(QRect(0, 320, 131, 141));
         eventB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/icon7.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        eventB->setIcon(icon2);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/icon7.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        eventB->setIcon(icon6);
         eventB->setIconSize(QSize(83, 77));
         label_7 = new QLabel(widget_3);
         label_7->setObjectName("label_7");
@@ -756,7 +752,7 @@ public:
         main->setGeometry(QRect(130, 0, 1411, 771));
         vaccin = new QTabWidget(frame);
         vaccin->setObjectName("vaccin");
-        vaccin->setGeometry(QRect(130, 0, 1421, 771));
+        vaccin->setGeometry(QRect(130, 0, 1661, 1051));
         Tab1 = new QWidget();
         Tab1->setObjectName("Tab1");
         label_11 = new QLabel(Tab1);
@@ -918,9 +914,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/7398464.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        edit_vac->setIcon(icon3);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/7398464.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        edit_vac->setIcon(icon7);
         edit_vac->setIconSize(QSize(42, 36));
         delete_vac = new QPushButton(Tab1);
         delete_vac->setObjectName("delete_vac");
@@ -1005,9 +1001,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/216658.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        delete_vac->setIcon(icon4);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/216658.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        delete_vac->setIcon(icon8);
         delete_vac->setIconSize(QSize(49, 37));
         tableView_3 = new QTableView(Tab1);
         tableView_3->setObjectName("tableView_3");
@@ -1108,8 +1104,8 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        QIcon icon5(QIcon::fromTheme(QIcon::ThemeIcon::DocumentPrintPreview));
-        pdfvaccin->setIcon(icon5);
+        QIcon icon9(QIcon::fromTheme(QIcon::ThemeIcon::DocumentPrintPreview));
+        pdfvaccin->setIcon(icon9);
         pdfvaccin->setIconSize(QSize(42, 36));
         choix_vac = new QComboBox(Tab1);
         choix_vac->setObjectName("choix_vac");
@@ -1204,8 +1200,8 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        QIcon icon6(QIcon::fromTheme(QIcon::ThemeIcon::AppointmentNew));
-        chatbot_page->setIcon(icon6);
+        QIcon icon10(QIcon::fromTheme(QIcon::ThemeIcon::AppointmentNew));
+        chatbot_page->setIcon(icon10);
         chatbot_page->setIconSize(QSize(65, 34));
         chatbot_line_2 = new QLineEdit(Tab1);
         chatbot_line_2->setObjectName("chatbot_line_2");
@@ -1301,9 +1297,9 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/save.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        save_vac->setIcon(icon7);
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8(":/save.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        save_vac->setIcon(icon11);
         save_vac->setIconSize(QSize(25, 26));
         lineEdit_12 = new QLineEdit(Tab2);
         lineEdit_12->setObjectName("lineEdit_12");
@@ -1329,8 +1325,8 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        QIcon icon8(QIcon::fromTheme(QIcon::ThemeIcon::ApplicationExit));
-        Quit->setIcon(icon8);
+        QIcon icon12(QIcon::fromTheme(QIcon::ThemeIcon::ApplicationExit));
+        Quit->setIcon(icon12);
         Quit->setIconSize(QSize(29, 21));
         lineEdit_13 = new QLineEdit(Tab2);
         lineEdit_13->setObjectName("lineEdit_13");
@@ -1623,7 +1619,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
-        supprimerevent->setIcon(icon4);
+        supprimerevent->setIcon(icon8);
         supprimerevent->setIconSize(QSize(49, 37));
         modifierevent = new QPushButton(Tab3);
         modifierevent->setObjectName("modifierevent");
@@ -1693,7 +1689,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        modifierevent->setIcon(icon3);
+        modifierevent->setIcon(icon7);
         modifierevent->setIconSize(QSize(42, 36));
         choixtri = new QComboBox(Tab3);
         choixtri->addItem(QString());
@@ -1923,7 +1919,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_3->setIcon(icon8);
+        Quit_3->setIcon(icon12);
         Quit_3->setIconSize(QSize(25, 20));
         save_event = new QPushButton(tab_2);
         save_event->setObjectName("save_event");
@@ -1933,7 +1929,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);"));
-        save_event->setIcon(icon7);
+        save_event->setIcon(icon11);
         save_event->setIconSize(QSize(25, 26));
         save_event->setFlat(true);
         lineEdit_33 = new QLineEdit(tab_2);
@@ -2142,7 +2138,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius :25px\n"
 ""));
-        supprimerevent_3->setIcon(icon4);
+        supprimerevent_3->setIcon(icon8);
         supprimerevent_3->setIconSize(QSize(49, 37));
         edit_equi = new QPushButton(tab);
         edit_equi->setObjectName("edit_equi");
@@ -2212,7 +2208,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        edit_equi->setIcon(icon3);
+        edit_equi->setIcon(icon7);
         edit_equi->setIconSize(QSize(42, 36));
         lineEdit_66 = new QLineEdit(tab);
         lineEdit_66->setObjectName("lineEdit_66");
@@ -2372,7 +2368,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_2->setIcon(icon8);
+        Quit_2->setIcon(icon12);
         Quit_2->setIconSize(QSize(26, 21));
         label_38 = new QLabel(tab_3);
         label_38->setObjectName("label_38");
@@ -2396,7 +2392,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        save_eq->setIcon(icon7);
+        save_eq->setIcon(icon11);
         save_eq->setIconSize(QSize(25, 26));
         vaccin->addTab(tab_3, QString());
         label_38->raise();
@@ -2426,7 +2422,7 @@ public:
         tab_4->setObjectName("tab_4");
         tableView_22 = new QTableView(tab_4);
         tableView_22->setObjectName("tableView_22");
-        tableView_22->setGeometry(QRect(100, 40, 1201, 631));
+        tableView_22->setGeometry(QRect(130, 80, 1261, 621));
         QPalette palette12;
         palette12.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette12.setBrush(QPalette::Active, QPalette::Button, brush24);
@@ -2514,7 +2510,7 @@ public:
 ""));
         calendrier_rdv = new QCalendarWidget(tab_4);
         calendrier_rdv->setObjectName("calendrier_rdv");
-        calendrier_rdv->setGeometry(QRect(710, 200, 481, 251));
+        calendrier_rdv->setGeometry(QRect(740, 230, 481, 251));
         calendrier_rdv->setMinimumSize(QSize(431, 0));
         QPalette palette13;
         palette13.setBrush(QPalette::Active, QPalette::WindowText, brush1);
@@ -2602,34 +2598,34 @@ public:
         calendrier_rdv->setDateEditAcceptDelay(1500);
         label_34 = new QLabel(tab_4);
         label_34->setObjectName("label_34");
-        label_34->setGeometry(QRect(10, 20, 1381, 691));
+        label_34->setGeometry(QRect(110, 50, 1321, 691));
         label_34->setFrameShape(QFrame::Shape::WinPanel);
         label_34->setFrameShadow(QFrame::Shadow::Sunken);
         label_34->setLineWidth(2);
         label_34->setMidLineWidth(0);
         tableView_7 = new QTableView(tab_4);
         tableView_7->setObjectName("tableView_7");
-        tableView_7->setGeometry(QRect(150, 90, 1111, 541));
+        tableView_7->setGeometry(QRect(170, 120, 1161, 541));
         tableView_7->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;"));
         lineEdit_29 = new QLineEdit(tab_4);
         lineEdit_29->setObjectName("lineEdit_29");
-        lineEdit_29->setGeometry(QRect(190, 170, 301, 51));
+        lineEdit_29->setGeometry(QRect(220, 200, 301, 51));
         lineEdit_29->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
         lineEdit_30 = new QLineEdit(tab_4);
         lineEdit_30->setObjectName("lineEdit_30");
-        lineEdit_30->setGeometry(QRect(510, 170, 121, 51));
+        lineEdit_30->setGeometry(QRect(540, 200, 121, 51));
         lineEdit_30->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
         rdv_rech = new QLineEdit(tab_4);
         rdv_rech->setObjectName("rdv_rech");
-        rdv_rech->setGeometry(QRect(190, 160, 301, 51));
+        rdv_rech->setGeometry(QRect(220, 190, 301, 51));
         rdv_rech->setFont(font5);
         rdv_rech->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "font: 18pt \"Segoe UI\";\n"
@@ -2640,47 +2636,47 @@ public:
         rdv_rech->setCursorPosition(0);
         label_36 = new QLabel(tab_4);
         label_36->setObjectName("label_36");
-        label_36->setGeometry(QRect(190, 110, 341, 31));
+        label_36->setGeometry(QRect(220, 140, 341, 31));
         label_36->setFont(font6);
         label_36->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         label_67 = new QLabel(tab_4);
         label_67->setObjectName("label_67");
-        label_67->setGeometry(QRect(490, 40, 351, 41));
+        label_67->setGeometry(QRect(560, 70, 351, 41));
         QFont font12;
         font12.setPointSize(16);
         font12.setBold(true);
         label_67->setFont(font12);
         lineEdit_69 = new QLineEdit(tab_4);
         lineEdit_69->setObjectName("lineEdit_69");
-        lineEdit_69->setGeometry(QRect(1250, 50, 41, 41));
+        lineEdit_69->setGeometry(QRect(1340, 90, 41, 41));
         lineEdit_69->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
         Quit_4 = new QPushButton(tab_4);
         Quit_4->setObjectName("Quit_4");
-        Quit_4->setGeometry(QRect(1250, 50, 41, 31));
+        Quit_4->setGeometry(QRect(1340, 90, 41, 31));
         Quit_4->setFont(font7);
         Quit_4->setStyleSheet(QString::fromUtf8("background-color:rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_4->setIcon(icon8);
+        Quit_4->setIcon(icon12);
         Quit_4->setIconSize(QSize(19, 26));
         rdv_pdf = new QPushButton(tab_4);
         rdv_pdf->setObjectName("rdv_pdf");
-        rdv_pdf->setGeometry(QRect(720, 120, 61, 51));
+        rdv_pdf->setGeometry(QRect(790, 160, 61, 51));
         rdv_pdf->setFont(font7);
         rdv_pdf->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 "color: rgb(0, 0, 0);\n"
 ""));
-        rdv_pdf->setIcon(icon5);
+        rdv_pdf->setIcon(icon9);
         rdv_pdf->setIconSize(QSize(37, 34));
         liste_att = new QListWidget(tab_4);
         liste_att->setObjectName("liste_att");
-        liste_att->setGeometry(QRect(180, 260, 341, 141));
+        liste_att->setGeometry(QRect(210, 290, 341, 141));
         QFont font13;
         font13.setFamilies({QString::fromUtf8("Segoe UI")});
         font13.setPointSize(13);
@@ -2699,55 +2695,55 @@ public:
         liste_att->setSortingEnabled(false);
         edit_rdv = new QPushButton(tab_4);
         edit_rdv->setObjectName("edit_rdv");
-        edit_rdv->setGeometry(QRect(790, 120, 61, 51));
+        edit_rdv->setGeometry(QRect(860, 160, 61, 51));
         edit_rdv->setFont(font7);
         edit_rdv->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        edit_rdv->setIcon(icon3);
+        edit_rdv->setIcon(icon7);
         edit_rdv->setIconSize(QSize(37, 34));
         lineEdit_34 = new QLineEdit(tab_4);
         lineEdit_34->setObjectName("lineEdit_34");
-        lineEdit_34->setGeometry(QRect(860, 130, 61, 51));
+        lineEdit_34->setGeometry(QRect(930, 170, 61, 51));
         lineEdit_34->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
         lineEdit_36 = new QLineEdit(tab_4);
         lineEdit_36->setObjectName("lineEdit_36");
-        lineEdit_36->setGeometry(QRect(790, 130, 61, 51));
+        lineEdit_36->setGeometry(QRect(860, 170, 61, 51));
         lineEdit_36->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
         deleteRdv = new QPushButton(tab_4);
         deleteRdv->setObjectName("deleteRdv");
-        deleteRdv->setGeometry(QRect(860, 120, 61, 51));
+        deleteRdv->setGeometry(QRect(930, 160, 61, 51));
         deleteRdv->setFont(font7);
         deleteRdv->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        deleteRdv->setIcon(icon4);
+        deleteRdv->setIcon(icon8);
         deleteRdv->setIconSize(QSize(37, 34));
         lineEdit_37 = new QLineEdit(tab_4);
         lineEdit_37->setObjectName("lineEdit_37");
-        lineEdit_37->setGeometry(QRect(720, 130, 61, 51));
+        lineEdit_37->setGeometry(QRect(790, 170, 61, 51));
         lineEdit_37->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
         lineEdit_35 = new QLineEdit(tab_4);
         lineEdit_35->setObjectName("lineEdit_35");
-        lineEdit_35->setGeometry(QRect(940, 130, 301, 51));
+        lineEdit_35->setGeometry(QRect(1010, 170, 301, 51));
         lineEdit_35->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
         ajoutrdv = new QPushButton(tab_4);
         ajoutrdv->setObjectName("ajoutrdv");
-        ajoutrdv->setGeometry(QRect(940, 120, 301, 51));
+        ajoutrdv->setGeometry(QRect(1010, 160, 301, 51));
         QFont font14;
         font14.setFamilies({QString::fromUtf8("Segoe UI")});
         font14.setPointSize(17);
@@ -2761,7 +2757,7 @@ public:
 ""));
         label_50 = new QLabel(tab_4);
         label_50->setObjectName("label_50");
-        label_50->setGeometry(QRect(180, 220, 341, 31));
+        label_50->setGeometry(QRect(210, 250, 341, 31));
         QFont font15;
         font15.setPointSize(15);
         font15.setBold(false);
@@ -2771,7 +2767,7 @@ public:
         label_50->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         label_51 = new QLabel(tab_4);
         label_51->setObjectName("label_51");
-        label_51->setGeometry(QRect(180, 400, 341, 31));
+        label_51->setGeometry(QRect(210, 430, 341, 31));
         label_51->setFont(font15);
         label_51->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);"));
         tri_rdv = new QComboBox(tab_4);
@@ -2780,7 +2776,7 @@ public:
         tri_rdv->addItem(QString());
         tri_rdv->addItem(QString());
         tri_rdv->setObjectName("tri_rdv");
-        tri_rdv->setGeometry(QRect(507, 160, 124, 51));
+        tri_rdv->setGeometry(QRect(540, 190, 121, 51));
         tri_rdv->setFont(font7);
         tri_rdv->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
 "background-color: rgb(93, 143, 157);\n"
@@ -2792,23 +2788,23 @@ public:
         tri_rdv->setFrame(true);
         label_97 = new QLabel(tab_4);
         label_97->setObjectName("label_97");
-        label_97->setGeometry(QRect(580, 170, 31, 31));
+        label_97->setGeometry(QRect(610, 200, 31, 31));
         label_97->setStyleSheet(QString::fromUtf8("image: url(:/icon8.png);"));
         drag = new QPushButton(tab_4);
         drag->setObjectName("drag");
-        drag->setGeometry(QRect(540, 380, 61, 51));
+        drag->setGeometry(QRect(570, 410, 61, 51));
         drag->setFont(font7);
         drag->setStyleSheet(QString::fromUtf8("background-color: rgb(93, 143, 157);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 "color: rgb(0, 0, 0);\n"
 ""));
-        QIcon icon9(QIcon::fromTheme(QIcon::ThemeIcon::ObjectRotateRight));
-        drag->setIcon(icon9);
+        QIcon icon13(QIcon::fromTheme(QIcon::ThemeIcon::ObjectRotateRight));
+        drag->setIcon(icon13);
         drag->setIconSize(QSize(37, 34));
         label_49 = new QLabel(tab_4);
         label_49->setObjectName("label_49");
-        label_49->setGeometry(QRect(670, 500, 611, 21));
+        label_49->setGeometry(QRect(700, 530, 651, 21));
         QFont font16;
         font16.setPointSize(11);
         font16.setBold(true);
@@ -2820,17 +2816,14 @@ public:
         feries->setGeometry(QRect(680, 460, 491, 31));
         lineEdit_38 = new QLineEdit(tab_4);
         lineEdit_38->setObjectName("lineEdit_38");
-        lineEdit_38->setGeometry(QRect(540, 390, 61, 51));
+        lineEdit_38->setGeometry(QRect(570, 420, 61, 51));
         lineEdit_38->setStyleSheet(QString::fromUtf8("background-color:rgb(0, 0, 0);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 25px;\n"
 ""));
-        rendez_v = new QLabel(tab_4);
-        rendez_v->setObjectName("rendez_v");
-        rendez_v->setGeometry(QRect(680, 530, 411, 81));
         label_52 = new QLabel(tab_4);
         label_52->setObjectName("label_52");
-        label_52->setGeometry(QRect(660, 90, 611, 20));
+        label_52->setGeometry(QRect(610, 130, 761, 20));
         QFont font17;
         font17.setPointSize(9);
         font17.setBold(false);
@@ -2839,7 +2832,7 @@ public:
         label_52->setFont(font17);
         liste = new QListWidget(tab_4);
         liste->setObjectName("liste");
-        liste->setGeometry(QRect(180, 440, 341, 141));
+        liste->setGeometry(QRect(220, 470, 341, 141));
         liste->setFont(font13);
         liste->setStyleSheet(QString::fromUtf8("background-color: rgb(121, 167, 173);\n"
 "alternate-background-color: rgb(63, 123, 134);\n"
@@ -2852,6 +2845,14 @@ public:
         liste->setSelectionRectVisible(true);
         liste->setItemAlignment(Qt::AlignmentFlag::AlignLeading);
         liste->setSortingEnabled(false);
+        rendez_v = new QListWidget(tab_4);
+        rendez_v->setObjectName("rendez_v");
+        rendez_v->setGeometry(QRect(700, 560, 551, 91));
+        rendez_v->setStyleSheet(QString::fromUtf8("background-color: transparent;"));
+        rendez_v->setAlternatingRowColors(false);
+        rendez_v->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerItem);
+        rendez_v->setSelectionRectVisible(true);
+        rendez_v->setSortingEnabled(true);
         vaccin->addTab(tab_4, QString());
         label_34->raise();
         tableView_22->raise();
@@ -2880,10 +2881,10 @@ public:
         label_49->raise();
         feries->raise();
         lineEdit_38->raise();
-        rendez_v->raise();
         label_52->raise();
         liste->raise();
         drag->raise();
+        rendez_v->raise();
         tab_10 = new QWidget();
         tab_10->setObjectName("tab_10");
         vaccin->addTab(tab_10, QString());
@@ -2982,7 +2983,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_9->setIcon(icon8);
+        Quit_9->setIcon(icon12);
         Quit_9->setIconSize(QSize(19, 26));
         lineEdit_153 = new QLineEdit(tab_9);
         lineEdit_153->setObjectName("lineEdit_153");
@@ -3004,11 +3005,11 @@ public:
 ""));
         label_329 = new QLabel(tab_9);
         label_329->setObjectName("label_329");
-        label_329->setGeometry(QRect(700, 360, 231, 41));
+        label_329->setGeometry(QRect(700, 260, 231, 41));
         label_329->setFont(font9);
         label_320 = new QLabel(tab_9);
         label_320->setObjectName("label_320");
-        label_320->setGeometry(QRect(700, 480, 241, 41));
+        label_320->setGeometry(QRect(700, 380, 241, 41));
         label_320->setFont(font9);
         dispo = new QDateTimeEdit(tab_9);
         dispo->setObjectName("dispo");
@@ -3058,12 +3059,12 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 8, 1), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 8, 1), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 7, 28), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 7, 28), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
-        infirmier_att->setGeometry(QRect(950, 420, 271, 41));
+        infirmier_att->setGeometry(QRect(950, 320, 271, 41));
         infirmier_att->setStyleSheet(QString::fromUtf8(" border: 2px solid black; \n"
 "         border-radius: 15px;    \n"
 "          padding: 5px;          \n"
@@ -3071,7 +3072,7 @@ public:
 "           color: black;"));
         medecin_att = new QComboBox(tab_9);
         medecin_att->setObjectName("medecin_att");
-        medecin_att->setGeometry(QRect(950, 360, 271, 41));
+        medecin_att->setGeometry(QRect(950, 260, 271, 41));
         medecin_att->setStyleSheet(QString::fromUtf8(" border: 2px solid black; \n"
 "         border-radius: 15px;    \n"
 "          padding: 5px;          \n"
@@ -3110,8 +3111,8 @@ public:
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);\n"
 ""));
-        QIcon icon10(QIcon::fromTheme(QIcon::ThemeIcon::DocumentSave));
-        save_rdv->setIcon(icon10);
+        QIcon icon14(QIcon::fromTheme(QIcon::ThemeIcon::DocumentSave));
+        save_rdv->setIcon(icon14);
         save_rdv->setIconSize(QSize(27, 28));
         label_323 = new QLabel(tab_9);
         label_323->setObjectName("label_323");
@@ -3131,7 +3132,7 @@ public:
 ""));
         label_322 = new QLabel(tab_9);
         label_322->setObjectName("label_322");
-        label_322->setGeometry(QRect(700, 420, 241, 41));
+        label_322->setGeometry(QRect(700, 320, 241, 41));
         label_322->setFont(font9);
         nom_rdv = new QLineEdit(tab_9);
         nom_rdv->setObjectName("nom_rdv");
@@ -3142,7 +3143,7 @@ public:
 "color: rgb(0, 0, 0);"));
         salle_att = new QLineEdit(tab_9);
         salle_att->setObjectName("salle_att");
-        salle_att->setGeometry(QRect(950, 480, 271, 41));
+        salle_att->setGeometry(QRect(950, 380, 271, 41));
         salle_att->setAutoFillBackground(false);
         salle_att->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
@@ -3159,46 +3160,15 @@ public:
         label_326->setObjectName("label_326");
         label_326->setGeometry(QRect(130, 200, 241, 41));
         label_326->setFont(font9);
-        samedi = new QCheckBox(tab_9);
-        samedi->setObjectName("samedi");
-        samedi->setGeometry(QRect(850, 280, 93, 26));
-        vendredi = new QCheckBox(tab_9);
-        vendredi->setObjectName("vendredi");
-        vendredi->setGeometry(QRect(850, 250, 93, 26));
-        matin = new QCheckBox(tab_9);
-        matin->setObjectName("matin");
-        matin->setGeometry(QRect(1010, 130, 93, 26));
-        tableView_83 = new QTableView(tab_9);
-        tableView_83->setObjectName("tableView_83");
-        tableView_83->setGeometry(QRect(830, 120, 141, 201));
-        tableView_83->setStyleSheet(QString::fromUtf8("background-color: rgb(120, 166, 172);\n"
-"border: 2px solid #000000;\n"
-"border-radius: 15px;"));
-        mercredi = new QCheckBox(tab_9);
-        mercredi->setObjectName("mercredi");
-        mercredi->setGeometry(QRect(850, 190, 93, 26));
-        midi = new QCheckBox(tab_9);
-        midi->setObjectName("midi");
-        midi->setGeometry(QRect(1010, 200, 93, 26));
-        soir = new QCheckBox(tab_9);
-        soir->setObjectName("soir");
-        soir->setGeometry(QRect(1010, 270, 93, 26));
-        tableView_84 = new QTableView(tab_9);
-        tableView_84->setObjectName("tableView_84");
-        tableView_84->setGeometry(QRect(1000, 120, 141, 201));
-        tableView_84->setStyleSheet(QString::fromUtf8("background-color: rgb(120, 166, 172);\n"
-"border: 2px solid #000000;\n"
-"border-radius: 15px;"));
-        lundi = new QCheckBox(tab_9);
-        lundi->setObjectName("lundi");
-        lundi->setGeometry(QRect(850, 130, 93, 26));
-        mardi = new QCheckBox(tab_9);
-        mardi->setObjectName("mardi");
-        mardi->setGeometry(QRect(850, 160, 93, 26));
-        jeudi = new QCheckBox(tab_9);
-        jeudi->setObjectName("jeudi");
-        jeudi->setGeometry(QRect(850, 220, 93, 26));
-        jeudi->setTristate(false);
+        attente = new QCheckBox(tab_9);
+        attente->setObjectName("attente");
+        attente->setGeometry(QRect(990, 500, 191, 31));
+        attente->setFont(font6);
+        attente->setStyleSheet(QString::fromUtf8("QCheckBox::indicator { width: 17px; height: 17px; }\n"
+"color: rgb(0, 0, 0);"));
+        attente->setIconSize(QSize(28, 25));
+        attente->setChecked(false);
+        attente->setTristate(false);
         vaccin->addTab(tab_9, QString());
         label_68->raise();
         tableView_27->raise();
@@ -3227,21 +3197,11 @@ public:
         nom_rdv->raise();
         salle_att->raise();
         label_326->raise();
-        tableView_83->raise();
-        mercredi->raise();
-        tableView_84->raise();
-        lundi->raise();
-        mardi->raise();
-        jeudi->raise();
-        samedi->raise();
-        vendredi->raise();
-        matin->raise();
-        soir->raise();
-        midi->raise();
         date_rdv->raise();
         vaccin_2->raise();
         adresse->raise();
         CIN_rdv->raise();
+        attente->raise();
         tab_5 = new QWidget();
         tab_5->setObjectName("tab_5");
         label_39 = new QLabel(tab_5);
@@ -3266,7 +3226,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_5->setIcon(icon8);
+        Quit_5->setIcon(icon12);
         Quit_5->setIconSize(QSize(29, 21));
         lineEdit_25 = new QLineEdit(tab_5);
         lineEdit_25->setObjectName("lineEdit_25");
@@ -3358,7 +3318,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        save_vac_2->setIcon(icon7);
+        save_vac_2->setIcon(icon11);
         save_vac_2->setIconSize(QSize(25, 26));
         tableView_8 = new QTableView(tab_5);
         tableView_8->setObjectName("tableView_8");
@@ -3467,7 +3427,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_13->setIcon(icon8);
+        Quit_13->setIcon(icon12);
         Quit_13->setIconSize(QSize(25, 20));
         label_204 = new QLabel(tab_6);
         label_204->setObjectName("label_204");
@@ -3549,7 +3509,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);"));
-        sauvegarderevent->setIcon(icon7);
+        sauvegarderevent->setIcon(icon11);
         sauvegarderevent->setIconSize(QSize(25, 26));
         sauvegarderevent->setFlat(true);
         vaccin->addTab(tab_6, QString());
@@ -3563,7 +3523,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        Quit_6->setIcon(icon8);
+        Quit_6->setIcon(icon12);
         Quit_6->setIconSize(QSize(26, 21));
         lineEdit_71 = new QLineEdit(tab_7);
         lineEdit_71->setObjectName("lineEdit_71");
@@ -3590,7 +3550,7 @@ public:
 "border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 ""));
-        modif_save->setIcon(icon7);
+        modif_save->setIcon(icon11);
         modif_save->setIconSize(QSize(25, 26));
         tableView_24 = new QTableView(tab_7);
         tableView_24->setObjectName("tableView_24");
@@ -3726,8 +3686,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 31), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 31), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 27), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 27), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -3735,11 +3695,11 @@ public:
         label_330->setFont(font9);
         label_331 = new QLabel(tab_34);
         label_331->setObjectName("label_331");
-        label_331->setGeometry(QRect(120, 500, 201, 41));
+        label_331->setGeometry(QRect(690, 390, 201, 41));
         label_331->setFont(font9);
         label_332 = new QLabel(tab_34);
         label_332->setObjectName("label_332");
-        label_332->setGeometry(QRect(690, 430, 241, 41));
+        label_332->setGeometry(QRect(690, 270, 241, 41));
         label_332->setFont(font9);
         label_333 = new QLabel(tab_34);
         label_333->setObjectName("label_333");
@@ -3762,7 +3722,7 @@ public:
 "color: rgb(0, 0, 0);"));
         infirmier_att_2 = new QComboBox(tab_34);
         infirmier_att_2->setObjectName("infirmier_att_2");
-        infirmier_att_2->setGeometry(QRect(940, 430, 271, 41));
+        infirmier_att_2->setGeometry(QRect(940, 270, 271, 41));
         infirmier_att_2->setStyleSheet(QString::fromUtf8(" border: 2px solid black; \n"
 "         border-radius: 15px;    \n"
 "          padding: 5px;          \n"
@@ -3858,7 +3818,7 @@ public:
 ""));
         medecin_att_2 = new QComboBox(tab_34);
         medecin_att_2->setObjectName("medecin_att_2");
-        medecin_att_2->setGeometry(QRect(940, 370, 271, 41));
+        medecin_att_2->setGeometry(QRect(940, 210, 271, 41));
         medecin_att_2->setStyleSheet(QString::fromUtf8(" border: 2px solid black; \n"
 "         border-radius: 15px;    \n"
 "          padding: 5px;          \n"
@@ -3872,15 +3832,15 @@ public:
 "border-radius: 15px;"));
         label_338 = new QLabel(tab_34);
         label_338->setObjectName("label_338");
-        label_338->setGeometry(QRect(690, 490, 241, 41));
+        label_338->setGeometry(QRect(690, 330, 241, 41));
         label_338->setFont(font9);
         label_339 = new QLabel(tab_34);
         label_339->setObjectName("label_339");
-        label_339->setGeometry(QRect(690, 370, 251, 41));
+        label_339->setGeometry(QRect(690, 210, 251, 41));
         label_339->setFont(font9);
         dispo_2 = new QDateTimeEdit(tab_34);
         dispo_2->setObjectName("dispo_2");
-        dispo_2->setGeometry(QRect(380, 510, 271, 41));
+        dispo_2->setGeometry(QRect(940, 390, 271, 41));
         dispo_2->setStyleSheet(QString::fromUtf8("border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "color: rgb(63, 123, 134);\n"
@@ -3925,7 +3885,7 @@ public:
 "border-radius: 15px;\n"
 "color: rgb(0, 0, 0);\n"
 ""));
-        save_rdv_2->setIcon(icon10);
+        save_rdv_2->setIcon(icon14);
         save_rdv_2->setIconSize(QSize(27, 28));
         adresse_2 = new QLineEdit(tab_34);
         adresse_2->setObjectName("adresse_2");
@@ -3948,55 +3908,21 @@ public:
 "           color: black;"));
         salle_att_2 = new QLineEdit(tab_34);
         salle_att_2->setObjectName("salle_att_2");
-        salle_att_2->setGeometry(QRect(940, 490, 271, 41));
+        salle_att_2->setGeometry(QRect(940, 330, 271, 41));
         salle_att_2->setAutoFillBackground(false);
         salle_att_2->setStyleSheet(QString::fromUtf8("border: 2px solid #000000;\n"
 "border-radius: 15px;\n"
 "background-color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        checkBox_71 = new QCheckBox(tab_34);
-        checkBox_71->setObjectName("checkBox_71");
-        checkBox_71->setGeometry(QRect(840, 260, 93, 26));
-        tableView_87 = new QTableView(tab_34);
-        tableView_87->setObjectName("tableView_87");
-        tableView_87->setGeometry(QRect(820, 130, 141, 201));
-        tableView_87->setStyleSheet(QString::fromUtf8("background-color: rgb(120, 166, 172);\n"
-"border: 2px solid #000000;\n"
-"border-radius: 15px;"));
-        checkBox_72 = new QCheckBox(tab_34);
-        checkBox_72->setObjectName("checkBox_72");
-        checkBox_72->setGeometry(QRect(1020, 170, 93, 26));
-        checkBox_73 = new QCheckBox(tab_34);
-        checkBox_73->setObjectName("checkBox_73");
-        checkBox_73->setGeometry(QRect(840, 290, 93, 26));
-        checkBox_74 = new QCheckBox(tab_34);
-        checkBox_74->setObjectName("checkBox_74");
-        checkBox_74->setGeometry(QRect(1020, 230, 93, 26));
-        checkBox_75 = new QCheckBox(tab_34);
-        checkBox_75->setObjectName("checkBox_75");
-        checkBox_75->setGeometry(QRect(1020, 140, 91, 21));
-        tableView_88 = new QTableView(tab_34);
-        tableView_88->setObjectName("tableView_88");
-        tableView_88->setGeometry(QRect(1000, 130, 141, 201));
-        tableView_88->setStyleSheet(QString::fromUtf8("background-color: rgb(120, 166, 172);\n"
-"border: 2px solid #000000;\n"
-"border-radius: 15px;"));
-        checkBox_76 = new QCheckBox(tab_34);
-        checkBox_76->setObjectName("checkBox_76");
-        checkBox_76->setGeometry(QRect(840, 140, 93, 26));
-        checkBox_77 = new QCheckBox(tab_34);
-        checkBox_77->setObjectName("checkBox_77");
-        checkBox_77->setGeometry(QRect(840, 230, 93, 26));
-        checkBox_77->setTristate(false);
-        checkBox_78 = new QCheckBox(tab_34);
-        checkBox_78->setObjectName("checkBox_78");
-        checkBox_78->setGeometry(QRect(840, 200, 93, 26));
-        checkBox_79 = new QCheckBox(tab_34);
-        checkBox_79->setObjectName("checkBox_79");
-        checkBox_79->setGeometry(QRect(840, 170, 93, 26));
-        checkBox_80 = new QCheckBox(tab_34);
-        checkBox_80->setObjectName("checkBox_80");
-        checkBox_80->setGeometry(QRect(1020, 200, 121, 26));
+        attente_1 = new QCheckBox(tab_34);
+        attente_1->setObjectName("attente_1");
+        attente_1->setGeometry(QRect(970, 501, 191, 31));
+        attente_1->setFont(font6);
+        attente_1->setStyleSheet(QString::fromUtf8("QCheckBox::indicator { width: 17px; height: 17px; }\n"
+"color: rgb(0, 0, 0);"));
+        attente_1->setIconSize(QSize(28, 25));
+        attente_1->setChecked(false);
+        attente_1->setTristate(false);
         vaccin->addTab(tab_34, QString());
         tableView_85->raise();
         tableView_86->raise();
@@ -4025,18 +3951,7 @@ public:
         label_341->raise();
         vaccin_3->raise();
         salle_att_2->raise();
-        tableView_87->raise();
-        checkBox_73->raise();
-        tableView_88->raise();
-        checkBox_76->raise();
-        checkBox_77->raise();
-        checkBox_78->raise();
-        checkBox_79->raise();
-        checkBox_74->raise();
-        checkBox_80->raise();
-        checkBox_75->raise();
-        checkBox_72->raise();
-        checkBox_71->raise();
+        attente_1->raise();
         tab_8 = new QWidget();
         tab_8->setObjectName("tab_8");
         stat = new QWidget(tab_8);
@@ -4198,7 +4113,7 @@ public:
         send_button = new QPushButton(tab_12);
         send_button->setObjectName("send_button");
         send_button->setGeometry(QRect(1300, 610, 51, 51));
-        send_button->setIcon(icon6);
+        send_button->setIcon(icon10);
         send_button->setIconSize(QSize(34, 33));
         chatbot_display = new QTextEdit(tab_12);
         chatbot_display->setObjectName("chatbot_display");
@@ -4243,12 +4158,64 @@ public:
         label_35->setGeometry(QRect(480, 60, 331, 41));
         label_35->setStyleSheet(QString::fromUtf8("font: 700 22pt \"Segoe UI\";"));
         vaccin->addTab(tab_13, QString());
+        tab_14 = new QWidget();
+        tab_14->setObjectName("tab_14");
+        detail_3 = new QTableView(tab_14);
+        detail_3->setObjectName("detail_3");
+        detail_3->setGeometry(QRect(400, 100, 551, 441));
+        detail_3->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;"));
+        detail_4 = new QTableView(tab_14);
+        detail_4->setObjectName("detail_4");
+        detail_4->setGeometry(QRect(440, 140, 471, 371));
+        detail_4->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
+"border: 2px solid #000000;\n"
+"border-radius: 15px;"));
+        label_53 = new QLabel(tab_14);
+        label_53->setObjectName("label_53");
+        label_53->setGeometry(QRect(520, 100, 351, 41));
+        label_53->setStyleSheet(QString::fromUtf8("font: 700 22pt \"Segoe UI\";"));
+        tabPres = new QTableWidget(tab_14);
+        if (tabPres->columnCount() < 3)
+            tabPres->setColumnCount(3);
+        QTableWidgetItem *__qtablewidgetitem20 = new QTableWidgetItem();
+        tabPres->setHorizontalHeaderItem(0, __qtablewidgetitem20);
+        QTableWidgetItem *__qtablewidgetitem21 = new QTableWidgetItem();
+        tabPres->setHorizontalHeaderItem(1, __qtablewidgetitem21);
+        QTableWidgetItem *__qtablewidgetitem22 = new QTableWidgetItem();
+        tabPres->setHorizontalHeaderItem(2, __qtablewidgetitem22);
+        if (tabPres->rowCount() < 3)
+            tabPres->setRowCount(3);
+        tabPres->setObjectName("tabPres");
+        tabPres->setGeometry(QRect(470, 160, 411, 321));
+        QFont font18;
+        font18.setPointSize(12);
+        tabPres->setFont(font18);
+        tabPres->setStyleSheet(QString::fromUtf8(" QTableWidget {\n"
+"         background-color:rgb(63, 123, 134);\n"
+"        }\n"
+"        QHeaderView {\n"
+"          background-color: rgb(63, 123, 134);\n"
+"        }\n"
+"        QHeaderView::section {\n"
+"          background-color:#bae5e8;\n"
+"           color: black;\n"
+"           font-size: 16px;\n"
+"            padding: 8px;\n"
+"        }\n"
+"        QTableWidget::item {\n"
+"          padding: 20px;\n"
+"\n"
+"        }"));
+        tabPres->setSortingEnabled(true);
+        vaccin->addTab(tab_14, QString());
         centralWidget = new QWidget(frame);
         centralWidget->setObjectName("centralWidget");
-        centralWidget->setGeometry(QRect(100, 170, 401, 171));
-        QFont font18;
-        font18.setPointSize(15);
-        centralWidget->setFont(font18);
+        centralWidget->setGeometry(QRect(60, 170, 301, 171));
+        QFont font19;
+        font19.setPointSize(15);
+        centralWidget->setFont(font19);
         main->raise();
         widget_2->raise();
         widget_3->raise();
@@ -4256,7 +4223,7 @@ public:
         centralWidget->raise();
         widget = new QWidget(centralwidget);
         widget->setObjectName("widget");
-        widget->setGeometry(QRect(0, 0, 1601, 131));
+        widget->setGeometry(QRect(0, 0, 2081, 131));
         QPalette palette18;
         palette18.setBrush(QPalette::Active, QPalette::WindowText, brush1);
         palette18.setBrush(QPalette::Active, QPalette::Button, brush15);
@@ -4316,13 +4283,13 @@ public:
 #endif
         palette18.setBrush(QPalette::Disabled, QPalette::Accent, brush22);
         widget->setPalette(palette18);
-        QFont font19;
-        font19.setPointSize(9);
-        font19.setBold(true);
-        font19.setItalic(false);
-        font19.setUnderline(false);
-        font19.setStrikeOut(false);
-        widget->setFont(font19);
+        QFont font20;
+        font20.setPointSize(9);
+        font20.setBold(true);
+        font20.setItalic(false);
+        font20.setUnderline(false);
+        font20.setStrikeOut(false);
+        widget->setFont(font20);
         widget->setAutoFillBackground(true);
         Medecin = new QLabel(widget);
         Medecin->setObjectName("Medecin");
@@ -4334,9 +4301,9 @@ public:
         pushButton_2->setObjectName("pushButton_2");
         pushButton_2->setGeometry(QRect(0, -10, 131, 141));
         pushButton_2->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon11;
-        icon11.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_2->setIcon(icon11);
+        QIcon icon15;
+        icon15.addFile(QString::fromUtf8(":/icon.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_2->setIcon(icon15);
         pushButton_2->setIconSize(QSize(71, 71));
         label_2 = new QLabel(widget);
         label_2->setObjectName("label_2");
@@ -4347,9 +4314,9 @@ public:
         pushButton_3->setObjectName("pushButton_3");
         pushButton_3->setGeometry(QRect(130, 0, 131, 131));
         pushButton_3->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon12;
-        icon12.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_3->setIcon(icon12);
+        QIcon icon16;
+        icon16.addFile(QString::fromUtf8(":/icon2.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_3->setIcon(icon16);
         pushButton_3->setIconSize(QSize(102, 78));
         label_3 = new QLabel(widget);
         label_3->setObjectName("label_3");
@@ -4364,9 +4331,9 @@ public:
         vaccinB->setToolTipDuration(12);
         vaccinB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         vaccinB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon13;
-        icon13.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        vaccinB->setIcon(icon13);
+        QIcon icon17;
+        icon17.addFile(QString::fromUtf8(":/4190642 (1).png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        vaccinB->setIcon(icon17);
         vaccinB->setIconSize(QSize(68, 68));
         vaccinB->setFlat(false);
         equiB = new QPushButton(widget);
@@ -4376,9 +4343,9 @@ public:
         equiB->setToolTipDuration(12);
         equiB->setLayoutDirection(Qt::LayoutDirection::LeftToRight);
         equiB->setStyleSheet(QString::fromUtf8("background: transparent;"));
-        QIcon icon14;
-        icon14.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        equiB->setIcon(icon14);
+        QIcon icon18;
+        icon18.addFile(QString::fromUtf8(":/icon5.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        equiB->setIcon(icon18);
         equiB->setIconSize(QSize(100, 89));
         equiB->setFlat(false);
         label_8 = new QLabel(widget);
@@ -4397,11 +4364,13 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 21));
+        menubar->setGeometry(QRect(0, 0, 1827, 25));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
         menuStatistique->setObjectName("menuStatistique");
+        menuActivit = new QMenu(menubar);
+        menuActivit->setObjectName("menuActivit");
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -4409,15 +4378,17 @@ public:
 
         menubar->addAction(menuSessio->menuAction());
         menubar->addAction(menuStatistique->menuAction());
+        menubar->addAction(menuActivit->menuAction());
         menuSessio->addAction(actionGestion_d_acc_s);
         menuSessio->addAction(actionChanger_d_utilisateur);
         menuSessio->addAction(actionQuitter);
         menuStatistique->addAction(actionVaccin);
         menuStatistique->addAction(actiontaux_des_rendez_vous);
+        menuActivit->addAction(actionEmploy_s);
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(13);
+        vaccin->setCurrentIndex(6);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -4431,6 +4402,7 @@ public:
         actionQuitter->setText(QCoreApplication::translate("MainWindow", "Quitter", nullptr));
         actionVaccin->setText(QCoreApplication::translate("MainWindow", "vaccin", nullptr));
         actiontaux_des_rendez_vous->setText(QCoreApplication::translate("MainWindow", "Taux des rendez_vous", nullptr));
+        actionEmploy_s->setText(QCoreApplication::translate("MainWindow", "Employ\303\251s", nullptr));
         pushButton_4->setText(QString());
         rdv->setText(QString());
         label_6->setText(QCoreApplication::translate("MainWindow", "Rendez-vous", nullptr));
@@ -4582,7 +4554,6 @@ public:
         drag->setText(QString());
         label_49->setText(QCoreApplication::translate("MainWindow", "S\303\251lectionner une date dans le calendrier pour afficher l'heure du rendez vous", nullptr));
         feries->setText(QString());
-        rendez_v->setText(QString());
         label_52->setText(QCoreApplication::translate("MainWindow", "Vous pouver selectinonner une date puis le bouton ajouter un rendez vous pour la selection rapide d'une date", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_4), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_10), QCoreApplication::translate("MainWindow", "Page", nullptr));
@@ -4608,15 +4579,7 @@ public:
         salle_att->setText(QString());
         adresse->setText(QString());
         label_326->setText(QCoreApplication::translate("MainWindow", "Date de naissance", nullptr));
-        samedi->setText(QCoreApplication::translate("MainWindow", "Samedi", nullptr));
-        vendredi->setText(QCoreApplication::translate("MainWindow", "Vendredi", nullptr));
-        matin->setText(QCoreApplication::translate("MainWindow", "Le matin", nullptr));
-        mercredi->setText(QCoreApplication::translate("MainWindow", "Mercredi", nullptr));
-        midi->setText(QCoreApplication::translate("MainWindow", "Le midi", nullptr));
-        soir->setText(QCoreApplication::translate("MainWindow", "Le soir", nullptr));
-        lundi->setText(QCoreApplication::translate("MainWindow", "Lundi", nullptr));
-        mardi->setText(QCoreApplication::translate("MainWindow", "Mardi", nullptr));
-        jeudi->setText(QCoreApplication::translate("MainWindow", "Jeudi", nullptr));
+        attente->setText(QCoreApplication::translate("MainWindow", "Liste d'attente", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_9), QCoreApplication::translate("MainWindow", "Page", nullptr));
         label_39->setText(QCoreApplication::translate("MainWindow", "Date d'expiration", nullptr));
         label_40->setText(QCoreApplication::translate("MainWindow", "Age minimum requis", nullptr));
@@ -4674,16 +4637,7 @@ public:
         adresse_2->setText(QString());
         label_341->setText(QCoreApplication::translate("MainWindow", "Vaccin d\303\251sir\303\251  ", nullptr));
         salle_att_2->setText(QString());
-        checkBox_71->setText(QCoreApplication::translate("MainWindow", "Vendredi", nullptr));
-        checkBox_72->setText(QCoreApplication::translate("MainWindow", "Le midi", nullptr));
-        checkBox_73->setText(QCoreApplication::translate("MainWindow", "Samedi", nullptr));
-        checkBox_74->setText(QCoreApplication::translate("MainWindow", "Le soir", nullptr));
-        checkBox_75->setText(QCoreApplication::translate("MainWindow", "Le matin", nullptr));
-        checkBox_76->setText(QCoreApplication::translate("MainWindow", "Lundi", nullptr));
-        checkBox_77->setText(QCoreApplication::translate("MainWindow", "Jeudi", nullptr));
-        checkBox_78->setText(QCoreApplication::translate("MainWindow", "Mercredi", nullptr));
-        checkBox_79->setText(QCoreApplication::translate("MainWindow", "Mardi", nullptr));
-        checkBox_80->setText(QCoreApplication::translate("MainWindow", "L'apr\303\250s-midi", nullptr));
+        attente_1->setText(QCoreApplication::translate("MainWindow", "Liste d'attente", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_34), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_8), QCoreApplication::translate("MainWindow", "Page", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_11), QCoreApplication::translate("MainWindow", "Page", nullptr));
@@ -4694,6 +4648,14 @@ public:
         vaccin->setTabText(vaccin->indexOf(tab_12), QCoreApplication::translate("MainWindow", "Page", nullptr));
         label_35->setText(QCoreApplication::translate("MainWindow", "Historique du Maladie", nullptr));
         vaccin->setTabText(vaccin->indexOf(tab_13), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        label_53->setText(QCoreApplication::translate("MainWindow", "Liste de pr\303\251sence ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem20 = tabPres->horizontalHeaderItem(0);
+        ___qtablewidgetitem20->setText(QCoreApplication::translate("MainWindow", "Pr\303\251nom", nullptr));
+        QTableWidgetItem *___qtablewidgetitem21 = tabPres->horizontalHeaderItem(1);
+        ___qtablewidgetitem21->setText(QCoreApplication::translate("MainWindow", "Nom", nullptr));
+        QTableWidgetItem *___qtablewidgetitem22 = tabPres->horizontalHeaderItem(2);
+        ___qtablewidgetitem22->setText(QCoreApplication::translate("MainWindow", "Pr\303\251sence", nullptr));
+        vaccin->setTabText(vaccin->indexOf(tab_14), QCoreApplication::translate("MainWindow", "Page", nullptr));
         Medecin->setText(QCoreApplication::translate("MainWindow", "M\303\251decins", nullptr));
         pushButton_2->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "Vaccins", nullptr));
@@ -4704,6 +4666,7 @@ public:
         label_8->setText(QCoreApplication::translate("MainWindow", "Equipements", nullptr));
         menuSessio->setTitle(QCoreApplication::translate("MainWindow", "Session", nullptr));
         menuStatistique->setTitle(QCoreApplication::translate("MainWindow", "Statistique", nullptr));
+        menuActivit->setTitle(QCoreApplication::translate("MainWindow", "Activit\303\251", nullptr));
     } // retranslateUi
 
 };
