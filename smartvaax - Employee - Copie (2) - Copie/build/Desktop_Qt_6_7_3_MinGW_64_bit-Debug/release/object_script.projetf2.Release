@@ -1,0 +1,13 @@
+release/evenement.o
+release/loginwindow.o
+release/main.o
+release/mainwindow.o
+release/medecin.o
+release/vaccin.o
+release/qrc_image.o
+release/qrc_qmake_qmake_qm_files.o
+release/moc_evenement.o
+release/moc_loginwindow.o
+release/moc_mainwindow.o
+release/moc_medecin.o
+release/moc_vaccin.o
