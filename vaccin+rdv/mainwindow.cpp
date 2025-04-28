@@ -31,8 +31,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStandardItemModel>
-
-
+#include <QSerialPort>
+#include <QSerialPortInfo>
 Connection::Connection() {}
 
 bool Connection::createconnect() {
@@ -53,8 +53,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , vaccinManager(new Vaccin(this))
     , rdvWindow (new rendez_vous(this))
+    , arduino(new Arduino(this))
     , chatbot(new ChatBot(this))
-    , notificationWidget (new NotificationWidget(this))
+    , notificationWidget (new NotificationWidget(this))  // Initialize the Arduino object
 
 {
 
@@ -165,7 +166,7 @@ MainWindow::MainWindow(QWidget *parent)
     int nbr_notif;
     newsFetcher = new NewsFetcher(this);
     connect(newsFetcher, &NewsFetcher::newSicknessDetected, this, &MainWindow::handleNewSicknessDetected);
-
+    connect(ui->histoButton, &QPushButton::clicked, this, &MainWindow::on_histo_clicked);
     ////////////////////////////////notification
     ///
     ///
@@ -187,6 +188,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     connect(ui->alert, &QPushButton::clicked, this, &MainWindow::showNotifications);
+    connect(ui->ordonnerButton, &QPushButton::clicked, this, &MainWindow::on_ordonner_clicked);
 
     ////////////////////////////////////
     connect(chatbot, &ChatBot::historyLoaded, this, &MainWindow::loadChatHistory);
@@ -479,7 +481,7 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
     ui->detail_label->setStyleSheet("QLabel { padding: 10px; background: #f8f8f8; border-radius: 5px; }");
-
+    QTimer::singleShot(0, this, &MainWindow::checkVaccineExpiration);
 }
 
 MainWindow::~MainWindow() {
@@ -513,7 +515,20 @@ void MainWindow::on_equiB_clicked() {
     vaccinTab->setCurrentIndex(4);
     loadEquipementsData();
 }
+void MainWindow::on_actionQuitter_triggered()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirmer l'arête", "Êtes-vous sûr de quitter l'application?",
+                                  QMessageBox::Yes | QMessageBox::No);
 
+    if (reply == QMessageBox::Yes)
+    {
+        QApplication::quit();
+    }
+    else {
+        QMessageBox::information(this, "Opération annulée", "L'arête a été annulée.");
+    }
+}
 
 
 void MainWindow::on_Quit_clicked() {
@@ -532,52 +547,158 @@ void MainWindow::on_Quit_5_clicked()
     vaccinTab->setCurrentIndex(0);
 
 }
+
+void MainWindow::onvaccinBclicked() {
+    vaccinTab->setCurrentIndex(0);
+    vaccinManager->loadVaccinData(ui->tabvaccin);
+}
+
+void MainWindow::on_histo_clicked()
+{
+    vaccinTab->setCurrentIndex(18);
+
+    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
+    QFile file(filePath);
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString content = in.readAll();
+        file.close();
+
+        ui->notificationViewer->setPlainText(content);
+
+    } else {
+        qDebug() << "Failed to open notifications file for reading.";
+        ui->notificationViewer->setPlainText("No notifications found.");
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void MainWindow::on_ordonner_clicked()
 {
     QListWidgetItem *selected = ui->liste->currentItem();
-    if (!selected)
-    {
+    if (!selected) {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner un élément de la liste.");
         return;
-    }
-    else
-    {
+    } else {
         vaccinTab->setCurrentIndex(17);
         int idRdvl = selected->data(Qt::UserRole).toInt();
         QSqlQuery prep;
         prep.prepare("SELECT VACCIN_RDV FROM RENDEZ_VOUS WHERE ID_RDV = :idRdvl");
         prep.bindValue(":idRdvl", idRdvl);
         QString Nom;
-        if (prep.exec())
-        {
-            if (prep.next())
-            {
+        if (prep.exec()) {
+            if (prep.next()) {
                 Nom = prep.value(0).toString();
                 ui->Nomvac->setText(Nom);
             }
         }
-        prep.prepare("SELECT REFERENCE, QUANTITE FROM VACCIN WHERE NOM=:Nom");
-        prep.bindValue(":Nom",Nom);
-        int reference,quantite;
-        if (prep.exec())
-        {
-            if (prep.next())
-            {
+        prep.prepare("SELECT REFERENCE, QUANTITE FROM VACCIN WHERE NOM = :Nom");
+        prep.bindValue(":Nom", Nom);
+        int reference, quantite;
+        if (prep.exec()) {
+            if (prep.next()) {
                 reference = prep.value(0).toInt();
                 quantite = prep.value(1).toInt();
                 ui->Referencevac->setText(QString::number(reference));
                 ui->quantitevac->setText(QString::number(quantite));
+
+                // Extract the first four digits from the 7-digit reference number
+                int movement1 = (reference / 1000000) % 10;  // First digit
+                int movement2 = (reference / 100000) % 10;   // Second digit
+                int movement3 = (reference / 10000) % 10;    // Third digit
+                int movement4 = (reference / 1000) % 10;     // Fourth digit
+
+                if (arduino != nullptr) {
+                    QString portName = "COM4";    // 🔵 Change this if needed
+                    qint32 baudRate = 9600;        // Must match Arduino
+
+                    if (!arduino->isSerialOpen()) {
+                        if (!arduino->initSerialPort(portName, baudRate)) {
+                            QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir le port série.");
+                            return;
+                        }
+                    }
+
+                    QString command = QString("%1%2%3%4\n")
+                                          .arg(movement1)
+                                          .arg(movement2)
+                                          .arg(movement3)
+                                          .arg(movement4);
+
+                    qDebug() << "Sending command:" << command;
+                    arduino->sendCommand(command);
+                } else {
+                    qDebug() << "Arduino object not initialized.";
+                }
             }
         }
     }
 }
-void MainWindow::onvaccinBclicked() {
-    vaccinTab->setCurrentIndex(0);
-    vaccinManager->loadVaccinData(ui->tabvaccin);
-    checkVaccineExpiration();
 
+
+
+void MainWindow::on_confirmer_clicked()
+{
+    QString nomVaccin = ui->Nomvac->text();
+    int currentQuantity = ui->quantitevac->text().toInt();
+
+    if (nomVaccin.isEmpty()) {
+        QMessageBox::warning(this, "Avertissement", "Le nom du vaccin est vide.");
+        return;
+    }
+
+    if (currentQuantity <= 0) {
+        QMessageBox::warning(this, "Avertissement", "La quantité de vaccin est déjà à 0.");
+        return;
+    }
+
+    int newQuantity = currentQuantity - 1;
+    ui->quantitevac->setText(QString::number(newQuantity));
+
+    QSqlQuery query;
+    query.prepare("UPDATE VACCIN SET QUANTITE = :newQuantity WHERE NOM = :nomVaccin");
+    query.bindValue(":newQuantity", newQuantity);
+    query.bindValue(":nomVaccin", nomVaccin);
+
+    if (query.exec()) {
+        QMessageBox::information(this, "Succès", "La quantité du vaccin a été mise à jour.");
+    } else {
+        QMessageBox::critical(this, "Erreur", "Échec de la mise à jour de la quantité du vaccin: " + query.lastError().text());
+        return; // Stop if the database update failed
+    }
+
+    // Now send the commands to Arduino
+    if (arduino != nullptr && arduino->isSerialOpen()) {
+        qDebug() << "Sending command 1 (open grab)";
+        arduino->sendCommand("1\n");
+
+        QTimer::singleShot(1000, this, [this]() {
+            if (arduino->isSerialOpen()) {
+                qDebug() << "Sending command 2 (close grab)";
+                arduino->sendCommand("2\n");
+            }
+        });
+
+        QTimer::singleShot(2000, this, [this]() {
+            if (arduino->isSerialOpen()) {
+                qDebug() << "Sending command 0 (end)";
+                arduino->sendCommand("0\n");
+            }
+        });
+
+    } else {
+        qDebug() << "Arduino serial port is not open. Cannot send commands.";
+        QMessageBox::warning(this, "Erreur", "Le port série n'est pas ouvert.");
+    }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 void MainWindow::checkVaccineExpiration() {
     QSqlQuery query;
     query.prepare("SELECT NOM, DATE_EXP FROM VACCIN WHERE DATE_EXP < SYSDATE");
@@ -601,21 +722,7 @@ void MainWindow::triggerExpiredVaccineNotification(const QString &nom, const QDa
     QString message = QString("Le vaccin '%1' a expiré le %2.")
                           .arg(nom, dateExp.toString("dd-MM-yyyy"));
 
-    QSoundEffect *soundEffect = new QSoundEffect(this);
-    soundEffect->setSource(QUrl::fromLocalFile("C:/Users/MSI/Downloads/ding-101492.wav"));
-    soundEffect->setLoopCount(1);
-    soundEffect->setVolume(0.9f);
-    soundEffect->play();
-    ui->bellN->show();
-    notificationWidget->setStyleSheet(
-        "background: rgb(70, 148, 156);"
-        "color: white;"
-        "border-radius: 8px;"
-        "padding: 10px;"
-        "QLabel { min-width: 200px; max-width: 250px; word-wrap: break-word; }");
-    notificationWidget->addNotification(message);
-    notificationWidget->show();
-    QTimer::singleShot(5000, notificationWidget, &QWidget::hide);
+    ajoutNotification(message);
 }
 
 
@@ -662,7 +769,7 @@ void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
                                            const QString &vaccineInfo,
                                            const QString &detail,
                                            const QString &source) {
-    // Play sound
+    qDebug() << "handleNewSicknessDetected called with:" << sicknessName << date << location << vaccineInfo << detail << source;
     QSoundEffect *soundEffect = new QSoundEffect(this);
     soundEffect->setSource(QUrl::fromLocalFile("C:/Users/MSI/Downloads/ding-101492.wav"));
     if (soundEffect->status() == QSoundEffect::Ready) {
@@ -738,6 +845,7 @@ void MainWindow::saveNotificationToFile(int numero,
         qDebug() << "Failed to open file for reading notifications.";
     }
 }
+
 
 void MainWindow::showNotificationHistory() {
     QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
@@ -1014,14 +1122,39 @@ void MainWindow::onTypeVac2CurrentIndexChanged()
     }
 }
 
-void MainWindow::on_save_vac_clicked()
-{
+void MainWindow::on_save_vac_clicked() {
     bool isValid = true;
-    int reference = ui->reference->text().toInt(&isValid);
+    QString referenceStr = ui->reference->text();
+
+    // Check if the reference is numeric and has exactly 7 digits
+    bool isNumeric = false;
+    referenceStr.toInt(&isNumeric);
+    if (!isNumeric || referenceStr.length() != 7) {
+        QMessageBox::warning(this, "Erreur", "La référence doit être composée de 7 chiffres.");
+        return;
+    }
+
+    int reference = referenceStr.toInt(&isValid);
     if (!isValid || reference <= 0) {
         QMessageBox::warning(this, "Erreur", "Référence invalide");
         return;
     }
+
+    // Vérification de l'unicité de la référence
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT COUNT(*) FROM VACCIN WHERE REFERENCE = :reference");
+    checkQuery.bindValue(":reference", reference);
+    if (!checkQuery.exec()) {
+        QMessageBox::critical(this, "Erreur", "Erreur lors de la vérification de la référence : " + checkQuery.lastError().text());
+        return;
+    }
+    checkQuery.next();
+    int count = checkQuery.value(0).toInt();
+    if (count > 0) {
+        QMessageBox::warning(this, "Erreur", "La référence doit être unique.");
+        return;
+    }
+
     QString nom = ui->nom_vac->currentText();
     if (nom.isEmpty() || nom == "nouveau vaccin") {
         QMessageBox::warning(this, "Erreur", "Nom de vaccin invalide");
@@ -1076,6 +1209,9 @@ void MainWindow::on_save_vac_clicked()
     vaccinManager->loadVaccinData(ui->tabvaccin);
     showAllRows();
 }
+
+
+
 void MainWindow::onDateChanged() {
     QDate selectedDate;
     QDateEdit *senderDateEdit = qobject_cast<QDateEdit*>(sender());
@@ -2236,6 +2372,10 @@ void MainWindow::on_drag_clicked()
     }
     on_rdv_clicked();
 }
+
+
+
+
 
 
 

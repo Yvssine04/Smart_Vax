@@ -5,6 +5,7 @@ QT += charts
 QT += core gui network
 QT += network
 QT += network widgets
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,6 +16,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    arduino.cpp \
     chatbot.cpp \
     customdelegate.cpp \
     equipements.cpp \
@@ -26,6 +28,7 @@ SOURCES += \
     vaccin.cpp
 
 HEADERS += \
+    arduino.h \
     chatbot.h \
     connection.h \
     customdelegate.h \

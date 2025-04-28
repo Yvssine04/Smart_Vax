@@ -24,6 +24,9 @@
 #include <QtCharts/QValueAxis>
 #include "NewsFetcher.h"  // Include the NewsFetcher header
 #include "chatbot.h"
+#include <QSerialPort>
+#include <QSerialPortInfo>
+#include "arduino.h"  // Include the Arduino header
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -120,13 +123,16 @@ private slots:
     void clearNotificationHistory();
     void on_drag_clicked();
     void tri(int index);
-    void on_ordonner_clicked();
 
     void checkVaccineExpiration();
     void triggerExpiredVaccineNotification(const QString &nom, const QDate &dateExp);
+////////////////////////////////////////////////////////////////////////////////////////arduino Bras
+    void on_ordonner_clicked();
+    void on_confirmer_clicked();
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    void on_actionQuitter_triggered();
 
-
-
+    void on_histo_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -134,9 +140,11 @@ private:
     rendez_vous *rdvWindow;
     QTabWidget *vaccinTab;
     Evenement *eventManager;
+    QSerialPort *serial;
     Evenement *evenement;
     QMediaPlayer *M_Player;
     QAudioOutput *audioOutput;
+    Arduino *arduino;  // Add an Arduino member
     QCalendarWidget *calendrier;
     NewsFetcher *newsFetcher;  // Add a NewsFetcher member
     QPushButton *ajoutvac;

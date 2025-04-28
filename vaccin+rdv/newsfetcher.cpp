@@ -13,7 +13,7 @@ NewsFetcher::NewsFetcher(QObject *parent) : QObject(parent) {
 }
 
 void NewsFetcher::fetchNews() {
-    QString apiKey = "2df7707941d4407cb99b1c8e607e6b59";
+    QString apiKey = "62da6ce7cded4bdfa7d1e23db76dd4cc";
     QString url = QString("https://newsapi.org/v2/everything?q=nouvelle+maladie&apiKey=%1").arg(apiKey);
     QNetworkRequest request(url);
     manager->get(request);
@@ -22,8 +22,12 @@ void NewsFetcher::fetchNews() {
 void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response = reply->readAll();
+        qDebug() << "Response:" << response;  // Print the response for debugging
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         QJsonArray articles = jsonDoc.object()["articles"].toArray();
+
+        QDate currentDate = QDate::currentDate();
+        QDate oneMonthAgo = currentDate.addMonths(-1);
 
         foreach (const QJsonValue &value, articles) {
             QJsonObject article = value.toObject();
@@ -36,37 +40,43 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
             QString formattedDate = dateTime.date().toString("yyyy-MM-dd");
             QString location = extractLocationFromContent(content);
 
-            if (title.contains("nouvelle maladie", Qt::CaseInsensitive) ||
-                content.contains("nouvelle maladie", Qt::CaseInsensitive)) {
+            qDebug() << "Article Title:" << title;  // Print article title for debugging
+            qDebug() << "Article Date:" << formattedDate;  // Print article date for debugging
 
-                QString diseaseName = title;
-                int colonIndex = diseaseName.indexOf(":");
-                if (colonIndex != -1) {
-                    diseaseName = diseaseName.left(colonIndex).trimmed();
+            // Check if the article is within the last month
+            if (dateTime.date() >= oneMonthAgo) {
+                if (title.contains("nouvelle maladie", Qt::CaseInsensitive) ||
+                    content.contains("nouvelle maladie", Qt::CaseInsensitive)) {
+
+                    QString diseaseName = title;
+                    int colonIndex = diseaseName.indexOf(":");
+                    if (colonIndex != -1) {
+                        diseaseName = diseaseName.left(colonIndex).trimmed();
+                    }
+                    diseaseName = diseaseName.replace("Nouvelle maladie détectée :", "").trimmed();
+
+                    QString vaccineInfo = "Non disponible";
+                    QRegularExpression vaccineRegex(
+                        "\\b(vaccin|vaccine|vaccination)\\s+(?:contre|pour|against)?\\s*"
+                        "([A-ZÀ-ÖØ-ß][a-zà-öø-ÿ]+(?:\\s+[A-ZÀ-ÖØ-ß][a-zà-öø-ÿ]+)*)\\b",
+                        QRegularExpression::CaseInsensitiveOption);
+
+                    QRegularExpressionMatch vaccineMatch = vaccineRegex.match(content);
+                    if (vaccineMatch.hasMatch()) {
+                        vaccineInfo = QString("Vaccin disponible: %1").arg(vaccineMatch.captured(2).trimmed());
+                    }
+                    else if (content.contains("vaccin", Qt::CaseInsensitive) ||
+                             content.contains("vaccine", Qt::CaseInsensitive)) {
+                        vaccineInfo = "Vaccin disponible (non spécifié)";
+                    }
+
+                    QString detail = QString("%1\nSource: %2\n%3")
+                                         .arg(title)
+                                         .arg(source)
+                                         .arg(content.left(200));
+
+                    emit newSicknessDetected(diseaseName, formattedDate, location, vaccineInfo, detail, source);
                 }
-                diseaseName = diseaseName.replace("Nouvelle maladie détectée :", "").trimmed();
-
-                QString vaccineInfo = "Non disponible";
-                QRegularExpression vaccineRegex(
-                    "\\b(vaccin|vaccine|vaccination)\\s+(?:contre|pour|against)?\\s*"
-                    "([A-ZÀ-ÖØ-ß][a-zà-öø-ÿ]+(?:\\s+[A-ZÀ-ÖØ-ß][a-zà-öø-ÿ]+)*)\\b",
-                    QRegularExpression::CaseInsensitiveOption);
-
-                QRegularExpressionMatch vaccineMatch = vaccineRegex.match(content);
-                if (vaccineMatch.hasMatch()) {
-                    vaccineInfo = QString("Vaccin disponible: %1").arg(vaccineMatch.captured(2).trimmed());
-                }
-                else if (content.contains("vaccin", Qt::CaseInsensitive) ||
-                         content.contains("vaccine", Qt::CaseInsensitive)) {
-                    vaccineInfo = "Vaccin disponible (non spécifié)";
-                }
-
-                QString detail = QString("%1\nSource: %2\n%3")
-                                     .arg(title)
-                                     .arg(source)
-                                     .arg(content.left(200));
-
-                emit newSicknessDetected(diseaseName, formattedDate, location, vaccineInfo, detail, source);
             }
         }
     } else {
@@ -74,6 +84,7 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
     }
     reply->deleteLater();
 }
+
 
 QString NewsFetcher::extractLocationFromContent(const QString &content) {
     QRegularExpression locationRegex(

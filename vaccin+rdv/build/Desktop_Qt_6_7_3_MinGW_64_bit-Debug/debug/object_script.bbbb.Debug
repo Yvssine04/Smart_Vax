@@ -1,3 +1,4 @@
+debug/arduino.o
 debug/chatbot.o
 debug/customdelegate.o
 debug/equipements.o
@@ -9,6 +10,7 @@ debug/rendez_vous.o
 debug/vaccin.o
 debug/qrc_image.o
 debug/qrc_sounds.o
+debug/moc_arduino.o
 debug/moc_chatbot.o
 debug/moc_customdelegate.o
 debug/moc_evenement.o
