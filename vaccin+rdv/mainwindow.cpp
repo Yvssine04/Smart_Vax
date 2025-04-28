@@ -582,122 +582,118 @@ void MainWindow::on_ordonner_clicked()
     if (!selected) {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner un élément de la liste.");
         return;
-    } else {
-        vaccinTab->setCurrentIndex(17);
-        int idRdvl = selected->data(Qt::UserRole).toInt();
-        QSqlQuery prep;
-        prep.prepare("SELECT VACCIN_RDV FROM RENDEZ_VOUS WHERE ID_RDV = :idRdvl");
-        prep.bindValue(":idRdvl", idRdvl);
-        QString Nom;
-        if (prep.exec()) {
-            if (prep.next()) {
-                Nom = prep.value(0).toString();
-                ui->Nomvac->setText(Nom);
-            }
-        }
+    }
+
+    vaccinTab->setCurrentIndex(17);
+    int idRdvl = selected->data(Qt::UserRole).toInt();
+    QSqlQuery prep;
+    prep.prepare("SELECT VACCIN_RDV FROM RENDEZ_VOUS WHERE ID_RDV = :idRdvl");
+    prep.bindValue(":idRdvl", idRdvl);
+    QString Nom;
+
+    if (prep.exec() && prep.next()) {
+        Nom = prep.value(0).toString();
+        ui->Nomvac->setText(Nom);
+
         prep.prepare("SELECT REFERENCE, QUANTITE FROM VACCIN WHERE NOM = :Nom");
         prep.bindValue(":Nom", Nom);
-        int reference, quantite;
-        if (prep.exec()) {
-            if (prep.next()) {
-                reference = prep.value(0).toInt();
-                quantite = prep.value(1).toInt();
-                ui->Referencevac->setText(QString::number(reference));
-                ui->quantitevac->setText(QString::number(quantite));
 
-                // Extract the first four digits from the 7-digit reference number
-                int movement1 = (reference / 1000000) % 10;  // First digit
-                int movement2 = (reference / 100000) % 10;   // Second digit
-                int movement3 = (reference / 10000) % 10;    // Third digit
-                int movement4 = (reference / 1000) % 10;     // Fourth digit
+        if (prep.exec() && prep.next()) {
+            int reference = prep.value(0).toInt();
+            int quantite = prep.value(1).toInt();
+            ui->Referencevac->setText(QString::number(reference));
+            ui->quantitevac->setText(QString::number(quantite));
 
-                if (arduino != nullptr) {
-                    QString portName = "COM4";    // 🔵 Change this if needed
-                    qint32 baudRate = 9600;        // Must match Arduino
-
-                    if (!arduino->isSerialOpen()) {
-                        if (!arduino->initSerialPort(portName, baudRate)) {
-                            QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir le port série.");
-                            return;
-                        }
+            // Send current quantity to Arduino IMMEDIATELY
+            if (arduino != nullptr) {
+                if (!arduino->isSerialOpen()) {
+                    if (!arduino->initSerialPort("COM4", 9600)) {
+                        QMessageBox::critical(this, "Erreur", "Port série non ouvert");
+                        return;
                     }
-
-                    QString command = QString("%1%2%3%4\n")
-                                          .arg(movement1)
-                                          .arg(movement2)
-                                          .arg(movement3)
-                                          .arg(movement4);
-
-                    qDebug() << "Sending command:" << command;
-                    arduino->sendCommand(command);
-                } else {
-                    qDebug() << "Arduino object not initialized.";
                 }
+
+                // Send quantity FIRST
+                QString quantityCommand = QString("Q:%1\n").arg(quantite);
+                arduino->sendCommand(quantityCommand);
+                qDebug() << "Sent quantity:" << quantityCommand;
+
+                // Then send movement commands
+                int movement1 = (reference / 1000000) % 10;
+                int movement2 = (reference / 100000) % 10;
+                int movement3 = (reference / 10000) % 10;
+                int movement4 = (reference / 1000) % 10;
+
+                QString moveCommand = QString("%1%2%3%4\n")
+                                          .arg(movement1).arg(movement2)
+                                          .arg(movement3).arg(movement4);
+
+                arduino->sendCommand(moveCommand);
+                qDebug() << "Sent movement:" << moveCommand;
+
+                // Send END command after 3 seconds
+                QTimer::singleShot(3000, this, [this]() {
+                    if (arduino && arduino->isSerialOpen()) {
+                        arduino->sendCommand("0\n");
+                        qDebug() << "Sent end command";
+                    }
+                });
             }
         }
     }
 }
-
-
 
 void MainWindow::on_confirmer_clicked()
 {
     QString nomVaccin = ui->Nomvac->text();
     int currentQuantity = ui->quantitevac->text().toInt();
 
-    if (nomVaccin.isEmpty()) {
-        QMessageBox::warning(this, "Avertissement", "Le nom du vaccin est vide.");
-        return;
-    }
-
-    if (currentQuantity <= 0) {
-        QMessageBox::warning(this, "Avertissement", "La quantité de vaccin est déjà à 0.");
+    if (nomVaccin.isEmpty() || currentQuantity <= 0) {
+        QMessageBox::warning(this, "Erreur", "Quantité invalide");
         return;
     }
 
     int newQuantity = currentQuantity - 1;
     ui->quantitevac->setText(QString::number(newQuantity));
 
+    // Update database
     QSqlQuery query;
     query.prepare("UPDATE VACCIN SET QUANTITE = :newQuantity WHERE NOM = :nomVaccin");
     query.bindValue(":newQuantity", newQuantity);
     query.bindValue(":nomVaccin", nomVaccin);
 
-    if (query.exec()) {
-        QMessageBox::information(this, "Succès", "La quantité du vaccin a été mise à jour.");
-    } else {
-        QMessageBox::critical(this, "Erreur", "Échec de la mise à jour de la quantité du vaccin: " + query.lastError().text());
-        return; // Stop if the database update failed
+    if (!query.exec()) {
+        QMessageBox::critical(this, "Erreur", query.lastError().text());
+        return;
     }
 
-    // Now send the commands to Arduino
+    // Send updated quantity to Arduino
     if (arduino != nullptr && arduino->isSerialOpen()) {
-        qDebug() << "Sending command 1 (open grab)";
-        arduino->sendCommand("1\n");
+        QString quantityCommand = QString("Q:%1\n").arg(newQuantity);
+        arduino->sendCommand(quantityCommand);
+        qDebug() << "Sent updated quantity:" << quantityCommand;
+    }
+
+    // Arm operation sequence
+    if (arduino != nullptr && arduino->isSerialOpen()) {
+        arduino->sendCommand("1\n"); // Open grab
+        qDebug() << "Sent open command";
 
         QTimer::singleShot(1000, this, [this]() {
-            if (arduino->isSerialOpen()) {
-                qDebug() << "Sending command 2 (close grab)";
-                arduino->sendCommand("2\n");
+            if (arduino && arduino->isSerialOpen()) {
+                arduino->sendCommand("2\n"); // Close grab
+                qDebug() << "Sent close command";
             }
         });
 
         QTimer::singleShot(2000, this, [this]() {
-            if (arduino->isSerialOpen()) {
-                qDebug() << "Sending command 0 (end)";
-                arduino->sendCommand("0\n");
+            if (arduino && arduino->isSerialOpen()) {
+                arduino->sendCommand("0\n"); // End
+                qDebug() << "Sent end command";
             }
         });
-
-    } else {
-        qDebug() << "Arduino serial port is not open. Cannot send commands.";
-        QMessageBox::warning(this, "Erreur", "Le port série n'est pas ouvert.");
     }
 }
-
-
-
-
 
 void MainWindow::checkVaccineExpiration() {
     QSqlQuery query;
