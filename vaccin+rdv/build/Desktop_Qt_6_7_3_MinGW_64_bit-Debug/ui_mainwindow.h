@@ -3181,8 +3181,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 7, 22), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 7, 22), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 7, 21), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 7, 21), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3849,8 +3849,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 21), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 21), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 20), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 20), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -4614,7 +4614,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1546, 26));
+        menubar->setGeometry(QRect(0, 0, 1546, 22));
         menuSessio = new QMenu(menubar);
         menuSessio->setObjectName("menuSessio");
         menuStatistique = new QMenu(menubar);
@@ -4634,7 +4634,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(16);
+        vaccin->setCurrentIndex(6);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

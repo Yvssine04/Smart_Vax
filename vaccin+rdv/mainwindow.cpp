@@ -599,12 +599,19 @@ void MainWindow::on_ordonner_clicked()
         prep.bindValue(":Nom", Nom);
 
         if (prep.exec() && prep.next()) {
-            int reference = prep.value(0).toInt();
+            QString fullReference = prep.value(0).toString();
             int quantite = prep.value(1).toInt();
-            ui->Referencevac->setText(QString::number(reference));
+            ui->Referencevac->setText(fullReference);
             ui->quantitevac->setText(QString::number(quantite));
 
-            // Send current quantity to Arduino IMMEDIATELY
+            // Extraire les 4 premiers chiffres
+            QString movementReference = fullReference.left(4);
+            if (movementReference.length() != 4) {
+                QMessageBox::warning(this, "Attention", "La référence doit contenir au moins 4 chiffres");
+                return;
+            }
+
+            // Envoyer à l'Arduino
             if (arduino != nullptr) {
                 if (!arduino->isSerialOpen()) {
                     if (!arduino->initSerialPort("COM4", 9600)) {
@@ -613,36 +620,52 @@ void MainWindow::on_ordonner_clicked()
                     }
                 }
 
-                // Send quantity FIRST
+                // 1. Envoyer la quantité
                 QString quantityCommand = QString("Q:%1\n").arg(quantite);
                 arduino->sendCommand(quantityCommand);
-                qDebug() << "Sent quantity:" << quantityCommand;
+                qDebug() << "Quantité envoyée:" << quantityCommand;
 
-                // Then send movement commands
-                int movement1 = (reference / 1000000) % 10;
-                int movement2 = (reference / 100000) % 10;
-                int movement3 = (reference / 10000) % 10;
-                int movement4 = (reference / 1000) % 10;
+                // 2. Envoyer les 4 premiers chiffres de la référence
+                arduino->sendCommand(movementReference + "\n");
+                qDebug() << "Référence de mouvement envoyée:" << movementReference;
 
-                QString moveCommand = QString("%1%2%3%4\n")
-                                          .arg(movement1).arg(movement2)
-                                          .arg(movement3).arg(movement4);
+                // Demande de confirmation
+                QMessageBox::StandardButton reply;
+                reply = QMessageBox::question(this, "Confirmation",
+                                              "Voulez-vous confirmer cette opération?",
+                                              QMessageBox::Yes|QMessageBox::No);
 
-                arduino->sendCommand(moveCommand);
-                qDebug() << "Sent movement:" << moveCommand;
+                if (reply == QMessageBox::Yes) {
+                    // Si confirmé, le bras reste en position
+                    qDebug() << "Opération confirmée - Bras reste en position";
 
-                // Send END command after 3 seconds
-                QTimer::singleShot(3000, this, [this]() {
+                    // Envoyer confirmation après délai
+                    QTimer::singleShot(3000, this, [this]() {
+                        if (arduino && arduino->isSerialOpen()) {
+                            arduino->sendCommand("C\n");  // Commande de confirmation
+                            qDebug() << "Commande de confirmation envoyée";
+                        }
+                    });
+                } else {
+                    // Si annulé, retour à la position initiale
+                    qDebug() << "Opération annulée - Retour à la position initiale";
+
+                    // Envoyer commande de retour
                     if (arduino && arduino->isSerialOpen()) {
-                        arduino->sendCommand("0\n");
-                        qDebug() << "Sent end command";
+                        arduino->sendCommand("H\n");  // Commande 'Home'
+                        qDebug() << "Commande 'Home' envoyée";
                     }
-                });
+
+                    // Réinitialiser l'interface
+                    ui->Nomvac->clear();
+                    ui->Referencevac->clear();
+                    ui->quantitevac->clear();
+                    vaccinTab->setCurrentIndex(6);  // Modification ici: retour à l'onglet 6 au lieu de 0
+                }
             }
         }
     }
 }
-
 void MainWindow::on_confirmer_clicked()
 {
     QString nomVaccin = ui->Nomvac->text();
@@ -653,10 +676,26 @@ void MainWindow::on_confirmer_clicked()
         return;
     }
 
+    // Demande de confirmation finale
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirmation finale",
+                                  "Êtes-vous sûr de vouloir valider cette opération?",
+                                  QMessageBox::Yes|QMessageBox::No);
+
+    if (reply != QMessageBox::Yes) {
+        // Si l'utilisateur annule
+        if (arduino != nullptr && arduino->isSerialOpen()) {
+            arduino->sendCommand("H\n");  // Retour à la position initiale
+            qDebug() << "Opération annulée - Retour à la position initiale";
+        }
+        return;
+    }
+
+    // Si confirmé, procéder à la mise à jour
     int newQuantity = currentQuantity - 1;
     ui->quantitevac->setText(QString::number(newQuantity));
 
-    // Update database
+    // Mise à jour de la base de données
     QSqlQuery query;
     query.prepare("UPDATE VACCIN SET QUANTITE = :newQuantity WHERE NOM = :nomVaccin");
     query.bindValue(":newQuantity", newQuantity);
@@ -667,34 +706,36 @@ void MainWindow::on_confirmer_clicked()
         return;
     }
 
-    // Send updated quantity to Arduino
+    // Envoyer la quantité mise à jour à l'Arduino
     if (arduino != nullptr && arduino->isSerialOpen()) {
         QString quantityCommand = QString("Q:%1\n").arg(newQuantity);
         arduino->sendCommand(quantityCommand);
-        qDebug() << "Sent updated quantity:" << quantityCommand;
+        qDebug() << "Quantité mise à jour envoyée:" << quantityCommand;
     }
 
-    // Arm operation sequence
+    // Séquence d'opération du bras
     if (arduino != nullptr && arduino->isSerialOpen()) {
-        arduino->sendCommand("1\n"); // Open grab
-        qDebug() << "Sent open command";
+        // 1. Ouvrir la pince
+        arduino->sendCommand("1\n");
+        qDebug() << "Commande 'ouvrir' envoyée";
 
+        // 2. Fermer la pince après délai
         QTimer::singleShot(1000, this, [this]() {
             if (arduino && arduino->isSerialOpen()) {
-                arduino->sendCommand("2\n"); // Close grab
-                qDebug() << "Sent close command";
+                arduino->sendCommand("2\n");
+                qDebug() << "Commande 'fermer' envoyée";
             }
         });
 
+        // 3. Retour à la position initiale après opération
         QTimer::singleShot(2000, this, [this]() {
             if (arduino && arduino->isSerialOpen()) {
-                arduino->sendCommand("0\n"); // End
-                qDebug() << "Sent end command";
+                arduino->sendCommand("H\n"); // Commande 'Home'
+                qDebug() << "Commande 'Home' envoyée";
             }
         });
     }
 }
-
 void MainWindow::checkVaccineExpiration() {
     QSqlQuery query;
     query.prepare("SELECT NOM, DATE_EXP FROM VACCIN WHERE DATE_EXP < SYSDATE");

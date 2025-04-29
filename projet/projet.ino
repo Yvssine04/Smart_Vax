@@ -26,8 +26,18 @@ const byte digitPatterns[10] = {
 
 int currentQuantity = 0;
 int currentRotate = 90;
+int currentUpDown = 50;
 bool isGrabOpen = false;
 unsigned long lastCommandTime = 0;
+
+// Home position
+const int HOME_ROTATE = 40;
+const int HOME_UPDOWN = 50;
+
+// Reference positions
+int referenceRotate = HOME_ROTATE;
+int referenceUpDown = HOME_UPDOWN;
+bool newReferenceReceived = false;
 
 void setup() {
   Serial.begin(9600);
@@ -40,13 +50,11 @@ void setup() {
   for(int i=0; i<7; i++) pinMode(segmentPins[i], OUTPUT);
   for(int i=0; i<3; i++) pinMode(digitPins[i], OUTPUT);
   
-  // Initialize servos
-  moveServo(SERVO_ROTATE, 40);
-  moveServo(SERVO_UPDOWN1, 50);
-  moveServo(SERVO_UPDOWN2, 50);
+  // Initialize servos to home position
+  moveToHomePosition();
   closeGrabber();
   
-  Serial.println("System ready - up/down follows reference exactly");
+  Serial.println("System ready - maintains position until new reference");
 }
 
 void loop() {
@@ -57,6 +65,29 @@ void loop() {
     input.trim();
     handleCommand(input);
     lastCommandTime = millis();
+  }
+  
+  // If new reference received, move to home then to reference
+  if(newReferenceReceived) {
+    pwm.wakeup();
+    
+    // 1. Return to home position
+    moveToHomePosition();
+    delay(500);
+    
+    // 2. Move to reference position
+    moveServo(SERVO_ROTATE, referenceRotate);
+    moveServo(SERVO_UPDOWN1, referenceUpDown);
+    moveServo(SERVO_UPDOWN2, referenceUpDown);
+    currentRotate = referenceRotate;
+    currentUpDown = referenceUpDown;
+    
+    Serial.print("Moved to reference - Rotate: ");
+    Serial.print(referenceRotate);
+    Serial.print("° UpDown: ");
+    Serial.println(referenceUpDown);
+    
+    newReferenceReceived = false;
   }
   
   if(millis() - lastCommandTime > 5000) pwm.sleep();
@@ -75,38 +106,74 @@ void handleCommand(String cmd) {
   else if(cmd == "2") {
     closeGrabber();
   }
+  else if(cmd == "H") {
+    moveToHomePosition();
+  }
+  else if(cmd.startsWith("REF:")) {
+    // New reference format: "REF:rotate,updown"
+    int commaIndex = cmd.indexOf(',');
+    if(commaIndex > 0) {
+      referenceRotate = cmd.substring(4, commaIndex).toInt();
+      referenceUpDown = cmd.substring(commaIndex+1).toInt();
+      
+      // Constrain values
+      referenceRotate = constrain(referenceRotate, ROTATE_MIN, ROTATE_MAX);
+      referenceUpDown = constrain(referenceUpDown, UPDOWN_MIN, UPDOWN_MAX);
+      
+      newReferenceReceived = true;
+      
+      Serial.print("New reference received - Rotate: ");
+      Serial.print(referenceRotate);
+      Serial.print("° UpDown: ");
+      Serial.println(referenceUpDown);
+    }
+  }
   else if(cmd.length() == 4) {
+    // Manual control mode
     pwm.wakeup();
     
-    // Extract movement values
     int moveRight = cmd.charAt(0) - '0';
     int moveLeft = cmd.charAt(1) - '0';
     int moveUp = cmd.charAt(2) - '0';
     int moveDown = cmd.charAt(3) - '0';
 
-    // Calculate new rotate position (10° per digit)
     currentRotate += (moveRight - moveLeft) * 10;
     currentRotate = constrain(currentRotate, ROTATE_MIN, ROTATE_MAX);
     
-    // Calculate up/down position directly from reference (10° per digit)
-    int upDownPosition = (moveUp - moveDown) * 10 + 50; // Center at 50
-    upDownPosition = constrain(upDownPosition, UPDOWN_MIN, UPDOWN_MAX);
+    currentUpDown += (moveUp - moveDown) * 10;
+    currentUpDown = constrain(currentUpDown, UPDOWN_MIN, UPDOWN_MAX);
     
-    // Move servos
     moveServo(SERVO_ROTATE, currentRotate);
-    moveServo(SERVO_UPDOWN1, upDownPosition);
-    moveServo(SERVO_UPDOWN2, upDownPosition);
+    moveServo(SERVO_UPDOWN1, currentUpDown);
+    moveServo(SERVO_UPDOWN2, currentUpDown);
     
-    Serial.print("New position - Rotate: ");
+    Serial.print("Manual position - Rotate: ");
     Serial.print(currentRotate);
     Serial.print("° UpDown: ");
-    Serial.print(upDownPosition);
-    Serial.println("°");
+    Serial.println(currentUpDown);
   }
 }
 
+void moveToHomePosition() {
+  pwm.wakeup();
+  Serial.println("Returning to home position");
+  
+  // Move up/down first
+  moveServo(SERVO_UPDOWN1, HOME_UPDOWN);
+  moveServo(SERVO_UPDOWN2, HOME_UPDOWN);
+  delay(300);
+  
+  // Then move rotate
+  moveServo(SERVO_ROTATE, HOME_ROTATE);
+  
+  currentRotate = HOME_ROTATE;
+  currentUpDown = HOME_UPDOWN;
+}
+
 void moveServo(int servo, int angle) {
-  pwm.setPWM(servo, 0, map(angle, 0, 180, 150, 600));
+  angle = constrain(angle, 0, 180);
+  int pulse = map(angle, 0, 180, 150, 600);
+  pwm.setPWM(servo, 0, pulse);
   delay(15);
 }
 

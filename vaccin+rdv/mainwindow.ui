@@ -1732,7 +1732,7 @@ background-color: rgb(31, 109, 119);</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>16</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -12208,7 +12208,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>22</day>
+         <day>21</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -12218,7 +12218,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>22</day>
+         <day>21</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -14164,7 +14164,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>21</day>
+         <day>20</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -14174,7 +14174,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>21</day>
+         <day>20</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -17753,7 +17753,7 @@ border-radius: 15px;</string>
      <x>0</x>
      <y>0</y>
      <width>1546</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSessio">
