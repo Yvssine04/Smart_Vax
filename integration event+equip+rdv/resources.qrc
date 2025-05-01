@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>map.qml</file>
+        <file>bells.png</file>
+        <file>bellw.png</file>
+    </qresource>
+</RCC>
