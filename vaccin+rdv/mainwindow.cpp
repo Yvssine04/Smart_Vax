@@ -166,7 +166,6 @@ MainWindow::MainWindow(QWidget *parent)
     int nbr_notif;
     newsFetcher = new NewsFetcher(this);
     connect(newsFetcher, &NewsFetcher::newSicknessDetected, this, &MainWindow::handleNewSicknessDetected);
-    connect(ui->histoButton, &QPushButton::clicked, this, &MainWindow::on_histo_clicked);
     ////////////////////////////////notification
     ///
     ///
@@ -482,6 +481,7 @@ MainWindow::MainWindow(QWidget *parent)
         );
     ui->detail_label->setStyleSheet("QLabel { padding: 10px; background: #f8f8f8; border-radius: 5px; }");
     QTimer::singleShot(0, this, &MainWindow::checkVaccineExpiration);
+
 }
 
 MainWindow::~MainWindow() {
@@ -552,27 +552,6 @@ void MainWindow::onvaccinBclicked() {
     vaccinTab->setCurrentIndex(0);
     vaccinManager->loadVaccinData(ui->tabvaccin);
 }
-
-void MainWindow::on_histo_clicked()
-{
-    vaccinTab->setCurrentIndex(18);
-
-    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
-    QFile file(filePath);
-
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file);
-        QString content = in.readAll();
-        file.close();
-
-        ui->notificationViewer->setPlainText(content);
-
-    } else {
-        qDebug() << "Failed to open notifications file for reading.";
-        ui->notificationViewer->setPlainText("No notifications found.");
-    }
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -807,40 +786,23 @@ void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
                                            const QString &detail,
                                            const QString &source) {
     qDebug() << "handleNewSicknessDetected called with:" << sicknessName << date << location << vaccineInfo << detail << source;
-    QSoundEffect *soundEffect = new QSoundEffect(this);
-    soundEffect->setSource(QUrl::fromLocalFile("C:/Users/MSI/Downloads/ding-101492.wav"));
-    if (soundEffect->status() == QSoundEffect::Ready) {
-        soundEffect->play();
-    }
 
-    // Show notification
-    ui->bellN->show();
-    notificationWidget->setStyleSheet(
-        "background: rgb(70, 148, 156);"
-        "color: white;"
-        "border-radius: 8px;"
-        "padding: 10px;"
-        "QLabel { min-width: 200px; max-width: 250px; word-wrap: break-word; }");
-
-    QString notificationMessage = QString("Nouvelle maladie détectée : %1\n"
+    QString notificationMessage = QString("Nouvelle : %1\n"
                                           "Date : %2\n"
                                           "Lieu : %3\n"
                                           "Vaccin : %4\n"
                                           "Source : %5")
                                       .arg(sicknessName, date, location, vaccineInfo, source);
 
-    notificationWidget->addNotification(notificationMessage);
-    notificationWidget->show();
-    QTimer::singleShot(5000, notificationWidget, &QWidget::hide);
-
+    ajoutNotification(notificationMessage);
     static int uniqueNumero = 1;
     saveNotificationToFile(uniqueNumero++,
-                               detail,
-                               vaccineInfo,
-                               QDate::fromString(date, "yyyy-MM-dd"),
-                               source,
-                               sicknessName,
-                               location);
+                           detail,
+                           vaccineInfo,
+                           QDate::fromString(date, "yyyy-MM-dd"),
+                           source,
+                           sicknessName,
+                           location);
 }
 
 void MainWindow::saveNotificationToFile(int numero,
@@ -2185,19 +2147,6 @@ void MainWindow::ajoutNotification(const QString message) {
     QDateTime currentDateTime = QDateTime::currentDateTime();
 
     QSqlQuery query;
-    query.prepare("INSERT INTO NOTIFICATIONS (DETAIL_NOTIF, DATE_NOTIF) "
-                  "VALUES (:message, TO_TIMESTAMP(:date, 'YYYY-MM-DD HH24:MI:SS'))");
-    query.bindValue(":message", message);
-    query.bindValue(":date", currentDateTime.toString("yyyy-MM-dd hh:mm:ss"));
-
-    if (!query.exec()) {
-        qDebug() << "Failed query:" << query.lastQuery();
-        qDebug() << "Error:" << query.lastError().text();
-    }
-    else {
-        qDebug() << "Notification inserted successfully!";
-    }
-
 
     notificationWidget->addNotification(message);
     notificationWidget->show();
@@ -2206,7 +2155,6 @@ void MainWindow::ajoutNotification(const QString message) {
 
 void MainWindow::handleNotificationClicked1() {
     vaccinTab->setCurrentIndex(14);
-
 }
 
 

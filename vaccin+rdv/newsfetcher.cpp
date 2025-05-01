@@ -1,4 +1,6 @@
 #include "NewsFetcher.h"
+#include "qdir.h"
+#include "qstandardpaths.h"
 #include <QRegularExpression>
 #include <QDateTime>
 
@@ -22,12 +24,17 @@ void NewsFetcher::fetchNews() {
 void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray response = reply->readAll();
-        qDebug() << "Response:" << response;  // Print the response for debugging
+        qDebug() << "Response:" << response;
+
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         QJsonArray articles = jsonDoc.object()["articles"].toArray();
 
         QDate currentDate = QDate::currentDate();
-        QDate oneMonthAgo = currentDate.addMonths(-1);
+        QDate weekAgo = currentDate.addMonths(-1);
+
+
+
+        QStringList keywords = {"vaccin ", "nouvelle maladie", "contagion", "nouvelle pandémie", "pandémie "};
 
         foreach (const QJsonValue &value, articles) {
             QJsonObject article = value.toObject();
@@ -39,16 +46,23 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
             QDateTime dateTime = QDateTime::fromString(dateStr, Qt::ISODate);
             QString formattedDate = dateTime.date().toString("yyyy-MM-dd");
             QString location = extractLocationFromContent(content);
+            QString diseaseName = title;
 
-            qDebug() << "Article Title:" << title;  // Print article title for debugging
-            qDebug() << "Article Date:" << formattedDate;  // Print article date for debugging
+            qDebug() << "Article Title:" << title;
+            qDebug() << "Article Date:" << formattedDate;
 
-            // Check if the article is within the last month
-            if (dateTime.date() >= oneMonthAgo) {
-                if (title.contains("nouvelle maladie", Qt::CaseInsensitive) ||
-                    content.contains("nouvelle maladie", Qt::CaseInsensitive)) {
 
-                    QString diseaseName = title;
+            if (dateTime.date() >= weekAgo) {
+                bool containsKeyword = false;
+                foreach (const QString &keyword, keywords) {
+                    if (title.contains(keyword, Qt::CaseInsensitive) ||
+                        content.contains(keyword, Qt::CaseInsensitive)) {
+                        containsKeyword = true;
+                        break;
+                    }
+                }
+
+                if (containsKeyword) {
                     int colonIndex = diseaseName.indexOf(":");
                     if (colonIndex != -1) {
                         diseaseName = diseaseName.left(colonIndex).trimmed();
@@ -64,9 +78,8 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
                     QRegularExpressionMatch vaccineMatch = vaccineRegex.match(content);
                     if (vaccineMatch.hasMatch()) {
                         vaccineInfo = QString("Vaccin disponible: %1").arg(vaccineMatch.captured(2).trimmed());
-                    }
-                    else if (content.contains("vaccin", Qt::CaseInsensitive) ||
-                             content.contains("vaccine", Qt::CaseInsensitive)) {
+                    } else if (content.contains("vaccin", Qt::CaseInsensitive) ||
+                               content.contains("vaccine", Qt::CaseInsensitive)) {
                         vaccineInfo = "Vaccin disponible (non spécifié)";
                     }
 
@@ -79,9 +92,11 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
                 }
             }
         }
+
     } else {
         qDebug() << "Erreur lors de la récupération des nouvelles:" << reply->errorString();
     }
+
     reply->deleteLater();
 }
 

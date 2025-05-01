@@ -553,7 +553,6 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 67: _t->on_ordonner_clicked(); break;
         case 68: _t->on_confirmer_clicked(); break;
         case 69: _t->on_actionQuitter_triggered(); break;
-        case 70: _t->on_histo_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
