@@ -1732,7 +1732,7 @@ background-color: rgb(31, 109, 119);</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>17</number>
+      <number>16</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -11689,7 +11689,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>17</day>
+         <day>16</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -11699,7 +11699,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>17</day>
+         <day>16</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -13645,7 +13645,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>16</day>
+         <day>15</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -13655,7 +13655,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>16</day>
+         <day>15</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -16141,7 +16141,7 @@ font: 700 26pt &quot;Segoe UI&quot;;</string>
       <widget class="QTableView" name="detail">
        <property name="geometry">
         <rect>
-         <x>580</x>
+         <x>400</x>
          <y>50</y>
          <width>551</width>
          <height>661</height>
@@ -16156,7 +16156,7 @@ border-radius: 15px;</string>
       <widget class="QScrollArea" name="detail_2">
        <property name="geometry">
         <rect>
-         <x>590</x>
+         <x>410</x>
          <y>150</y>
          <width>531</width>
          <height>541</height>
@@ -16189,7 +16189,7 @@ border-radius: 15px;</string>
       <widget class="QLabel" name="label_35">
        <property name="geometry">
         <rect>
-         <x>700</x>
+         <x>520</x>
          <y>70</y>
          <width>391</width>
          <height>41</height>

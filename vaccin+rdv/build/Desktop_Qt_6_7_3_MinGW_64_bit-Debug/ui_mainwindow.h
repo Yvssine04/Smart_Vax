@@ -3094,8 +3094,8 @@ public:
 ""));
         date_rdv->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv->setDateTime(QDateTime(QDate(2024, 7, 17), QTime(0, 0, 0)));
-        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 7, 17), QTime(0, 0, 0)));
+        date_rdv->setDateTime(QDateTime(QDate(2024, 7, 16), QTime(0, 0, 0)));
+        date_rdv->setMinimumDateTime(QDateTime(QDate(1970, 7, 16), QTime(0, 0, 0)));
         date_rdv->setCalendarPopup(true);
         infirmier_att = new QComboBox(tab_9);
         infirmier_att->setObjectName("infirmier_att");
@@ -3762,8 +3762,8 @@ public:
 ""));
         date_rdv_2->setButtonSymbols(QAbstractSpinBox::ButtonSymbols::UpDownArrows);
         date_rdv_2->setCorrectionMode(QAbstractSpinBox::CorrectionMode::CorrectToNearestValue);
-        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 16), QTime(0, 0, 0)));
-        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 16), QTime(0, 0, 0)));
+        date_rdv_2->setDateTime(QDateTime(QDate(2024, 7, 15), QTime(0, 0, 0)));
+        date_rdv_2->setMinimumDateTime(QDateTime(QDate(1970, 7, 15), QTime(0, 0, 0)));
         date_rdv_2->setCalendarPopup(true);
         label_330 = new QLabel(tab_34);
         label_330->setObjectName("label_330");
@@ -4259,13 +4259,13 @@ public:
         tab_13->setObjectName("tab_13");
         detail = new QTableView(tab_13);
         detail->setObjectName("detail");
-        detail->setGeometry(QRect(580, 50, 551, 661));
+        detail->setGeometry(QRect(400, 50, 551, 661));
         detail->setStyleSheet(QString::fromUtf8("background-color: rgb(63, 123, 134);\n"
 "border: 2px solid #000000;\n"
 "border-radius: 15px;"));
         detail_2 = new QScrollArea(tab_13);
         detail_2->setObjectName("detail_2");
-        detail_2->setGeometry(QRect(590, 150, 531, 541));
+        detail_2->setGeometry(QRect(410, 150, 531, 541));
         detail_2->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
@@ -4276,7 +4276,7 @@ public:
         detail_2->setWidget(scrollAreaWidgetContents);
         label_35 = new QLabel(tab_13);
         label_35->setObjectName("label_35");
-        label_35->setGeometry(QRect(700, 70, 391, 41));
+        label_35->setGeometry(QRect(520, 70, 391, 41));
         label_35->setStyleSheet(QString::fromUtf8("font: 700 22pt \"Segoe UI\";"));
         vaccin->addTab(tab_13, QString());
         tab_14 = new QWidget();
@@ -4523,7 +4523,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        vaccin->setCurrentIndex(17);
+        vaccin->setCurrentIndex(16);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

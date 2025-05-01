@@ -877,65 +877,32 @@ void MainWindow::showNotificationHistory() {
 }
 
 void MainWindow::handleNotificationClicked(const QString &message) {
-    // 1. Extract disease name
-    QString diseaseName = message.split('\n').first();
-    diseaseName = diseaseName.remove("Nouvelle maladie détectée :").trimmed();
+    // Determine the type of notification
+    bool isExpirationNotification = message.contains("a expiré le", Qt::CaseInsensitive);
 
-    // 2. Read notification details from file
-    QString filePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/notifications.txt";
-    QFile file(filePath);
-    QString fullArticle;
-
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file);
-        QString content = in.readAll();
-        file.close();
-
-        // Debug: Print the content read from the file
-        qDebug() << "File content:" << content;
-
-        // Find the relevant notification block
-        QStringList blocks = content.split("\n\n");
-        for (const QString &block : std::as_const(blocks)) {
-            if (block.contains("Maladie: " + diseaseName, Qt::CaseInsensitive)) {
-                fullArticle = block;
-                break;
-            }
-        }
-
-        if (!fullArticle.isEmpty()) {
-            // Debug: Print the full article found
-            qDebug() << "Full article found:" << fullArticle;
-
-            // Enhance formatting for QTextBrowser
-            fullArticle = "<html><body style='font-family:Arial; font-size:12pt;'>"
-                          + fullArticle.replace("\n", "<br>")
-                          + "</body></html>";
-        } else {
-            fullArticle = "<i>Article complet non disponible</i>";
-        }
-    } else {
-        qDebug() << "Failed to open file for reading notifications.";
-        fullArticle = "<i>Article complet non disponible</i>";
-    }
-    // 3. Show notification dialog
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Détails - " + diseaseName);
+    msgBox.setWindowTitle("Détails de la notification");
     msgBox.setText(message);
 
-    QPushButton *ok = msgBox.addButton("Ok", QMessageBox::ActionRole);
-    ok->setStyleSheet("background-color: #46949c; color: white;");
+    QPushButton *okButton = msgBox.addButton("Ok", QMessageBox::ActionRole);
+    okButton->setStyleSheet("background-color: #46949c; color: white;");
 
-    QPushButton *historiqueButton = msgBox.addButton("Afficher l'historique", QMessageBox::ActionRole);
-    historiqueButton->setStyleSheet("background-color: #46949c; color: white;");
+    QPushButton *historiqueButton = nullptr;
+    QPushButton *clearHistoryButton = nullptr;
 
-    QPushButton *clearHistoryButton = msgBox.addButton("Effacer l'historique", QMessageBox::ActionRole);
-    clearHistoryButton->setStyleSheet("background-color: #46949c; color: white;");
+    if (!isExpirationNotification) {
+        historiqueButton = msgBox.addButton("Afficher l'historique", QMessageBox::ActionRole);
+        historiqueButton->setStyleSheet("background-color: #46949c; color: white;");
 
+        clearHistoryButton = msgBox.addButton("Effacer l'historique", QMessageBox::ActionRole);
+        clearHistoryButton->setStyleSheet("background-color: #46949c; color: white;");
+    }
 
     msgBox.exec();
 
-    if (msgBox.clickedButton() == historiqueButton) {
+    if (msgBox.clickedButton() == okButton) {
+        // Handle OK button click if needed
+    } else if (msgBox.clickedButton() == historiqueButton) {
         showNotificationHistory();
     } else if (msgBox.clickedButton() == clearHistoryButton) {
         clearNotificationHistory();

@@ -34,7 +34,7 @@ void NewsFetcher::onNewsFetched(QNetworkReply *reply) {
 
 
 
-        QStringList keywords = {"vaccin ", "nouvelle maladie", "contagion", "nouvelle pandémie", "pandémie "};
+        QStringList keywords = {"vaccin ", "nouvelle maladie", "nouvelle pandémie", "nouveau vaccin "};
 
         foreach (const QJsonValue &value, articles) {
             QJsonObject article = value.toObject();
