@@ -370,7 +370,7 @@ connect(alertPlayer, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error 
     connect(ui->tabvaccin->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::onVaccinHeaderSectionClicked);
     ui->tabvaccin->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tabvaccin->setSelectionMode(QAbstractItemView::SingleSelection);
-
+    connect(ui->chatbot_line_3, &QLineEdit::returnPressed, this, &MainWindow::handleChatbotLine3ReturnPressed);
 ////////////////////////////////////////////////////////////
 
 
@@ -1098,6 +1098,13 @@ void MainWindow::on_chatbot_page_clicked()
 {
     vaccinTab->setCurrentIndex(22);
 }
+
+void MainWindow::on_chatbot_page_2_clicked()
+{
+    vaccinTab->setCurrentIndex(22);
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::on_ordonner_clicked()
@@ -1296,11 +1303,21 @@ void MainWindow::loadChatHistory(const QString &history) {
 
 void MainWindow::showChatHistory() {
     chatbot->loadChatHistory();
+        ui->chatbot_line->setEnabled(false);
+    ui->chatbot_line_2->setEnabled(false);
+    ui->chatbot_line_3->setEnabled(false);
 }
+
+
 
 void MainWindow::createNewChat() {
     ui->chatbot_display->clear();
+    ui->chatbot_line->setEnabled(true);
+    ui->chatbot_line_2->setEnabled(true);
+    ui->chatbot_line_3->setEnabled(true);
 }
+
+
 
 void MainWindow::sendMessageToChatbot() {
     QString userMessage = ui->chatbot_line->text();
@@ -1325,6 +1342,14 @@ void MainWindow::handleChatbotLine2ReturnPressed()
     sendMessageToChatbot();
 }
 
+void MainWindow::handleChatbotLine3ReturnPressed()
+{
+    QString text = ui->chatbot_line_3->text();
+    ui->vaccin->setCurrentIndex(22);
+    ui->chatbot_line->setText(text);
+    ui->chatbot_line_3->clear();
+    sendMessageToChatbot();
+}
 
 void MainWindow::handleNewSicknessDetected(const QString &sicknessName,
                                            const QString &date,
@@ -3572,4 +3597,5 @@ void MainWindow::processFrame()
     ui->cameraFeed->setPixmap(QPixmap::fromImage(img));  // Display camera feed
 }
 */
+
 

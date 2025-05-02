@@ -1716,7 +1716,7 @@ background-color: rgb(31, 109, 119);</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>21</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="Tab1">
       <attribute name="title">
@@ -12404,7 +12404,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>28</day>
+         <day>27</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -12414,7 +12414,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>28</day>
+         <day>27</day>
         </datetime>
        </property>
        <property name="displayFormat">
@@ -14337,7 +14337,7 @@ border-radius: 15px;
          <second>0</second>
          <year>2024</year>
          <month>7</month>
-         <day>27</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="minimumDateTime">
@@ -14347,7 +14347,7 @@ border-radius: 15px;
          <second>0</second>
          <year>1970</year>
          <month>7</month>
-         <day>27</day>
+         <day>26</day>
         </datetime>
        </property>
        <property name="displayFormat">

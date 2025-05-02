@@ -176,7 +176,7 @@ private slots:
     void onTypeVacCurrentIndexChanged();
     void onTypeVac2CurrentIndexChanged();
     void on_chatbot_page_clicked();
-
+    void handleChatbotLine3ReturnPressed();
 ////////////////////mariem
  void onStatistiqueActionTriggered();
  void createEquipmentChart(const QMap<QString, int>& stats);
@@ -184,6 +184,8 @@ private slots:
 // void on_camButton_clicked();
      void onPdfButtonClicked();
  void on_actionStats_Fr_quentation_triggered();
+
+     void on_chatbot_page_2_clicked();
 
  public slots:
     void updateEventList(QString ville);
@@ -279,7 +281,6 @@ private:
 
 
     QTimer *averageTimer; //
-
 
     QAudioOutput* audioOutput;
     /// mariem
