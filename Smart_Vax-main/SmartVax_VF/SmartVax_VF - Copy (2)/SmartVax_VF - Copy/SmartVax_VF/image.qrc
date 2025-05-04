@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>4190642 (1).png</file>
+        <file>icon.png</file>
+        <file>icon2.png</file>
+        <file>logo.png</file>
+        <file>icon4.png</file>
+        <file>bell.png</file>
+        <file>icon5.png</file>
+        <file>icon6.png</file>
+        <file>icon7.png</file>
+        <file>icon8.png</file>
+        <file>216658.png</file>
+        <file>7398464.png</file>
+        <file>save.png</file>
+    </qresource>
+</RCC>
