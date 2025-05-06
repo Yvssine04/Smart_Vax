@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/microo">
+        <file>micro.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,16 @@
+release/connection.o
+release/main.o
+release/mainwindow.o
+release/patient.o
+release/qrc_TRi.o
+release/qrc_add.o
+release/qrc_ajouter.o
+release/qrc_icon.o
+release/qrc_image.o
+release/qrc_impremante.o
+release/qrc_impremente.o
+release/qrc_micr.o
+release/qrc_saeeeeeeeeeeeeeeeee.o
+release/qrc_save1.o
+release/qrc_qmake_qmake_qm_files.o
+release/moc_mainwindow.o

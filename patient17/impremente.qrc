@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/imppp">
+        <file>impremente.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,16 @@
+debug/connection.o
+debug/main.o
+debug/mainwindow.o
+debug/patient.o
+debug/qrc_TRi.o
+debug/qrc_add.o
+debug/qrc_ajouter.o
+debug/qrc_icon.o
+debug/qrc_image.o
+debug/qrc_impremante.o
+debug/qrc_impremente.o
+debug/qrc_micr.o
+debug/qrc_saeeeeeeeeeeeeeeeee.o
+debug/qrc_save1.o
+debug/qrc_qmake_qmake_qm_files.o
+debug/moc_mainwindow.o

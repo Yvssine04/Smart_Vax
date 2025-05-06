@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/123456">
+        <file>123456.qrc.autosave</file>
+    </qresource>
+</RCC>
